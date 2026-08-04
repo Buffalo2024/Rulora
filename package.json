@@ -1,0 +1,52 @@
+{
+  "name": "@rulora/core",
+  "version": "0.1.0-alpha.1",
+  "description": "Hybird orchestration: models understand and create; programs control, validate and deliver.",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "files": [
+    "src",
+    "assets/brand/rulora-logo-256.png",
+    "assets/contact/wechat-qr.jpg",
+    "README.md",
+    "README_EN.md",
+    "LICENSE",
+    "NOTICE",
+    "TRADEMARKS.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Jeff <zzjeff1993.agent@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Buffalo2024/rulora.git"
+  },
+  "homepage": "https://github.com/Buffalo2024/rulora#readme",
+  "bugs": {
+    "url": "https://github.com/Buffalo2024/rulora/issues"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "example": "node examples/01-guided-diagnosis/run.js",
+    "example:diagnosis": "node examples/01-guided-diagnosis/run.js",
+    "example:native-image": "node examples/02-native-image-report/run.js",
+    "example:stable-image": "node examples/03-stable-image-reproduction/run.js",
+    "release:check": "node scripts/release-check.js",
+    "pack:check": "npm pack --dry-run"
+  },
+  "keywords": [
+    "llm",
+    "agent",
+    "state-machine",
+    "workflow",
+    "openclaw",
+    "hybird"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

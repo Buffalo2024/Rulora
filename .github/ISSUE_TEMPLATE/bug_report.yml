@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible problem in Rulora Core or an example.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include API keys, production prompts, or real user data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide a sanitized scenario and commands.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Rulora and Node.js versions
+    validations:
+      required: true
+  - type: textarea
+    id: ownership
+    attributes:
+      label: Hybird ownership boundary
+      description: Which model step or program gate was involved?

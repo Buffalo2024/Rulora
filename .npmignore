@@ -1,0 +1,6 @@
+tests/
+examples/
+docs/
+.env
+.env.*
+!.env.example

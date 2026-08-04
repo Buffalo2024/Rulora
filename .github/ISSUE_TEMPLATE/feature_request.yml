@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a reusable Hybird capability or public example.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+    validations:
+      required: true
+  - type: textarea
+    id: split
+    attributes:
+      label: Model/program responsibility split
+      description: What should the model do, and what must the program own?
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Proposed contract and validation
+    validations:
+      required: true
