@@ -1,6 +1,6 @@
 # Rulora contributor instructions
 
-Rulora is a Hybird orchestration framework: models understand and create;
+Rulora is a Hybrid orchestration framework: models understand and create;
 programs control, validate and deliver.
 
 ## Non-negotiable rules

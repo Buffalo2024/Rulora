@@ -1,4 +1,4 @@
-const { HybirdPipeline } = require('../../src')
+const { HybridPipeline } = require('../../src')
 
 const slots = {
   headline: { maxChars: 18, maxLines: 1 },
@@ -6,7 +6,7 @@ const slots = {
   nextStep: { maxChars: 16, maxLines: 1 }
 }
 
-const pipeline = new HybirdPipeline({
+const pipeline = new HybridPipeline({
   id: 'stable-image-reproduction-demo',
   steps: [
     {
@@ -24,14 +24,17 @@ const pipeline = new HybirdPipeline({
       }
     },
     {
-      id: 'program_fuse_registered_slots',
+      id: 'program_mock_fuse_registered_slots',
       owner: 'program',
-      run: async value => ({ ...value, finalImage: 'mock://stable-reproduction.png', outsideSlotChangedPixels: 0 })
+      run: async value => ({ ...value, finalImage: 'mock://stable-reproduction.png', mockOutsideSlotChangedPixels: 0 })
     },
     {
-      id: 'program_pixel_and_ocr_gate',
+      id: 'program_mock_pixel_gate',
       owner: 'program',
-      run: async value => ({ ...value, qa: { passed: value.outsideSlotChangedPixels === 0 } }),
+      run: async value => ({
+        ...value,
+        qa: { mode: 'mock', passed: value.mockOutsideSlotChangedPixels === 0 }
+      }),
       validate: async value => value.qa.passed || value.qa
     }
   ]

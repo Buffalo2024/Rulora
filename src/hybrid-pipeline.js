@@ -10,7 +10,7 @@ class PipelineError extends Error {
  * Minimal sequential pipeline used to make model/program ownership explicit.
  * A step returns a new value; an optional program gate accepts or rejects it.
  */
-class HybirdPipeline {
+class HybridPipeline {
   constructor({ id, steps = [] }) {
     if (!id) throw new Error('pipeline id is required')
     this.id = id
@@ -38,4 +38,4 @@ class HybirdPipeline {
   }
 }
 
-module.exports = { HybirdPipeline, PipelineError }
+module.exports = { HybridPipeline, PipelineError }

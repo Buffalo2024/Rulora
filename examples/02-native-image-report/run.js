@@ -1,4 +1,4 @@
-const { HybirdPipeline } = require('../../src')
+const { HybridPipeline } = require('../../src')
 const { IMMUTABLE_MARK, buildNativeReportPrompt } = require('./visual-prompt')
 
 const sampleReport = {
@@ -11,7 +11,7 @@ const sampleReport = {
   plan: ['第1周选定样本', '第2—3周跑通闭环', '第4周复盘并固化']
 }
 
-const pipeline = new HybirdPipeline({
+const pipeline = new HybridPipeline({
   id: 'native-image-report-demo',
   steps: [
     {
@@ -48,17 +48,18 @@ const pipeline = new HybirdPipeline({
       run: async value => ({
         ...value,
         candidateImage: 'mock://native-report-v1.png',
-        mockOcrText: `Rulora Hybird 开源案例 ${value.report.title} ${IMMUTABLE_MARK}`
+        mockOcrText: `Rulora Hybrid 开源案例 ${value.report.title} ${IMMUTABLE_MARK}`
       })
     },
     {
-      id: 'program_quality_gate',
+      id: 'program_mock_quality_gate',
       owner: 'program',
       run: async value => ({
         ...value,
         qa: {
+          mode: 'mock',
           passed: value.mockOcrText.includes(IMMUTABLE_MARK),
-          checks: ['required-copy', 'immutable-open-source-mark', 'readability', 'visual-density']
+          checks: ['immutable-open-source-mark-in-mock-ocr-text']
         }
       }),
       validate: async value => value.qa.passed || value.qa

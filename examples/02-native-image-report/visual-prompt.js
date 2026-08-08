@@ -21,7 +21,7 @@ function buildNativeReportPrompt({ report, visualStory }) {
 - ${narrative}
 
 【必须原样出现的固定文字】
-- Rulora · Hybird 开源案例
+- Rulora · Hybrid 开源案例
 - 1 你们合起来的价值
 - 2 你在 AI 时代的潜力
 - 3 建议数字协作者主要做什么

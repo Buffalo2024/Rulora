@@ -1,6 +1,6 @@
 # Rulora architecture
 
-## Hybird execution contract
+## Hybrid execution contract
 
 Rulora 把一次工作流划分为四种责任：
 
@@ -17,14 +17,23 @@ Rulora 把一次工作流划分为四种责任：
 read state → build model task → model proposes → validate → commit transition
 ```
 
-## Core primitives
+## Implemented in `0.1.0-alpha.1`
 
 - `ScenarioDefinition`：场景、分支、字段和输出契约。
 - `OrchestrationMachine`：唯一有权改变工作流状态的组件。
-- `Repository`：可替换的持久化接口。
-- `ModelProvider`：文本或图片服务适配器。
-- `PolicyGate`：权限、预算、敏感信息和人工介入策略。
-- `QualityGate`：Schema、OCR、视觉、溢出或像素范围检查。
+- `MemoryRepository`：测试和本地示例使用的进程内存储。
+- `HybridPipeline`：明确步骤所有权、按顺序运行并执行可选验证门禁。
+- 内建程序门禁：基础字段类型与容量、来源回合、Token 总量、无进展和人工接管。
+
+## Extension boundaries, not bundled implementations
+
+- `Repository`：宿主可以按 `create/get/save` 约定实现持久化；当前没有数据库适配器。
+- Model / Image Provider：由宿主调用并向 Core 提交候选值；当前没有供应商 SDK 适配器。
+- Channel Adapter：由宿主连接网页、OpenClaw 或客服渠道；当前没有渠道包。
+- Quality Gate：可在 Pipeline 的 `validate` 中接入；当前没有 OCR、视觉 QA、确定性图片融合或像素差异引擎。
+
+当前版本也没有并发控制、断点恢复、通用重试调度或生产级可观测性。它们属于后续能力，
+不应从本架构图中推断为已经实现。
 
 ## Deterministic invariants
 

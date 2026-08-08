@@ -1,9 +1,15 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { HybirdPipeline, PipelineError } = require('../src')
+const { HybridPipeline, PipelineError } = require('../src')
+
+test('public API uses the correctly spelled HybridPipeline name', () => {
+  const api = require('../src')
+  assert.equal(typeof api.HybridPipeline, 'function')
+  assert.equal(api[['Hy', 'birdPipeline'].join('')], undefined)
+})
 
 test('pipeline records explicit model/program ownership', async () => {
-  const pipeline = new HybirdPipeline({
+  const pipeline = new HybridPipeline({
     id: 'demo',
     steps: [
       { id: 'understand', owner: 'model', run: async value => ({ n: value.n + 1 }) },
@@ -16,7 +22,7 @@ test('pipeline records explicit model/program ownership', async () => {
 })
 
 test('program gate rejects an invalid model candidate', async () => {
-  const pipeline = new HybirdPipeline({
+  const pipeline = new HybridPipeline({
     id: 'demo',
     steps: [
       { id: 'create', owner: 'model', run: async () => ({ text: 'too long' }) },

@@ -17,7 +17,7 @@ Rulora tool adapter
   ├─ recordUsage
   └─ freeze
   ↓
-Repository + downstream Hybird pipeline
+Repository + downstream Hybrid pipeline
 ```
 
 ## 接入原则

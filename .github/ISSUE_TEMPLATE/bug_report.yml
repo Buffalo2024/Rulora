@@ -29,5 +29,5 @@ body:
   - type: textarea
     id: ownership
     attributes:
-      label: Hybird ownership boundary
+      label: Hybrid ownership boundary
       description: Which model step or program gate was involved?

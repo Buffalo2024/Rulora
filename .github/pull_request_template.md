@@ -1,6 +1,6 @@
 ## What changed
 
-## Hybird responsibility split
+## Hybrid responsibility split
 
 - Model owns:
 - Program owns:

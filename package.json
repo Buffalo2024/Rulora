@@ -1,11 +1,18 @@
 {
   "name": "@rulora/core",
   "version": "0.1.0-alpha.1",
-  "description": "Hybird orchestration: models understand and create; programs control, validate and deliver.",
+  "description": "Hybrid orchestration: models understand and create; programs control, validate and deliver.",
   "license": "Apache-2.0",
   "type": "commonjs",
   "main": "src/index.js",
-  "exports": "./src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "require": "./src/index.js",
+      "default": "./src/index.js"
+    }
+  },
   "files": [
     "src",
     "assets/brand/rulora-logo-256.png",
@@ -43,7 +50,7 @@
     "state-machine",
     "workflow",
     "openclaw",
-    "hybird"
+    "hybrid"
   ],
   "sideEffects": false,
   "publishConfig": {
