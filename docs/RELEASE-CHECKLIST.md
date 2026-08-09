@@ -26,3 +26,12 @@
 - [x] Issues、Discussions 和安全策略已启用；
 - [ ] 保护 `main` 分支，并要求 CI 通过；
 - [x] 创建与 npm 对应的 `v0.1.0-alpha.2` Pre-release。
+
+## 下一次开源同步
+
+- [ ] 将仓库描述更新为执行契约定位；
+- [ ] 将 Topics 更新为 `execution-contract`、`reliable-agents`、`ai-agents` 等；
+- [ ] 推送 README、架构、恢复测试和 Agent 生态说明；
+- [ ] 发布前重新运行全部命令并保存 CI 结果；
+- [ ] Core 版本升级后再发布 npm 与对应 GitHub Pre-release，保证 Tag、包版本和 Changelog 一致；
+- [ ] Report Agent 独立仓库通过发布审计后，再将正式链接加入主仓库。

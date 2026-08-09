@@ -1,7 +1,7 @@
 # Rulora Agent 生态与项目边界
 
-Rulora 是 Hybrid 框架、Core 运行时、公共约定和 Agent 项目索引。解决具体用户任务的
-Agent 作为独立开源项目发布。
+Rulora 是面向可靠 AI Agent 的执行契约框架、Core 运行时、公共约定和 Agent 项目索引。
+解决具体用户任务的 Agent 作为独立开源项目发布。
 
 ## 如何判断是 Agent 还是场景包
 
@@ -13,7 +13,7 @@ Agent 作为独立开源项目发布。
 Rulora
 ├── Core 与公共约定
 ├── 官方 Agent 索引
-└── Rulora Report Agent（独立项目，筹备中）
+└── Rulora Report Agent（独立开源项目）
     ├── 跨境电商政策日报
     ├── 客服运营日报
     └── 新能源汽车出海周报
@@ -22,16 +22,17 @@ Rulora
 日报和周报不是独立 Agent。Report Agent 通过任务路由选择场景、周期、输入模式、区域、
 模板和交付格式，并复用结构化、验证、渲染和 QA 底座。
 
-## Rulora Report Agent 预留位置
+## Rulora Report Agent
 
 Report Agent 计划将公开来源或企业数据转换为经过验证的 PNG 长图和单页可编辑 PPTX。
 首批场景计划为：
 
-1. 跨境电商政策与平台规则日报：美国、欧洲和东盟区域 Profile；
-2. 通用客服运营日报：通用表格输入与字段映射；
-3. 新能源汽车出海周报：事实、解释和待专家确认推断分层。
+1. 跨境电商政策与平台规则日报：按决策主题、适用范围与证据状态组织，不预留地区版位；
+2. 通用客服运营日报：使用企业聚合数据、基准和目标值；
+3. 新能源汽车出海周报：按市场准入、贸易措施、供应链等决策主题组织。
 
-该项目尚未发布。达到以下条件后，Rulora 才会添加正式仓库链接：
+[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent) 已作为独立 Alpha
+仓库发布，并按以下条件持续审计：
 
 - 克隆后可以按照文档独立运行；
 - 至少一个场景具有真实、可复现的端到端交付；

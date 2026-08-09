@@ -1,7 +1,8 @@
 # Rulora contributor instructions
 
-Rulora is a Hybrid orchestration framework: models understand and create;
-programs control, validate and deliver.
+Rulora is an execution-contract framework for reliable AI agents: probabilistic
+models understand and create; deterministic programs control, validate, recover,
+reproduce, and deliver.
 
 ## Non-negotiable rules
 
