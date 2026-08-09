@@ -25,4 +25,4 @@
 - [x] 仓库已配置品牌社交预览图；
 - [x] Issues、Discussions 和安全策略已启用；
 - [ ] 保护 `main` 分支，并要求 CI 通过；
-- [ ] 创建与 npm 对应的 `v0.1.0-alpha.2` Pre-release。
+- [x] 创建与 npm 对应的 `v0.1.0-alpha.2` Pre-release。
