@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
-  <p><strong>An open-source execution-contract framework for reliable AI agents.</strong></p>
-  <p>Hybrid cooperation between probabilistic models and deterministic programs makes complex tasks verifiable, recoverable, and reproducible.</p>
+  <p><strong>Models understand and create. Programs control, validate, and deliver.</strong></p>
+  <p>Rulora is an open-source execution-contract framework for reliable AI agents. Through Hybrid cooperation between probabilistic models and deterministic programs, it makes complex agent tasks verifiable, recoverable, and reproducible.</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
