@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
-  <p><strong>面向可靠 AI Agent 的开源执行契约框架。</strong></p>
-  <p>通过概率模型与确定性程序的 Hybrid 协作，让复杂任务可验证、可恢复、可复现。</p>
+  <p><strong>让模型负责理解与创造，让程序负责控制、验证与交付。</strong></p>
+  <p>一个面向可靠 AI Agent 的开源执行契约框架，通过概率模型与确定性程序的 Hybrid 协作，让 Agent 在复杂任务中具备可验证、可恢复、可复现的执行能力。</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
