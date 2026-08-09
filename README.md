@@ -4,6 +4,11 @@
   <p><strong>让模型负责理解与创造，让程序负责控制、验证与交付。</strong></p>
   <p>一套面向真实业务场景的 LLM + Program Hybrid 协同框架。</p>
   <p>
+    <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
+    <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0 license"></a>
+  </p>
+  <p>
     <a href="README_EN.md">English</a> ·
     <a href="#快速开始">快速开始</a> ·
     <a href="#官方-agent-生态">Agent 生态</a> ·
