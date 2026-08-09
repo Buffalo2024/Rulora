@@ -2,6 +2,9 @@
 
 ## Hybrid execution contract
 
+执行契约不是 Prompt 文档，而是可运行的状态、输入、证据、预算、失败和验收规则。模型输出
+始终是候选值；程序根据契约决定接受、拒绝、恢复或交付。
+
 Rulora 把一次工作流划分为四种责任：
 
 | 责任 | 所有者 | 说明 |
@@ -23,6 +26,7 @@ read state → build model task → model proposes → validate → commit trans
 - `OrchestrationMachine`：唯一有权改变工作流状态的组件。
 - `MemoryRepository`：测试和本地示例使用的进程内存储。
 - `HybridPipeline`：明确步骤所有权、按顺序运行并执行可选验证门禁。
+- `recoverSession`：从宿主 Repository 恢复前校验场景、分支、状态和字段证据不变量。
 - 内建程序门禁：基础字段类型与容量、来源回合、Token 总量、无进展和人工接管。
 
 ## Extension boundaries, not bundled implementations
@@ -32,8 +36,8 @@ read state → build model task → model proposes → validate → commit trans
 - Channel Adapter：由宿主连接网页、OpenClaw 或客服渠道；当前没有渠道包。
 - Quality Gate：可在 Pipeline 的 `validate` 中接入；当前没有 OCR、视觉 QA、确定性图片融合或像素差异引擎。
 
-当前版本也没有并发控制、断点恢复、通用重试调度或生产级可观测性。它们属于后续能力，
-不应从本架构图中推断为已经实现。
+当前版本支持从 Repository 检查点恢复控制流程，但只内置进程内存储；数据库持久化适配器、
+跨进程锁、通用重试调度和生产级可观测性仍属于后续能力，不应从本架构图中推断为已经实现。
 
 ## Deterministic invariants
 

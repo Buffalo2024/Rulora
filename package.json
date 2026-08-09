@@ -1,7 +1,7 @@
 {
   "name": "@rulora/core",
   "version": "0.1.0-alpha.2",
-  "description": "Hybrid orchestration: models understand and create; programs control, validate and deliver.",
+  "description": "Open-source execution contracts for reliable AI agents using Hybrid model-program cooperation.",
   "license": "Apache-2.0",
   "type": "commonjs",
   "main": "src/index.js",
@@ -48,6 +48,8 @@
     "agent",
     "state-machine",
     "workflow",
+    "execution-contract",
+    "reliable-agents",
     "openclaw",
     "hybrid"
   ],

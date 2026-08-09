@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
-  <p><strong>让模型负责理解与创造，让程序负责控制、验证与交付。</strong></p>
-  <p>一套面向真实业务场景的 LLM + Program Hybrid 协同框架。</p>
+  <p><strong>面向可靠 AI Agent 的开源执行契约框架。</strong></p>
+  <p>通过概率模型与确定性程序的 Hybrid 协作，让复杂任务可验证、可恢复、可复现。</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
@@ -21,8 +21,9 @@
 
 ## Rulora 是什么
 
-Rulora 是一套用于构建高约束 AI 工作流的开源基础框架。它不要求模型接管全部流程，
-而是把开放性的理解与创作交给模型，把确定性的状态、规则和交付责任交给程序。
+Rulora 是一个面向可靠 AI Agent 的开源执行契约框架。它不要求模型接管全部流程，
+而是通过概率模型与确定性程序的 **Hybrid 协作**，让 Agent 在复杂任务中具备可验证、
+可恢复、可复现的执行能力。
 
 Rulora 将这种协作方式称为 **Hybrid 机制**：
 
@@ -62,8 +63,9 @@ Rulora：质量检查、定向重试、人工接管、保存
 2. **模型提交候选结果**：字段、报告和图片必须通过程序契约才能进入下一阶段。
 3. **结论绑定证据**：重要输出可以追溯到输入字段、用户回合或上游产物。
 4. **失败是显式状态**：重试、无进展、Token 预算和人工接管由程序记录。
-5. **集成留在边界之外**：模型、图片、渠道与持久化由宿主通过明确接口接入。
-6. **商业策略留在宿主应用**：付费、订阅和访问次数不写死在 Rulora Core 中。
+5. **恢复必须校验检查点**：宿主重启后从 Repository 读取状态，只有通过场景不变量校验才可继续，已接受步骤不会重复执行。
+6. **集成留在边界之外**：模型、图片、渠道与持久化由宿主通过明确接口接入。
+7. **商业策略留在宿主应用**：付费、订阅和访问次数不写死在 Rulora Core 中。
 
 ## 快速开始
 
@@ -90,14 +92,15 @@ npm run example
 
 | Agent | 状态 | 任务 | 场景 |
 |---|---|---|---|
-| **Rulora Report Agent** | 设计中 · 仓库尚未发布 | 将公开来源或企业数据转换为经过验证的 PNG 长图和单页 PPTX | 跨境电商政策日报、客服运营日报、新能源汽车出海周报 |
+| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Alpha · 已开源 | 将公开来源或企业数据转换为经过验证的 PNG 长图和单页 PPTX | 跨境电商政策日报、客服运营日报、新能源汽车出海周报 |
+| **Rulora PDCA Management Agent** | 长期设计保留 | 通过 DST-PDCA 访谈、行动跟踪和复盘支持持续管理改善 | 咨询分析、问题解决、计划推进、PDCA 审查 |
 
-Report Agent 将作为一个独立开源项目发布。三个场景共享采集、结构化、分析、验证、渲染
-和 QA 底座，通过任务路由选择周期、数据源、模板及交付格式。项目达到可运行标准后，
-这里会补充仓库链接；当前不提供空仓库或占位链接。
+Report Agent 已作为独立开源项目发布。三个场景共享数据接入、结构化、分析、验证、渲染
+和 QA 底座，通过任务路由选择周期、数据源、模板及交付格式。
 
 官方 Agent 与社区 Agent 的边界、发布条件和目录约定见
 [Agent 生态与项目边界](docs/AGENT-ECOSYSTEM.md)。
+PDCA Agent 的长期设计见 [PDCA Management Agent 设计备忘](docs/PDCA-MANAGEMENT-AGENT.md)。
 
 ## 当前实现边界
 
@@ -106,10 +109,11 @@ Report Agent 将作为一个独立开源项目发布。三个场景共享采集�
 - `OrchestrationMachine`：字段分支、来源回合、Token 计数、无进展纠偏、人工接管和冻结；
 - `MemoryRepository`：仅用于本地演示和测试的进程内存储；
 - `HybridPipeline`：带 `model` / `program` 所有权和可选验证门禁的顺序流水线；
+- Repository 检查点恢复：新控制器可校验已有状态并从未完成分支继续；
 - 一个无需 API Key 的 Core 教学示例。
 
 当前尚未内置：真实模型或图片 Provider、持久化数据库适配器、OCR、确定性图片融合、
-像素差异计算、并发控制、断点恢复和生产级可观测性。相关名称在架构文档中表示扩展边界，
+像素差异计算、数据库适配器、自动重试调度、并发控制和生产级可观测性。相关名称在架构文档中表示扩展边界，
 不表示当前包已经提供对应实现。
 
 ## Core 教学示例与实验

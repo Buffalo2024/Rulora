@@ -1,9 +1,10 @@
 # Rulora Vision
 
-Rulora 希望让 AI 应用从“依赖 Prompt 运气”走向“可理解、可验证、可恢复、可交付”。
+Rulora 是一个面向可靠 AI Agent 的开源执行契约框架。它希望让 AI 应用从“依赖 Prompt
+运气”走向可验证、可恢复、可复现的复杂任务执行。
 
-它不与 OpenClaw、LangGraph、Mastra 或模型 SDK 竞争。Rulora 专注于它们与真实业务之间
-常常缺失的一层：明确规定模型和程序各自能做什么、何时前进、何时重试、何时转人工。
+它不以替代 OpenClaw、LangGraph、Mastra 或模型 SDK 为目标。流程图和工具编排回答“任务
+如何连接”，Rulora 的执行契约回答“候选结果何时可接受、失败如何恢复、交付如何验证与复现”。
 
 长期方向：
 

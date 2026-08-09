@@ -106,6 +106,7 @@ export class OrchestrationMachine {
     isUserTurn: false
   }
   getState(id: string, options?: { sessionKey?: string }): Promise<WorkflowState>
+  recoverSession(id: string, options?: { sessionKey?: string }): Promise<WorkflowState>
   recordUserTurn(id: string, input: {
     turnId: string
     text: string
