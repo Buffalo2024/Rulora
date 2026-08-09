@@ -15,16 +15,10 @@
     <filter id="glow"><feGaussianBlur stdDeviation="11" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
   <rect width="1280" height="640" fill="url(#bg)"/>
-  <circle cx="280" cy="320" r="206" fill="none" stroke="#182637" stroke-width="2"/>
-  <path d="M278 119 A201 201 0 0 0 278 521" fill="none" stroke="url(#cyan)" stroke-width="23" stroke-linecap="round" filter="url(#glow)"/>
-  <path d="M302 119 A201 201 0 0 1 302 521" fill="none" stroke="url(#amber)" stroke-width="23" stroke-linecap="round" filter="url(#glow)"/>
-  <path d="M278 167 V462 L290 500 L302 462 V167" fill="none" stroke="#102337" stroke-width="5"/>
-  <path d="M278 179 C230 165 242 246 197 230 C156 215 142 282 195 287 C249 292 220 367 171 383 C221 358 257 371 278 412" fill="none" stroke="url(#cyan)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M302 174 H345 V227 H389 V282 H336 V337 H390 V410 C366 367 329 369 302 415" fill="none" stroke="url(#amber)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M278 443 L290 491 L302 443" fill="#0bcce8" stroke="#f7a72a" stroke-width="6"/>
-  <text x="555" y="265" fill="#ffffff" font-size="112" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="2">Rulora</text>
-  <text x="560" y="337" fill="#91a2b8" font-size="29" font-family="Inter, Arial, sans-serif" letter-spacing="1">LLM + Program Hybrid Orchestration</text>
-  <line x1="560" y1="382" x2="1118" y2="382" stroke="#26374b" stroke-width="2"/>
-  <text x="560" y="436" fill="#16cde8" font-size="27" font-family="Inter, Arial, sans-serif" font-weight="600">Models understand and create.</text>
-  <text x="560" y="480" fill="#ffb52f" font-size="27" font-family="Inter, Arial, sans-serif" font-weight="600">Programs control, validate and deliver.</text>
+  <image href="rulora-logo-512.png" x="104" y="104" width="432" height="432"/>
+  <text x="596" y="237" fill="#ffffff" font-size="104" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="1">Rulora</text>
+  <text x="600" y="307" fill="#b5c0cf" font-size="28" font-family="Inter, Arial, sans-serif">Execution contracts for reliable AI agents</text>
+  <line x1="600" y1="354" x2="1160" y2="354" stroke="#26374b" stroke-width="2"/>
+  <text x="600" y="414" fill="#16cde8" font-size="27" font-family="Inter, Arial, sans-serif" font-weight="600">Models understand and create.</text>
+  <text x="600" y="462" fill="#ffb52f" font-size="27" font-family="Inter, Arial, sans-serif" font-weight="600">Programs control, validate and deliver.</text>
 </svg>
