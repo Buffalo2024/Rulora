@@ -3,7 +3,7 @@
   <h1>Rulora</h1>
   <p><strong>Models are responsible for understanding and creation. Programs are responsible for control, validation, and delivery.</strong></p>
   <p>An open-source LLM + Program orchestration framework built around the Hybrid mechanism.</p>
-  <p><a href="README.md">中文说明</a> · <a href="#quick-start">Quick Start</a> · <a href="#case-studies">Cases</a></p>
+  <p><a href="README.md">中文说明</a> · <a href="#quick-start">Quick Start</a> · <a href="#official-agent-ecosystem">Agent Ecosystem</a></p>
 </div>
 
 ---
@@ -22,6 +22,11 @@ Rulora calls this collaboration the **Hybrid mechanism**:
 Hybrid is Rulora's project term for model-and-program collaboration. It is not a model provider,
 agent platform, or image service.
 
+The Rulora repository contains Core, shared conventions, minimal learning examples, and an index of
+official Agents. Agents that solve end-user tasks are released as independent open-source projects.
+Daily/weekly cadence, industries, and output formats are routed scenario packs inside an Agent rather
+than separate Agents.
+
 ## Core Rules
 
 1. Programs own state transitions.
@@ -31,13 +36,29 @@ agent platform, or image service.
 5. Model, image, channel, and persistence integrations stay behind explicit host-owned boundaries.
 6. Pricing, subscriptions, and access-count policies belong to the host application, not Rulora Core.
 
-## Case Studies
+## Official Agent Ecosystem
+
+| Agent | Status | Task | Scenario packs |
+|---|---|---|---|
+| **Rulora Report Agent** | In design · repository not published | Turn public sources or business data into validated long-form PNG and one-page PPTX deliverables | Cross-border policy daily, customer-service operations daily, EV export weekly |
+
+Report Agent will be released as one independent open-source project. Its scenario packs share the
+same collection, normalization, analysis, validation, rendering, and QA foundation. A task router
+selects cadence, source profile, template, and output format. This page will link to the repository
+after a runnable release exists; Rulora does not publish empty placeholder repositories.
+
+See [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md).
+
+## Core Learning Examples
 
 | Case | Status | Model responsibility | Program responsibility |
 |---|---|---|---|
 | [01 · Guided Diagnosis](examples/01-guided-diagnosis/README.md) | Alpha | Interpret replies and propose fields | Branch loops, validation, progress correction, evidence, freeze |
-| [02 · Native Image Report](examples/02-native-image-report/README.md) | Mock concept | Propose report content and an image task | Basic field checks, story selection, and a simulated QA gate |
-| [03 · Stable Image Reproduction](examples/03-stable-image-reproduction/README.md) | Mock concept | Propose copy within slot capacity | Character limits, simulated fusion, and a simulated pixel gate |
+| [02 · Native Image Report](examples/02-native-image-report/README.md) | Lab · Mock | Propose report content and an image task | Basic field checks, story selection, and a simulated QA gate |
+| [03 · Stable Image Reproduction](examples/03-stable-image-reproduction/README.md) | Lab · Mock | Propose copy within slot capacity | Character limits, simulated fusion, and a simulated pixel gate |
+
+These examples explain the Hybrid mechanism; they are not released business Agents. Report-related
+labs will move into Report Agent's shared foundation after real rendering, evidence, and QA paths work.
 
 ## Quick Start
 
@@ -72,6 +93,7 @@ Rulora acts as the deterministic business-control layer for fields, transitions,
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md)
 - [OpenClaw integration](docs/OPENCLAW-INTEGRATION.md)
 - [Release checklist](docs/RELEASE-CHECKLIST.md)
 - [Contributing](CONTRIBUTING.md)

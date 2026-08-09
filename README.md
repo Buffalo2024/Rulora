@@ -6,7 +6,7 @@
   <p>
     <a href="README_EN.md">English</a> ·
     <a href="#快速开始">快速开始</a> ·
-    <a href="#场景案例">场景案例</a> ·
+    <a href="#官方-agent-生态">Agent 生态</a> ·
     <a href="docs/ARCHITECTURE.md">架构</a> ·
     <a href="CONTRIBUTING.md">参与贡献</a>
   </p>
@@ -27,6 +27,10 @@ Rulora 将这种协作方式称为 **Hybrid 机制**：
 
 > Hybrid 是 Rulora 对“模型能力与确定性程序协同”的项目术语，
 > 不是某个模型、Agent 平台或图片服务的名称。
+
+Rulora 主仓库提供 Core、公共约定、最小教学示例和官方 Agent 索引。解决具体任务的
+Agent 作为独立开源项目发布；日报、周报、行业和交付格式属于 Agent 内部可路由的场景包，
+不等同于新的 Agent。
 
 ## 为什么需要它
 
@@ -56,13 +60,26 @@ Rulora：质量检查、定向重试、人工接管、保存
 5. **集成留在边界之外**：模型、图片、渠道与持久化由宿主通过明确接口接入。
 6. **商业策略留在宿主应用**：付费、订阅和访问次数不写死在 Rulora Core 中。
 
-## 场景案例
+## 官方 Agent 生态
+
+| Agent | 状态 | 任务 | 场景 |
+|---|---|---|---|
+| **Rulora Report Agent** | 设计中 · 仓库尚未发布 | 将公开来源或企业数据转换为经过验证的 PNG 长图和单页 PPTX | 跨境电商政策日报、客服运营日报、新能源汽车出海周报 |
+
+Report Agent 将作为一个独立开源项目发布。三个场景共享采集、结构化、分析、验证、渲染
+和 QA 底座，通过任务路由选择周期、数据源、模板及交付格式。项目达到可运行标准后，
+这里会补充仓库链接；当前不提供空仓库或占位链接。
+
+官方 Agent 与社区 Agent 的边界、发布条件和目录约定见
+[Agent 生态与项目边界](docs/AGENT-ECOSYSTEM.md)。
+
+## Core 教学示例
 
 | 案例 | 状态 | 模型负责 | 程序负责 |
 |---|---|---|---|
 | [01 · 受控诊断 Agent](examples/01-guided-diagnosis/README.md) | Alpha | 理解回答、提问、提炼候选字段 | 字段、分支 Loop、无进展纠偏、Token 门禁、证据与冻结 |
-| [02 · 原生报告生图](examples/02-native-image-report/README.md) | Mock 概念样例 | 生成候选报告和图片任务 | 基础字段检查、视觉叙事选择、模拟 QA 门禁 |
-| [03 · 稳定生图复刻](examples/03-stable-image-reproduction/README.md) | Mock 概念样例 | 按槽位容量提供候选文案 | 字符容量检查、模拟融合与模拟像素门禁 |
+| [02 · 原生报告生图](examples/02-native-image-report/README.md) | Lab · Mock | 生成候选报告和图片任务 | 基础字段检查、视觉叙事选择、模拟 QA 门禁 |
+| [03 · 稳定生图复刻](examples/03-stable-image-reproduction/README.md) | Lab · Mock | 按槽位容量提供候选文案 | 字符容量检查、模拟融合与模拟像素门禁 |
 
 案例二追求每次报告的原生视觉协同；案例三追求一个优秀设计被稳定、批量地复刻。
 
@@ -70,7 +87,8 @@ Rulora：质量检查、定向重试、人工接管、保存
 接入时的任务输入参考。当前仓库没有内置图片 Provider、OCR 引擎或图片编辑器；样例只用
 模拟 URI 和模拟 OCR 文本演示门禁顺序，不会生成图片，也不能证明真实 OCR 或视觉质量。
 
-这些案例说明 Hybrid 机制，并提供可运行程序和一个完整的原生报告视觉 Prompt 示例。
+这些示例只用于解释 Hybrid 机制，不代表已经发布的业务 Agent。报告相关 Lab 将在真实
+渲染、证据和 QA 链路完成后迁移为 Report Agent 的公共底座。
 
 ## 快速开始
 
@@ -147,8 +165,8 @@ rulora/
 ├─ docs/                                 架构、边界与发布说明
 ├─ examples/
 │  ├─ 01-guided-diagnosis/               受控诊断 Agent
-│  ├─ 02-native-image-report/             原生报告生图
-│  └─ 03-stable-image-reproduction/       稳定生图复刻
+│  ├─ 02-native-image-report/             原生报告生图 Lab
+│  └─ 03-stable-image-reproduction/       稳定生图复刻 Lab
 ├─ src/                                  通用状态机和 Hybrid Pipeline
 └─ tests/                                状态、门禁和契约测试
 ```
@@ -156,6 +174,7 @@ rulora/
 ## 文档导航
 
 - [架构与核心不变量](docs/ARCHITECTURE.md)
+- [Agent 生态与项目边界](docs/AGENT-ECOSYSTEM.md)
 - [OpenClaw 接入说明](docs/OPENCLAW-INTEGRATION.md)
 - [发布检查清单](docs/RELEASE-CHECKLIST.md)
 - [GitHub 仓库资料](docs/REPOSITORY-METADATA.md)
