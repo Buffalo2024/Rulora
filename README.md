@@ -62,7 +62,13 @@ Rulora：质量检查、定向重试、人工接管、保存
 
 ## 快速开始
 
-要求 Node.js 20 或更高版本。npm Alpha 包发布前，可直接从源码运行：
+要求 Node.js 20 或更高版本。安装公开 Alpha：
+
+```bash
+npm install @rulora/core@alpha
+```
+
+也可以直接从源码运行：
 
 ```bash
 git clone https://github.com/Buffalo2024/Rulora.git
@@ -90,7 +96,7 @@ Report Agent 将作为一个独立开源项目发布。三个场景共享采集�
 
 ## 当前实现边界
 
-当前 `0.1.0-alpha.1` 已实现：
+当前 Alpha 已实现：
 
 - `OrchestrationMachine`：字段分支、来源回合、Token 计数、无进展纠偏、人工接管和冻结；
 - `MemoryRepository`：仅用于本地演示和测试的进程内存储；
@@ -109,10 +115,10 @@ Report Agent 将作为一个独立开源项目发布。三个场景共享采集�
 
 ## 安装 Core
 
-当前 npm 包尚未发布。请先从源码运行；首个 npm 版本发布后将支持：
+当前版本处于 Alpha，请显式使用 `alpha` 标签安装：
 
 ```bash
-npm install @rulora/core
+npm install @rulora/core@alpha
 ```
 
 基础用法：

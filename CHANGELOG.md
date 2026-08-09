@@ -4,6 +4,13 @@
 
 ## Unreleased
 
+## 0.1.0-alpha.2 - 2026-08-09
+
+- 发布 `@rulora/core` 到 npm 的公开 `alpha` 标签；
+- 更新中英文安装说明，要求显式使用 `@rulora/core@alpha`；
+- 将主页教学内容收束为一个 Core 示例，并将报告 Mock 迁入 `labs/`；
+- 增加官方 Agent 生态和 Rulora Report Agent 预留位置。
+
 - 统一更正 Hybrid 的历史错误拼写，公开类名改为 `HybridPipeline`；
 - 增加 CommonJS 包的类型声明入口；
 - 明确 Alpha 版本的已实现能力、扩展边界和图片 Mock 示例限制；

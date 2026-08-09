@@ -38,7 +38,13 @@ than separate Agents.
 
 ## Quick Start
 
-Node.js 20 or newer is required. Until the npm alpha is published, run Core from source:
+Node.js 20 or newer is required. Install the public alpha:
+
+```bash
+npm install @rulora/core@alpha
+```
+
+You can also run Core from source:
 
 ```bash
 git clone https://github.com/Buffalo2024/Rulora.git
@@ -65,12 +71,12 @@ See [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md).
 
 ## Current Implementation Status
 
-Version `0.1.0-alpha.1` implements the program-owned conversation state machine, an in-memory
+The current alpha implements the program-owned conversation state machine, an in-memory
 repository, a minimal sequential `HybridPipeline`, and one Core learning example. This repository does
 not yet include a real model/image provider, persistent database adapter, concurrency control, recovery,
 or production observability. Architecture terms describe extension boundaries, not bundled features.
 
-The npm package has not been published yet. Use the source checkout for the current preview.
+Install the preview with the explicit `alpha` dist-tag; no stable release has been declared.
 
 ## Core Learning Example and Labs
 
