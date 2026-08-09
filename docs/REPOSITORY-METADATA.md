@@ -6,14 +6,14 @@
 
 ## Description
 
-中文：`让模型负责理解与创造，让程序负责控制、验证与交付的 Hybrid 协同框架。`
+中文：`面向可靠 AI Agent 的开源执行契约框架，通过概率模型与确定性程序的 Hybrid 协作，让复杂任务可验证、可恢复、可复现。`
 
-English: `Hybrid orchestration for reliable LLM + program workflows.`
+English: `Open-source execution contracts for reliable AI agents through Hybrid model-program cooperation.`
 
 ## Suggested topics
 
-`llm` `agent` `workflow` `state-machine` `orchestration` `structured-output`
-`human-in-the-loop` `openclaw` `image-generation` `hybrid`
+`ai-agents` `execution-contract` `reliable-agents` `llm` `workflow` `state-machine`
+`structured-output` `human-in-the-loop` `openclaw` `hybrid`
 
 ## Social preview
 
@@ -22,9 +22,9 @@ English: `Hybrid orchestration for reliable LLM + program workflows.`
 
 ## Release title
 
-`Rulora v0.1.0-alpha.1 — First public Hybrid framework preview`
+`Rulora v0.1.0-alpha.3 — Execution contracts for reliable AI agents`
 
 ## Release summary
 
-首个公开预览包含 Rulora Core、Hybrid Pipeline，以及受控诊断、原生报告生图和稳定生图
-复刻三个案例。当前版本用于验证接口和社区反馈，不承诺生产兼容性。
+本预览包含程序所有的状态机、Hybrid Pipeline、证据门禁、检查点恢复与可复现教学示例。
+当前版本用于验证执行契约接口和社区反馈，不承诺生产兼容性。

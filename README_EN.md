@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
-  <p><strong>Models are responsible for understanding and creation. Programs are responsible for control, validation, and delivery.</strong></p>
-  <p>An open-source LLM + Program orchestration framework built around the Hybrid mechanism.</p>
+  <p><strong>An open-source execution-contract framework for reliable AI agents.</strong></p>
+  <p>Hybrid cooperation between probabilistic models and deterministic programs makes complex tasks verifiable, recoverable, and reproducible.</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
@@ -15,8 +15,9 @@
 
 ## What Rulora Is
 
-Rulora helps build constrained AI workflows for real business processes. Models handle open-ended
-understanding and creation, while deterministic programs own state, rules, validation, and delivery.
+Rulora is an open-source execution-contract framework for reliable AI agents. Through Hybrid
+cooperation between probabilistic models and deterministic programs, it makes complex agent tasks
+verifiable, recoverable, and reproducible.
 
 Rulora calls this collaboration the **Hybrid mechanism**:
 
@@ -38,8 +39,9 @@ than separate Agents.
 2. Models submit candidates rather than final authority.
 3. Important conclusions remain traceable to evidence.
 4. Retries, stalled progress, token budgets, and human handoff are explicit states.
-5. Model, image, channel, and persistence integrations stay behind explicit host-owned boundaries.
-6. Pricing, subscriptions, and access-count policies belong to the host application, not Rulora Core.
+5. Recovery validates a repository checkpoint before continuing and never silently repairs or advances it.
+6. Model, image, channel, and persistence integrations stay behind explicit host-owned boundaries.
+7. Pricing, subscriptions, and access-count policies belong to the host application, not Rulora Core.
 
 ## Quick Start
 
@@ -65,21 +67,21 @@ advances branches, and freezes an evidence-linked result. It needs no API key.
 
 | Agent | Status | Task | Scenario packs |
 |---|---|---|---|
-| **Rulora Report Agent** | In design · repository not published | Turn public sources or business data into validated long-form PNG and one-page PPTX deliverables | Cross-border policy daily, customer-service operations daily, EV export weekly |
+| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Open-source alpha | Turn public sources or business data into validated long-form PNG and one-page PPTX deliverables | Cross-border policy daily, customer-service operations daily, EV export weekly |
 
-Report Agent will be released as one independent open-source project. Its scenario packs share the
-same collection, normalization, analysis, validation, rendering, and QA foundation. A task router
-selects cadence, source profile, template, and output format. This page will link to the repository
-after a runnable release exists; Rulora does not publish empty placeholder repositories.
+Report Agent is released as one independent open-source project. Its scenario packs share the
+same evidence-ingestion, normalization, analysis, validation, rendering, and QA foundation. A task router
+selects cadence, source profile, template, and output format.
 
 See [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md).
 
 ## Current Implementation Status
 
-The current alpha implements the program-owned conversation state machine, an in-memory
-repository, a minimal sequential `HybridPipeline`, and one Core learning example. This repository does
-not yet include a real model/image provider, persistent database adapter, concurrency control, recovery,
-or production observability. Architecture terms describe extension boundaries, not bundled features.
+The current alpha implements the program-owned conversation state machine, an in-memory repository,
+a minimal sequential `HybridPipeline`, validated recovery from a host repository checkpoint, and one
+Core learning example. It does not bundle a real model/image provider, persistent database adapter,
+automatic retry scheduler, concurrency control, or production observability. Architecture terms
+describe extension boundaries, not bundled features.
 
 Install the preview with the explicit `alpha` dist-tag; no stable release has been declared.
 

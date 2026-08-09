@@ -72,3 +72,51 @@ test('token gate is idempotent by operation id', async () => {
   assert.equal(usage.tokensUsed, 100)
   assert.equal(usage.blocked, true)
 })
+
+test('a new controller recovers a validated checkpoint and continues without replaying accepted work', async () => {
+  const repository = new MemoryRepository()
+  const firstController = new OrchestrationMachine({ repository, scenario })
+  await firstController.createSession({ id: 'wf', sessionKey: 's' })
+  await firstController.recordUserTurn('wf', { sessionKey: 's', turnId: 't1', text: 'first' })
+  await firstController.submitFields('wf', { sessionKey: 's', sourceTurnId: 't1', fields: { a1: 'aa' } })
+
+  const recoveredController = new OrchestrationMachine({ repository, scenario })
+  const checkpoint = await recoveredController.recoverSession('wf', { sessionKey: 's' })
+  assert.equal(checkpoint.currentBranch.id, 'b')
+  assert.deepEqual(checkpoint.completedFields, ['a1'])
+
+  await recoveredController.recordUserTurn('wf', { sessionKey: 's', turnId: 't2', text: 'second' })
+  await recoveredController.submitFields('wf', { sessionKey: 's', sourceTurnId: 't2', fields: { b1: 'bb' } })
+  const frozen = await recoveredController.freeze('wf', { sessionKey: 's' })
+  assert.deepEqual(frozen.fields, { a1: 'aa', b1: 'bb' })
+})
+
+test('recovery rejects a checkpoint that conflicts with the scenario state', async () => {
+  const repository = new MemoryRepository()
+  const machine = new OrchestrationMachine({ repository, scenario })
+  await machine.createSession({ id: 'wf' })
+  const corrupted = await repository.get('wf')
+  corrupted.branchIndex = 99
+  await repository.save(corrupted)
+  await assert.rejects(() => machine.recoverSession('wf'), error => error instanceof WorkflowError && error.code === 'INVALID_CHECKPOINT')
+})
+
+test('recovery rejects a checkpoint that skips required accepted work', async () => {
+  const repository = new MemoryRepository()
+  const machine = new OrchestrationMachine({ repository, scenario })
+  await machine.createSession({ id: 'wf' })
+  const corrupted = await repository.get('wf')
+  corrupted.branchIndex = 1
+  corrupted.progress.branchId = 'b'
+  await repository.save(corrupted)
+  await assert.rejects(() => machine.recoverSession('wf'), error => error instanceof WorkflowError && error.code === 'INVALID_CHECKPOINT')
+})
+
+test('scenario field ids are unique so recovered evidence cannot be reinterpreted by another branch', () => {
+  const invalidScenario = structuredClone(scenario)
+  invalidScenario.branches[1].fields.a1 = { schema: { type: 'string' } }
+  assert.throws(
+    () => new OrchestrationMachine({ repository: new MemoryRepository(), scenario: invalidScenario }),
+    /duplicate field id/
+  )
+})

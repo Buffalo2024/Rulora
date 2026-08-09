@@ -58,6 +58,18 @@ class OrchestrationMachine {
     return this.publicState(record)
   }
 
+  /**
+   * Re-open a repository-backed workflow after the host process or controller
+   * has restarted. Recovery never repairs or advances state implicitly: the
+   * stored record must still satisfy the scenario invariants.
+   */
+  async recoverSession(id, { sessionKey = '' } = {}) {
+    const record = await this.requireRecord(id)
+    this.assertSession(record, sessionKey)
+    this.assertRecoverableRecord(record)
+    return this.publicState(record)
+  }
+
   async recordUserTurn(id, { turnId, text, sessionKey = '' }) {
     const record = await this.requireRecord(id)
     this.assertSession(record, sessionKey)
@@ -195,6 +207,41 @@ class OrchestrationMachine {
     if (record.status !== 'active') throw new WorkflowError('WORKFLOW_NOT_ACTIVE', `workflow is ${record.status}`, 409)
   }
 
+  assertRecoverableRecord(record) {
+    if (record.scenarioId !== this.scenario.id) {
+      throw new WorkflowError('SCENARIO_MISMATCH', 'stored workflow belongs to a different scenario', 409)
+    }
+    if (!Number.isInteger(record.branchIndex) || record.branchIndex < 0 || record.branchIndex > this.scenario.branches.length) {
+      throw new WorkflowError('INVALID_CHECKPOINT', 'stored workflow has an invalid branch index', 409)
+    }
+    if (!['active', 'human_handoff', 'ready_for_output', 'frozen'].includes(record.status)) {
+      throw new WorkflowError('INVALID_CHECKPOINT', 'stored workflow has an invalid status', 409)
+    }
+    const terminal = ['ready_for_output', 'frozen'].includes(record.status)
+    if (terminal !== (record.branchIndex === this.scenario.branches.length)) {
+      throw new WorkflowError('INVALID_CHECKPOINT', 'stored workflow status and branch index conflict', 409)
+    }
+    const definitions = Object.assign({}, ...this.scenario.branches.map(branch => branch.fields))
+    for (const [fieldId, item] of Object.entries(record.fields || {})) {
+      if (!definitions[fieldId] || validateValue(item?.value, definitions[fieldId])) {
+        throw new WorkflowError('INVALID_CHECKPOINT', `stored field violates its contract: ${fieldId}`, 409)
+      }
+      if (!item || !item.sourceTurnId || !record.turns?.[item.sourceTurnId]) {
+        throw new WorkflowError('INVALID_CHECKPOINT', `stored field has no valid evidence turn: ${fieldId}`, 409)
+      }
+    }
+    for (const branch of this.scenario.branches.slice(0, record.branchIndex)) {
+      for (const fieldId of branch.requiredFields) {
+        if (!record.fields?.[fieldId]) {
+          throw new WorkflowError('INVALID_CHECKPOINT', `completed branch is missing required field: ${fieldId}`, 409)
+        }
+      }
+    }
+    if (record.status === 'frozen' && !record.frozen) {
+      throw new WorkflowError('INVALID_CHECKPOINT', 'frozen workflow has no frozen artifact', 409)
+    }
+  }
+
   async requireRecord(id) {
     const record = await this.repository.get(id)
     if (!record) throw new WorkflowError('NOT_FOUND', 'workflow session not found', 404)
@@ -223,8 +270,16 @@ class OrchestrationMachine {
 function validateScenario(scenario) {
   if (!scenario || typeof scenario !== 'object') throw new Error('scenario is required')
   if (!scenario.id || !Array.isArray(scenario.branches) || scenario.branches.length === 0) throw new Error('scenario must include id and non-empty branches')
+  const branchIds = new Set()
+  const fieldIds = new Set()
   for (const branch of scenario.branches) {
     if (!branch.id || !branch.openingQuestion || !Array.isArray(branch.requiredFields) || !branch.fields) throw new Error(`invalid branch: ${branch.id || 'unknown'}`)
+    if (branchIds.has(branch.id)) throw new Error(`duplicate branch id: ${branch.id}`)
+    branchIds.add(branch.id)
+    for (const fieldId of Object.keys(branch.fields)) {
+      if (fieldIds.has(fieldId)) throw new Error(`duplicate field id across branches: ${fieldId}`)
+      fieldIds.add(fieldId)
+    }
     for (const fieldId of branch.requiredFields) if (!branch.fields[fieldId]) throw new Error(`required field missing definition: ${fieldId}`)
   }
 }
