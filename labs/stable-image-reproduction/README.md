@@ -1,4 +1,4 @@
-# Case 03 · 稳定生图复刻
+# Lab · 稳定生图复刻
 
 [English](README_EN.md) · [运行示例](run.js)
 
@@ -28,7 +28,7 @@
 ```
 
 ```bash
-npm run example:stable-image
+npm run lab:stable-image
 ```
 
 它适合短文字复刻，不替代案例二的高密度原生报告生成。如果运行期完全没有模型理解或

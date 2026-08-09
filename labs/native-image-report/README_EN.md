@@ -8,7 +8,7 @@ owns validation and narrative selection, and can own OCR, visual QA, targeted
 retries, and save after the host supplies those integrations.
 
 ```bash
-npm run example:native-image
+npm run lab:native-image
 ```
 
 The sample uses a mock URI and mock OCR text. It does not generate an image, run

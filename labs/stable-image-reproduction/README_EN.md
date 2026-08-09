@@ -7,7 +7,7 @@ copy. The intended program flow then freezes text slots, capacity, typography an
 for deterministic reproduction of future short-copy variants.
 
 ```bash
-npm run example:stable-image
+npm run lab:stable-image
 ```
 
 This case targets short stable copy; dense native reports belong to Case 02.

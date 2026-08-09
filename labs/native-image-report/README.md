@@ -1,4 +1,4 @@
-# Case 02 · 原生报告生图
+# Lab · 原生报告生图
 
 [English](README_EN.md) · [运行示例](run.js) · [完整视觉 Prompt](visual-prompt.js)
 
@@ -28,7 +28,7 @@
 ```
 
 ```bash
-npm run example:native-image
+npm run lab:native-image
 ```
 
 示例包含一份可交给图片 Provider 的完整视觉 Prompt。运行脚本使用 Mock URI 和模拟 OCR

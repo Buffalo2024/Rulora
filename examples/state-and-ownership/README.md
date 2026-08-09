@@ -1,10 +1,11 @@
-# Case 01 · 受控诊断 Agent
+# Core Example · 状态与所有权
 
 [English](README_EN.md) · [运行示例](run.js) · [场景定义](scenario.js) · [Agent 协议](protocol/AGENT.md)
 
-## 一句话定位
+## 学习目标
 
-让 LLM 自然地理解和追问，让程序可靠地控制字段、分支 Loop、成本与最终冻结。
+用一个虚构的需求澄清流程说明：LLM 可以理解和追问，但只有程序能够控制字段、分支、
+预算、证据、人工接管和最终冻结。
 
 ## 适合什么场景
 
@@ -24,7 +25,7 @@
 ## 30 秒运行
 
 ```bash
-npm run example:diagnosis
+npm run example
 ```
 
 示例使用两条虚构回答完成两个分支，不需要 API Key。接入真实模型时，Provider Adapter

@@ -60,6 +60,21 @@ Rulora：质量检查、定向重试、人工接管、保存
 5. **集成留在边界之外**：模型、图片、渠道与持久化由宿主通过明确接口接入。
 6. **商业策略留在宿主应用**：付费、订阅和访问次数不写死在 Rulora Core 中。
 
+## 快速开始
+
+要求 Node.js 20 或更高版本。npm Alpha 包发布前，可直接从源码运行：
+
+```bash
+git clone https://github.com/Buffalo2024/Rulora.git
+cd Rulora
+npm test
+npm run example
+```
+
+这个最小示例使用虚构输入展示模型候选字段如何经过程序验证、推进分支并冻结为带证据的
+结果，不需要 API Key。接入真实模型时，请通过 Provider Adapter 读取环境变量，不要把
+密钥写入代码、Scenario 或 Prompt。
+
 ## 官方 Agent 生态
 
 | Agent | 状态 | 任务 | 场景 |
@@ -73,44 +88,6 @@ Report Agent 将作为一个独立开源项目发布。三个场景共享采集�
 官方 Agent 与社区 Agent 的边界、发布条件和目录约定见
 [Agent 生态与项目边界](docs/AGENT-ECOSYSTEM.md)。
 
-## Core 教学示例
-
-| 案例 | 状态 | 模型负责 | 程序负责 |
-|---|---|---|---|
-| [01 · 受控诊断 Agent](examples/01-guided-diagnosis/README.md) | Alpha | 理解回答、提问、提炼候选字段 | 字段、分支 Loop、无进展纠偏、Token 门禁、证据与冻结 |
-| [02 · 原生报告生图](examples/02-native-image-report/README.md) | Lab · Mock | 生成候选报告和图片任务 | 基础字段检查、视觉叙事选择、模拟 QA 门禁 |
-| [03 · 稳定生图复刻](examples/03-stable-image-reproduction/README.md) | Lab · Mock | 按槽位容量提供候选文案 | 字符容量检查、模拟融合与模拟像素门禁 |
-
-案例二追求每次报告的原生视觉协同；案例三追求一个优秀设计被稳定、批量地复刻。
-
-案例二的[完整视觉 Prompt](examples/02-native-image-report/visual-prompt.js)可作为 Provider
-接入时的任务输入参考。当前仓库没有内置图片 Provider、OCR 引擎或图片编辑器；样例只用
-模拟 URI 和模拟 OCR 文本演示门禁顺序，不会生成图片，也不能证明真实 OCR 或视觉质量。
-
-这些示例只用于解释 Hybrid 机制，不代表已经发布的业务 Agent。报告相关 Lab 将在真实
-渲染、证据和 QA 链路完成后迁移为 Report Agent 的公共底座。
-
-## 快速开始
-
-要求 Node.js 20 或更高版本。
-
-```bash
-git clone https://github.com/Buffalo2024/rulora.git
-cd rulora
-npm test
-```
-
-运行三个本地示例：
-
-```bash
-npm run example:diagnosis
-npm run example:native-image
-npm run example:stable-image
-```
-
-示例默认使用 Mock Provider，不需要 API Key。接入真实模型时，请通过 Provider Adapter
-读取环境变量，不要把密钥写入代码、Scenario 或 Prompt。
-
 ## 当前实现边界
 
 当前 `0.1.0-alpha.1` 已实现：
@@ -118,11 +95,17 @@ npm run example:stable-image
 - `OrchestrationMachine`：字段分支、来源回合、Token 计数、无进展纠偏、人工接管和冻结；
 - `MemoryRepository`：仅用于本地演示和测试的进程内存储；
 - `HybridPipeline`：带 `model` / `program` 所有权和可选验证门禁的顺序流水线；
-- 三个无需 API Key 的本地示例，其中两个图片示例使用 Mock 结果。
+- 一个无需 API Key 的 Core 教学示例。
 
 当前尚未内置：真实模型或图片 Provider、持久化数据库适配器、OCR、确定性图片融合、
 像素差异计算、并发控制、断点恢复和生产级可观测性。相关名称在架构文档中表示扩展边界，
 不表示当前包已经提供对应实现。
+
+## Core 教学示例与实验
+
+[状态与所有权示例](examples/state-and-ownership/README.md)用于学习字段、分支、证据、预算、
+纠偏、人工接管和冻结。尚未形成真实交付能力的探索性代码放在 [`labs/`](labs/README.md)，
+不会作为官方 Agent 或 Core 能力宣传。
 
 ## 安装 Core
 
@@ -164,9 +147,8 @@ rulora/
 ├─ assets/                               Logo 与联系方式占位资产
 ├─ docs/                                 架构、边界与发布说明
 ├─ examples/
-│  ├─ 01-guided-diagnosis/               受控诊断 Agent
-│  ├─ 02-native-image-report/             原生报告生图 Lab
-│  └─ 03-stable-image-reproduction/       稳定生图复刻 Lab
+│  └─ state-and-ownership/                状态、证据与程序所有权教学示例
+├─ labs/                                 未进入正式能力范围的 Mock 实验
 ├─ src/                                  通用状态机和 Hybrid Pipeline
 └─ tests/                                状态、门禁和契约测试
 ```

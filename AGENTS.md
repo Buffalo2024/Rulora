@@ -20,9 +20,9 @@ Run:
 
 ```bash
 npm test
-npm run example:diagnosis
-npm run example:native-image
-npm run example:stable-image
+npm run example
+npm run lab:native-image
+npm run lab:stable-image
 npm run release:check
 ```
 

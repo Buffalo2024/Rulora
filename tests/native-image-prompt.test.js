@@ -3,7 +3,7 @@ const assert = require('node:assert/strict')
 const {
   IMMUTABLE_MARK,
   buildNativeReportPrompt
-} = require('../examples/02-native-image-report/visual-prompt')
+} = require('../labs/native-image-report/visual-prompt')
 
 const report = {
   title: '把反馈变成改进依据',

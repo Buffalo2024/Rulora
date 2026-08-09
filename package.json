@@ -37,10 +37,9 @@
   },
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "example": "node examples/01-guided-diagnosis/run.js",
-    "example:diagnosis": "node examples/01-guided-diagnosis/run.js",
-    "example:native-image": "node examples/02-native-image-report/run.js",
-    "example:stable-image": "node examples/03-stable-image-reproduction/run.js",
+    "example": "node examples/state-and-ownership/run.js",
+    "lab:native-image": "node labs/native-image-report/run.js",
+    "lab:stable-image": "node labs/stable-image-reproduction/run.js",
     "release:check": "node scripts/release-check.js",
     "pack:check": "npm pack --dry-run"
   },

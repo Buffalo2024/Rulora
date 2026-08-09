@@ -36,6 +36,20 @@ than separate Agents.
 5. Model, image, channel, and persistence integrations stay behind explicit host-owned boundaries.
 6. Pricing, subscriptions, and access-count policies belong to the host application, not Rulora Core.
 
+## Quick Start
+
+Node.js 20 or newer is required. Until the npm alpha is published, run Core from source:
+
+```bash
+git clone https://github.com/Buffalo2024/Rulora.git
+cd Rulora
+npm test
+npm run example
+```
+
+The minimal example uses fictional input to show how a program validates model-proposed fields,
+advances branches, and freezes an evidence-linked result. It needs no API key.
+
 ## Official Agent Ecosystem
 
 | Agent | Status | Task | Scenario packs |
@@ -49,41 +63,20 @@ after a runnable release exists; Rulora does not publish empty placeholder repos
 
 See [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md).
 
-## Core Learning Examples
-
-| Case | Status | Model responsibility | Program responsibility |
-|---|---|---|---|
-| [01 · Guided Diagnosis](examples/01-guided-diagnosis/README.md) | Alpha | Interpret replies and propose fields | Branch loops, validation, progress correction, evidence, freeze |
-| [02 · Native Image Report](examples/02-native-image-report/README.md) | Lab · Mock | Propose report content and an image task | Basic field checks, story selection, and a simulated QA gate |
-| [03 · Stable Image Reproduction](examples/03-stable-image-reproduction/README.md) | Lab · Mock | Propose copy within slot capacity | Character limits, simulated fusion, and a simulated pixel gate |
-
-These examples explain the Hybrid mechanism; they are not released business Agents. Report-related
-labs will move into Report Agent's shared foundation after real rendering, evidence, and QA paths work.
-
-## Quick Start
-
-Node.js 20 or newer is required.
-
-```bash
-git clone https://github.com/Buffalo2024/rulora.git
-cd rulora
-npm test
-npm run example:diagnosis
-npm run example:native-image
-npm run example:stable-image
-```
-
-Examples use local mock providers and require no API key.
-
 ## Current Implementation Status
 
 Version `0.1.0-alpha.1` implements the program-owned conversation state machine, an in-memory
-repository, and a minimal sequential `HybridPipeline`. The image examples use mock URIs and mock OCR
-text: this repository does not yet include a real model/image provider, OCR engine, deterministic image
-fusion, pixel-difference implementation, persistent database adapter, concurrency control, recovery,
+repository, a minimal sequential `HybridPipeline`, and one Core learning example. This repository does
+not yet include a real model/image provider, persistent database adapter, concurrency control, recovery,
 or production observability. Architecture terms describe extension boundaries, not bundled features.
 
 The npm package has not been published yet. Use the source checkout for the current preview.
+
+## Core Learning Example and Labs
+
+The [state and ownership example](examples/state-and-ownership/README_EN.md) teaches fields, branches,
+evidence, budgets, correction, handoff, and freezing. Exploratory code without a real delivery path lives
+under [`labs/`](labs/README.md) and is not presented as an official Agent or shipped Core capability.
 
 ## OpenClaw Integration
 
