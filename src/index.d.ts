@@ -27,6 +27,31 @@ export class HybridPipeline<T = unknown, C = Record<string, unknown>> {
   run(input: T, context?: C): Promise<{ pipelineId: string; output: T; events: PipelineEvent[] }>
 }
 
+export class LoopControlError extends Error { code: string; details: unknown }
+export class LoopControl {
+  constructor(options?: { kind?: 'network_reconnect' | 'constraint_revision' | 'business_broadcast'; maxAttempts?: number; maxNoProgress?: number })
+  record(input: { progressed: boolean }): { kind: string; attempts: number; noProgress: number; status: string; remainingAttempts: number }
+  snapshot(): { kind: string; attempts: number; noProgress: number; status: string; remainingAttempts: number }
+}
+
+export class OutputBoundaryError extends Error { code: string; stage: 'core' | 'audit'; details: unknown }
+export class OutputBoundary<T = unknown, C = Record<string, unknown>> {
+  constructor(options: {
+    recover?: (raw: unknown, context: C) => unknown | Promise<unknown>
+    adapt?: (value: unknown, context: C) => T | Promise<T>
+    validateCore: (value: T, context: C) => true | unknown | Promise<true | unknown>
+    validateAudit?: (value: T, context: C) => true | unknown | Promise<true | unknown>
+  })
+  process(raw: unknown, context?: C): Promise<{ value: T; accepted: true }>
+}
+
+export class CollectiveControlError extends Error { code: string }
+export class CollectiveControl<T extends { id?: string } = { id?: string; [key: string]: unknown }> {
+  constructor(options?: { quorum?: number })
+  freezeCandidates(submissions: T[]): ReadonlyArray<Readonly<T & { id: string }>>
+  select(candidates: ReadonlyArray<T & { id: string }>, selectedId: string): T & { id: string }
+}
+
 export interface Repository<T = Record<string, unknown>> {
   create(record: T): Promise<T>
   get(id: string): Promise<T | null>

@@ -4,7 +4,9 @@
 
 ## Unreleased
 
-- 将项目定位升级为面向可靠 AI Agent 的开源执行契约框架；
+- 将项目收束为可嵌入现有 Agent 的流程、循环、输出边界与群体候选控制组件；
+- 新增 `LoopControl`、`OutputBoundary` 和 `CollectiveControl`；
+- 增加作者 Vibe Coding、项目成熟度与欢迎共同优化的公开说明；
 - 新增 `recoverSession`，恢复宿主 Repository 检查点前验证场景、状态、分支、字段和证据不变量；
 - 拒绝跨分支重复字段 ID，避免恢复时发生字段语义重解释；
 - 增加控制器重启后继续执行、损坏检查点拒绝和跳过必填工作拒绝测试；

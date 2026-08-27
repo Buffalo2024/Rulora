@@ -2,7 +2,7 @@
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
   <p><strong>让模型负责理解与创造，让程序负责控制、验证与交付。</strong></p>
-  <p>一个面向可靠 AI Agent 的开源执行契约框架，通过概率模型与确定性程序的 Hybrid 协作，让 Agent 在复杂任务中具备可验证、可恢复、可复现的执行能力。</p>
+  <p>一组可嵌入现有 Agent 的开源控制组件：用 Hybrid 协作控制流程、循环、输出边界与群体决策。</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
@@ -11,7 +11,7 @@
   <p>
     <a href="README_EN.md">English</a> ·
     <a href="#快速开始">快速开始</a> ·
-    <a href="#官方-agent-生态">Agent 生态</a> ·
+    <a href="#场景案例">场景案例</a> ·
     <a href="docs/ARCHITECTURE.md">架构</a> ·
     <a href="CONTRIBUTING.md">参与贡献</a>
   </p>
@@ -19,24 +19,34 @@
 
 ---
 
+## 作者与项目说明
+
+Rulora 由一名没有专业编程背景的作者通过 **Vibe Coding** 创建。当前实现经过自动化测试和
+场景验证，但仍可能存在架构、性能、安全或兼容性问题。欢迎开发者带着具体问题、复现步骤、
+评估数据和改进方案参与讨论与优化。开源不是为了宣称项目已经完美，而是希望通过真实使用与
+共同审查，得到更可靠、更有用的产品。
+
 ## Rulora 是什么
 
-Rulora 是一个面向可靠 AI Agent 的开源执行契约框架。它不要求模型接管全部流程，
-而是通过概率模型与确定性程序的 **Hybrid 协作**，让 Agent 在复杂任务中具备可验证、
-可恢复、可复现的执行能力。
+Rulora 是一组可以按需嵌入单个 Agent 或 Agent 群体的轻量控制组件，通过概率模型与确定性
+程序的 **Hybrid 协作**，控制流程、循环、结构化输出和群体候选选择。
 
-Rulora 将这种协作方式称为 **Hybrid 机制**：
+Rulora 将这种协作方式称为 **Hybrid 机制**，核心分工如下：
 
-- **模型负责开放任务**：理解自然语言、追问、提炼、结构化生成和视觉创作；
-- **程序负责确定任务**：字段、状态、分支、预算、证据、Schema、质量门禁和保存；
-- **数据契约连接两者**：模型只提交候选结果，程序验证通过后才允许流程前进。
+- **LLM** 负责理解证据、开放语义推理、独立判断和候选选择；
+- **Program** 负责流程状态、字段合同、校验、统计、候选池、门禁和最终结果；
+- **Recovery** 只修复 JSON 或 Markdown 载体，不推断业务答案；
+- **Adapter** 只做字段别名与确定性类型转换，不增删或修改结论；
+- **Reviewer** 只选择 Program 冻结的候选 ID，不重新创造答案；
+- **Loop** 区分网络重连、约束修订和业务广播，全部有次数上限；
+- **Checkpoint** 保证只恢复失败节点，不重复调用成功节点；
+- **Improvement 席** 只利用客观反馈改进下一版本，不在运行中自改。
 
 > Hybrid 是 Rulora 对“模型能力与确定性程序协同”的项目术语，
 > 不是某个模型、Agent 平台或图片服务的名称。
 
-Rulora 主仓库提供 Core、公共约定、最小教学示例和官方 Agent 索引。解决具体任务的
-Agent 作为独立开源项目发布；日报、周报、行业和交付格式属于 Agent 内部可路由的场景包，
-不等同于新的 Agent。
+你可以只使用一个组件，也可以在同一个 Agent 中嵌套多个组件。Rulora 不接管模型、工具、
+会话、数据库或 UI；这些继续由宿主 Agent 负责。
 
 ## 为什么需要它
 
@@ -88,18 +98,21 @@ npm run example
 结果，不需要 API Key。接入真实模型时，请通过 Provider Adapter 读取环境变量，不要把
 密钥写入代码、Scenario 或 Prompt。
 
-## 官方 Agent 生态
+## 场景案例
 
 | Agent | 状态 | 任务 | 场景 |
 |---|---|---|---|
-| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Alpha · 已开源 | 将公开来源或企业数据转换为经过验证的 PNG 长图和单页 PPTX | 跨境电商政策日报、客服运营日报、新能源汽车出海周报 |
+| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Alpha · 已开源 | 将公开来源转换为经过验证的 PNG 长图 | 跨境电商政策日报、新能源汽车出海周报 |
+| **[Rulora AGTI](https://github.com/Buffalo2024/Rulora-AGTI)** | Alpha · 已开源 | 确定性身份测评、受控诊断与稳定视觉交付 | 20 道题、24 型身份、A/B 报告协议 |
+| **[Rulora Collective Decision](https://github.com/Buffalo2024/Rulora-Collective-Decision)** | Alpha · 已开源 | 多席独立候选、法定人数、受限复核与节点恢复 | 虚构企业信贷风险研究案例 |
+| **Rulora DeepSeek Harness Adapter** | 开发中 | 将 Rulora 控制组件接入 DeepSeek Harness | 接口仍需联调，不建议生产使用 |
 | **Rulora PDCA Management Agent** | 长期设计保留 | 通过 DST-PDCA 访谈、行动跟踪和复盘支持持续管理改善 | 咨询分析、问题解决、计划推进、PDCA 审查 |
 
-Report Agent 已作为独立开源项目发布。三个场景共享数据接入、结构化、分析、验证、渲染
-和 QA 底座，通过任务路由选择周期、数据源、模板及交付格式。
+Report Agent、AGTI 和 Collective Decision 均作为独立开源项目发布。Report Agent 的两个报告
+场景共享数据接入、结构化、分析、验证、渲染和 QA 底座；AGTI 展示确定性计分与受控诊断；
+Collective Decision 展示候选池、法定人数、受限 Reviewer 和失败节点恢复。
 
-官方 Agent 与社区 Agent 的边界、发布条件和目录约定见
-[Agent 生态与项目边界](docs/AGENT-ECOSYSTEM.md)。
+三个场景是独立仓库，用来证明同一组控制思想可以服务不同任务，不构成必须安装的“生态”。
 PDCA Agent 的长期设计见 [PDCA Management Agent 设计备忘](docs/PDCA-MANAGEMENT-AGENT.md)。
 
 ## 当前实现边界
@@ -109,6 +122,9 @@ PDCA Agent 的长期设计见 [PDCA Management Agent 设计备忘](docs/PDCA-MAN
 - `OrchestrationMachine`：字段分支、来源回合、Token 计数、无进展纠偏、人工接管和冻结；
 - `MemoryRepository`：仅用于本地演示和测试的进程内存储；
 - `HybridPipeline`：带 `model` / `program` 所有权和可选验证门禁的顺序流水线；
+- `LoopControl`：限制尝试次数与连续无进展次数，显式转入耗尽或人工接管；
+- `OutputBoundary`：按 Recovery → Adapter → Core/Audit 双契约接受或拒绝模型输出；
+- `CollectiveControl`：冻结候选池、检查法定人数，并限制 Reviewer 只能选择池内 ID；
 - Repository 检查点恢复：新控制器可校验已有状态并从未完成分支继续；
 - 一个无需 API Key 的 Core 教学示例。
 

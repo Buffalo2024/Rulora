@@ -2,36 +2,46 @@
   <img src="assets/brand/rulora-logo-256.png" width="148" alt="Rulora logo">
   <h1>Rulora</h1>
   <p><strong>Models understand and create. Programs control, validate, and deliver.</strong></p>
-  <p>Rulora is an open-source execution-contract framework for reliable AI agents. Through Hybrid cooperation between probabilistic models and deterministic programs, it makes complex agent tasks verifiable, recoverable, and reproducible.</p>
+  <p>Open-source, pluggable control components for adding flow, loop, output-boundary, and collective-decision controls to existing agents.</p>
   <p>
     <a href="https://www.npmjs.com/package/@rulora/core"><img src="https://img.shields.io/npm/v/%40rulora%2Fcore?tag=alpha&label=npm%20alpha" alt="npm alpha version"></a>
     <a href="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml"><img src="https://github.com/Buffalo2024/Rulora/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0 license"></a>
   </p>
-  <p><a href="README.md">中文说明</a> · <a href="#quick-start">Quick Start</a> · <a href="#official-agent-ecosystem">Agent Ecosystem</a></p>
+  <p><a href="README.md">中文说明</a> · <a href="#quick-start">Quick Start</a> · <a href="#scenario-examples">Scenario Examples</a></p>
 </div>
 
 ---
 
+## Creator and Project Note
+
+Rulora was created through vibe coding by an author without a professional programming background.
+The implementation has automated tests and scenario validation, but architecture, performance, security,
+or compatibility issues may remain. Concrete bug reports, reproduction steps, evaluation data, technical
+review, and improvements are welcome.
+
 ## What Rulora Is
 
-Rulora is an open-source execution-contract framework for reliable AI agents. Through Hybrid
-cooperation between probabilistic models and deterministic programs, it makes complex agent tasks
-verifiable, recoverable, and reproducible.
+Rulora is a small set of control components that can be embedded in an existing single agent or agent
+collective. Through Hybrid cooperation between probabilistic models
+and deterministic programs, it controls flows, loops, structured-output boundaries, and candidate selection.
 
 Rulora calls this collaboration the **Hybrid mechanism**:
 
-- models interpret language, ask questions, propose structured content, and create visuals;
-- programs own fields, state, branches, budgets, evidence, schemas, quality gates, and persistence;
-- explicit data contracts connect both sides, and model output never changes business state directly.
+- the LLM interprets evidence, performs open-ended semantic reasoning, makes independent judgments, and selects candidates;
+- the Program owns flow state, field contracts, validation, statistics, candidate pools, gates, and final results;
+- Recovery repairs only JSON or Markdown carriers and never infers business answers;
+- Adapter performs only field-alias and deterministic type conversion, without changing conclusions;
+- Reviewer selects only candidate IDs frozen by the Program and cannot create a new answer;
+- Loop separates network reconnects, constraint revisions, and business broadcasts, each with a hard limit;
+- Checkpoint resumes only failed nodes and does not call successful nodes again;
+- the Improvement seat uses objective feedback only for the next version and never self-modifies during a run.
 
 Hybrid is Rulora's project term for model-and-program collaboration. It is not a model provider,
 agent platform, or image service.
 
-The Rulora repository contains Core, shared conventions, minimal learning examples, and an index of
-official Agents. Agents that solve end-user tasks are released as independent open-source projects.
-Daily/weekly cadence, industries, and output formats are routed scenario packs inside an Agent rather
-than separate Agents.
+Use one component or compose several. Models, tools, sessions, databases, and user interfaces remain
+owned by the host agent.
 
 ## Core Rules
 
@@ -63,25 +73,27 @@ npm run example
 The minimal example uses fictional input to show how a program validates model-proposed fields,
 advances branches, and freezes an evidence-linked result. It needs no API key.
 
-## Official Agent Ecosystem
+## Scenario Examples
 
 | Agent | Status | Task | Scenario packs |
 |---|---|---|---|
-| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Open-source alpha | Turn public sources or business data into validated long-form PNG and one-page PPTX deliverables | Cross-border policy daily, customer-service operations daily, EV export weekly |
+| **[Rulora Report Agent](https://github.com/Buffalo2024/Rulora-Report-Agent)** | Open-source alpha | Turn public sources into validated long-form PNG deliverables | Cross-border policy daily, EV export weekly |
+| **[Rulora AGTI](https://github.com/Buffalo2024/Rulora-AGTI)** | Open-source alpha | Deterministic identity assessment, controlled diagnosis, and stable visual delivery | 20 questions, 24 identities, A/B report protocols |
+| **[Rulora Collective Decision](https://github.com/Buffalo2024/Rulora-Collective-Decision)** | Open-source alpha | Independent seats, candidate pools, quorum, constrained review, and failed-node recovery | Fictional credit-risk research case |
+| **Rulora DeepSeek Harness Adapter** | Under development | Embed Rulora controls in Harness lifecycles | Real SDK integration still needs debugging |
 
-Report Agent is released as one independent open-source project. Its scenario packs share the
-same evidence-ingestion, normalization, analysis, validation, rendering, and QA foundation. A task router
-selects cadence, source profile, template, and output format.
+Report Agent, AGTI, and Collective Decision are released as independent open-source projects. Report Agent's
+scenario packs share one ingestion, normalization, analysis, validation, rendering, and QA foundation. AGTI
+demonstrates deterministic scoring and controlled diagnosis. Collective Decision demonstrates frozen candidate
+pools, quorum, constrained review, and failed-node recovery.
 
-See [Agent ecosystem and project boundaries](docs/AGENT-ECOSYSTEM.md).
+These independent repositories demonstrate the controls in real tasks; they are not a required ecosystem.
 
 ## Current Implementation Status
 
 The current alpha implements the program-owned conversation state machine, an in-memory repository,
-a minimal sequential `HybridPipeline`, validated recovery from a host repository checkpoint, and one
-Core learning example. It does not bundle a real model/image provider, persistent database adapter,
-automatic retry scheduler, concurrency control, or production observability. Architecture terms
-describe extension boundaries, not bundled features.
+`HybridPipeline`, `LoopControl`, `OutputBoundary`, `CollectiveControl`, validated checkpoint recovery,
+and one learning example. It does not bundle providers, databases, schedulers, UI, or production observability.
 
 Install the preview with the explicit `alpha` dist-tag; no stable release has been declared.
 

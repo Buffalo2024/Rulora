@@ -6,7 +6,7 @@
 
 ## Description
 
-中文：`面向可靠 AI Agent 的开源执行契约框架，通过概率模型与确定性程序的 Hybrid 协作，让复杂任务可验证、可恢复、可复现。`
+中文：`可嵌入现有 AI Agent 的开源控制组件，通过模型与程序的 Hybrid 协作控制流程、循环、输出边界与群体决策。`
 
 English: `Open-source execution contracts for reliable AI agents through Hybrid model-program cooperation.`
 

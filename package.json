@@ -1,7 +1,7 @@
 {
   "name": "@rulora/core",
-  "version": "0.1.0-alpha.2",
-  "description": "Open-source execution contracts for reliable AI agents using Hybrid model-program cooperation.",
+  "version": "0.1.0-alpha.3",
+  "description": "Pluggable control components for reliable AI agents using Hybrid model-program cooperation.",
   "license": "Apache-2.0",
   "type": "commonjs",
   "main": "src/index.js",
@@ -48,7 +48,9 @@
     "agent",
     "state-machine",
     "workflow",
-    "execution-contract",
+    "agent-control",
+    "loop-control",
+    "output-validation",
     "reliable-agents",
     "openclaw",
     "hybrid"
