@@ -41,7 +41,8 @@
     "lab:native-image": "node labs/native-image-report/run.js",
     "lab:stable-image": "node labs/stable-image-reproduction/run.js",
     "release:check": "node scripts/release-check.js",
-    "pack:check": "npm pack --dry-run"
+    "pack:check": "npm pack --dry-run",
+    "prepublishOnly": "npm test && npm run release:check"
   },
   "keywords": [
     "llm",
@@ -57,6 +58,7 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   }
 }
