@@ -13,12 +13,11 @@
 
 ---
 
-## Creator and Project Note
+## Project Note
 
-Rulora was created through vibe coding by an author without a professional programming background.
-The implementation has automated tests and scenario validation, but architecture, performance, security,
-or compatibility issues may remain. Concrete bug reports, reproduction steps, evaluation data, technical
-review, and improvements are welcome.
+Rulora has automated tests and scenario validation, but it remains under active development and architecture,
+performance, security, or compatibility issues may remain. Concrete bug reports, reproduction steps,
+evaluation data, technical review, and improvements are welcome.
 
 ## What Rulora Is
 
