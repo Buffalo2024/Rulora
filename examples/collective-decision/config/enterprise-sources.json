@@ -1,0 +1,74 @@
+{
+  "contract_version": "1.0.0",
+  "policy": {
+    "minimum_independent_relevant_sources": 2,
+    "per_claim_corroboration_required": false,
+    "require_snapshot": true,
+    "require_publication_date": true
+  },
+  "sources": [
+    {
+      "id": "cninfo",
+      "label": "巨潮资讯网",
+      "base_url": "https://www.cninfo.com.cn/",
+      "source_type": "company_disclosure",
+      "adapter": "cninfo",
+      "production_ingest_enabled": false,
+      "access_mode": "public_json_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "cninfo.com.cn"
+      ],
+      "data_category": "enterprise_disclosure",
+      "claims": [
+        "财务报表",
+        "客户供应商集中度",
+        "合同订单",
+        "担保诉讼",
+        "融资与股权变化"
+      ],
+      "listed_companies_only": true,
+      "manual_import_enabled": true
+    },
+    {
+      "id": "government_policy",
+      "label": "国务院及部委政策",
+      "base_url": "https://www.gov.cn/zhengce/",
+      "source_type": "government_policy",
+      "adapter": "government_policy",
+      "production_ingest_enabled": false,
+      "access_mode": "public_json_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "gov.cn"
+      ],
+      "data_category": "policy",
+      "claims": [
+        "产业政策",
+        "补贴与限制",
+        "贸易政策",
+        "安全环保要求"
+      ],
+      "http_allowed_hosts": [
+        "gov.cn"
+      ],
+      "manual_import_enabled": true
+    },
+    {
+      "id": "web_search",
+      "label": "联网公开网页检索",
+      "source_type": "reputable_media",
+      "adapter": "searxng_web",
+      "access_mode": "configured_public_web_search",
+      "production_ingest_enabled": false,
+      "default_grade": "C",
+      "allow_external_article_hosts": true,
+      "claims": [
+        "仅在SearXNG已配置时启用",
+        "抓取公开原文并存证",
+        "按实际发布者识别独立来源"
+      ],
+      "manual_import_enabled": true
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "schema_version": "synthetic-company-catalog-v1",
+  "records": [
+    {
+      "company_id": "001",
+      "company_name": "演示企业1号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-001",
+      "unified_social_credit_code": "DEMO-TAX-001",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "002",
+      "company_name": "演示企业2号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-002",
+      "unified_social_credit_code": "DEMO-TAX-002",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "003",
+      "company_name": "演示企业3号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-003",
+      "unified_social_credit_code": "DEMO-TAX-003",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "004",
+      "company_name": "演示企业4号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-004",
+      "unified_social_credit_code": "DEMO-TAX-004",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "005",
+      "company_name": "演示企业5号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-005",
+      "unified_social_credit_code": "DEMO-TAX-005",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "006",
+      "company_name": "演示企业6号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-006",
+      "unified_social_credit_code": "DEMO-TAX-006",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "007",
+      "company_name": "演示企业7号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-007",
+      "unified_social_credit_code": "DEMO-TAX-007",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "008",
+      "company_name": "演示企业8号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-008",
+      "unified_social_credit_code": "DEMO-TAX-008",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "009",
+      "company_name": "演示企业9号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-009",
+      "unified_social_credit_code": "DEMO-TAX-009",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "010",
+      "company_name": "演示企业10号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-010",
+      "unified_social_credit_code": "DEMO-TAX-010",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "011",
+      "company_name": "演示企业11号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-011",
+      "unified_social_credit_code": "DEMO-TAX-011",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "012",
+      "company_name": "演示企业12号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-012",
+      "unified_social_credit_code": "DEMO-TAX-012",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "013",
+      "company_name": "演示企业13号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-013",
+      "unified_social_credit_code": "DEMO-TAX-013",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "014",
+      "company_name": "演示企业14号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-014",
+      "unified_social_credit_code": "DEMO-TAX-014",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "015",
+      "company_name": "演示企业15号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-015",
+      "unified_social_credit_code": "DEMO-TAX-015",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "016",
+      "company_name": "演示企业16号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-016",
+      "unified_social_credit_code": "DEMO-TAX-016",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "017",
+      "company_name": "演示企业17号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-017",
+      "unified_social_credit_code": "DEMO-TAX-017",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "018",
+      "company_name": "演示企业18号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-018",
+      "unified_social_credit_code": "DEMO-TAX-018",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "019",
+      "company_name": "演示企业19号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-019",
+      "unified_social_credit_code": "DEMO-TAX-019",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "020",
+      "company_name": "演示企业20号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-020",
+      "unified_social_credit_code": "DEMO-TAX-020",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "021",
+      "company_name": "演示企业21号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-021",
+      "unified_social_credit_code": "DEMO-TAX-021",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "022",
+      "company_name": "演示企业22号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-022",
+      "unified_social_credit_code": "DEMO-TAX-022",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "023",
+      "company_name": "演示企业23号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-023",
+      "unified_social_credit_code": "DEMO-TAX-023",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "024",
+      "company_name": "演示企业24号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-024",
+      "unified_social_credit_code": "DEMO-TAX-024",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    },
+    {
+      "company_id": "025",
+      "company_name": "演示企业25号",
+      "industry": "通用设备制造（虚构）",
+      "province": "示例省",
+      "city": "示例市",
+      "enterprise_type": "有限责任公司",
+      "taxpayer_id": "DEMO-TAX-025",
+      "unified_social_credit_code": "DEMO-TAX-025",
+      "business_scope": "机械设备及零部件的研发、制造与销售（虚构演示数据）"
+    }
+  ]
+}

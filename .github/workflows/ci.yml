@@ -19,10 +19,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install --ignore-scripts
+      - run: npm ci --ignore-scripts
       - run: npm test
+      - run: npm run test:types
+      - run: npm run example:schema
       - run: npm run example
+      - run: npm run examples:quickstart
       - run: npm run lab:native-image
       - run: npm run lab:stable-image
       - run: npm run release:check
+      - run: npm run docs:check
       - run: npm run pack:check

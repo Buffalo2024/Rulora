@@ -1,0 +1,91 @@
+{
+  "contract_version": "1.0.0",
+  "defaults": {
+    "provider": "openai_compatible",
+    "api": "openai-completions",
+    "base_url": "https://provider.example.invalid/v1",
+    "send_user_agent": true,
+    "user_agent": "RuloraRiskAgents/0.1 OpenAI-Compatible",
+    "max_retries": 3,
+    "retry_base_delay_ms": 1000,
+    "retry_max_delay_ms": 15000,
+    "retry_jitter_ratio": 0.2,
+    "json_mode": true,
+    "timeout_ms": 600000
+  },
+  "profiles": {
+    "chain_reasoner": {
+      "api_key_env": "NANSHU_CHAIN_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "NANSHU_CHAIN_MODEL",
+      "timeout_ms": 600000
+    },
+    "monitor_extractor": {
+      "api_key_env": "NANSHU_MONITOR_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "NANSHU_MONITOR_MODEL",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "enable_thinking": false
+      }
+    },
+    "factor_reasoner": {
+      "api_key_env": "NANSHU_FACTOR_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "NANSHU_FACTOR_MODEL",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "high"
+      }
+    },
+    "red_team_reasoner": {
+      "api_key_env": "NANSHU_REDTEAM_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "NANSHU_REDTEAM_MODEL",
+      "timeout_ms": 600000
+    },
+    "decision_reasoner": {
+      "api_key_env": "NANSHU_CREDIT_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "NANSHU_CREDIT_MODEL",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "high"
+      }
+    },
+    "countercheck_primary": {
+      "api_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "model": "configure-your-model",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "medium"
+      },
+      "model_env": "NANSHU_COUNTERCHECK_PRIMARY_MODEL"
+    },
+    "countercheck_secondary": {
+      "api_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "model": "configure-your-model",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "medium"
+      },
+      "model_env": "NANSHU_COUNTERCHECK_SECONDARY_MODEL"
+    }
+  },
+  "enterprise_model_routing": {
+    "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+    "countercheck_profiles": [
+      "countercheck_primary",
+      "countercheck_secondary",
+      "decision_reasoner"
+    ],
+    "backup_for_profiles": [
+      "chain_reasoner",
+      "factor_reasoner",
+      "red_team_reasoner",
+      "decision_reasoner"
+    ]
+  }
+}

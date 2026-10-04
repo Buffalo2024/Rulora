@@ -1,0 +1,52 @@
+{
+  "contract_version": "2.0.0",
+  "supervisor_role_id": "improvement_supervisor",
+  "eligible_seat_ids": ["industry_chain_analyst", "risk_factor_analyst", "adversarial_reviewer"],
+  "excluded_role_ids": ["public_evidence_monitor", "improvement_supervisor"],
+  "selection_policy": "lowest_external_outcome_and_user_feedback_score",
+  "maximum_replacements_per_cycle": 1,
+  "require_shadow_challenger": true,
+  "require_external_outcome": true,
+  "allow_consensus_as_truth": false,
+  "evaluation_batch_size": 20,
+  "minimum_cases_before_challenger": 20,
+  "challenger_minimum_paired_cases": 20,
+  "minimum_evaluated_cases_before_promotion": 50,
+  "promotion_required_consecutive_checkpoints": 2,
+  "promotion_minimum_fitness_gain": 0.03,
+  "promotion_minimum_brier_skill_gain": 0.02,
+  "promotion_minimum_direction_gain": 0,
+  "challenger_retirement_checkpoints": 2,
+  "challenger_retirement_fitness_gap": -0.03,
+  "maximum_active_challengers": 1,
+  "challenger_initial_weight": 0.45,
+  "promoted_champion_weight": 1,
+  "active_minimum_weight": 0.2,
+  "active_maximum_weight": 2,
+  "metric_weights": {
+    "brier_skill": 0,
+    "direction_accuracy": 0.65,
+    "advice_f1": 0.35
+  },
+  "feedback_weights": {
+    "external_outcome": 0.8,
+    "user_feedback": 0.2
+  },
+  "role_mutation_pool": {
+    "industry_chain_analyst": [
+      "提高反事实证伪权重",
+      "将产业链搜索向上游扩展两跳",
+      "提高客户和供应商集中度与替代认证周期权重"
+    ],
+    "risk_factor_analyst": [
+      "缩短事件证据半衰期",
+      "强化行业基准率与概率校准",
+      "降低相关因子和重复来源造成的重复计权"
+    ],
+    "adversarial_reviewer": [
+      "降低缺少独立来源的高置信结论",
+      "强化因果倒置、未来信息和替代解释检查",
+      "提高未解决高严重度质疑的保守收缩幅度"
+    ]
+  }
+}

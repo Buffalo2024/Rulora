@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/enterprise-report-2.0.0.json",
+  "title": "EnterpriseDecisionV2Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "方向",
+    "决策建议",
+    "理由"
+  ],
+  "properties": {
+    "方向": {
+      "enum": [
+        -1,
+        0,
+        1,
+        null
+      ]
+    },
+    "决策建议": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "编号",
+              "建议",
+              "id",
+              "target",
+              "action",
+              "time_range",
+              "direction_relation",
+              "scope",
+              "effect",
+              "readiness",
+              "prerequisites",
+              "evidence_refs"
+            ],
+            "properties": {
+              "编号": {
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  11,
+                  12
+                ]
+              },
+              "建议": {
+                "type": "string",
+                "minLength": 1
+              },
+              "id": {
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  11,
+                  12
+                ]
+              },
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "time_range": {
+                "type": "string",
+                "minLength": 1
+              },
+              "direction_relation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "enum": [
+                  "overall",
+                  "partial"
+                ]
+              },
+              "effect": {
+                "enum": [
+                  "increase",
+                  "maintain",
+                  "decrease",
+                  "pause",
+                  "exit",
+                  "reallocate",
+                  "protect"
+                ]
+              },
+              "readiness": {
+                "enum": [
+                  "ready",
+                  "conditional"
+                ]
+              },
+              "prerequisites": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "decision_object": {
+                "enum": [
+                  "existing_tasks",
+                  "new_investment",
+                  "strategy",
+                  "ongoing_investment",
+                  "other"
+                ]
+              },
+              "commitment_status": {
+                "enum": [
+                  "existing",
+                  "uncommitted",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "minItems": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "编号",
+              "建议",
+              "无法建议原因"
+            ],
+            "properties": {
+              "编号": {
+                "const": 10
+              },
+              "建议": {
+                "const": "无建议"
+              },
+              "无法建议原因": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "编号",
+              "建议",
+              "无需新增原因",
+              "已有安排",
+              "方向关系"
+            ],
+            "properties": {
+              "编号": {
+                "const": 13
+              },
+              "建议": {
+                "const": "无需新增措施"
+              },
+              "无需新增原因": {
+                "type": "string",
+                "minLength": 1
+              },
+              "方向关系": {
+                "type": "string",
+                "minLength": 1
+              },
+              "已有安排": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "arrangement",
+                    "evidence_refs"
+                  ],
+                  "properties": {
+                    "arrangement": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "evidence_refs": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "理由": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

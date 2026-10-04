@@ -2,8 +2,8 @@ const fs = require('node:fs')
 const path = require('node:path')
 
 const root = path.resolve(__dirname, '..')
-const ignored = new Set(['.git', 'node_modules', 'coverage', 'runtime'])
-const textExtensions = new Set(['.js', '.json', '.md', '.yml', '.yaml', '.txt', '.svg', '.example'])
+const ignored = new Set(['.git', 'node_modules', 'coverage', 'runtime', '.runtime', '.rulora-report'])
+const textExtensions = new Set(['.js', '.mjs', '.cjs', '.py', '.json', '.md', '.yml', '.yaml', '.txt', '.svg', '.example'])
 const failures = []
 const warnings = []
 const legacyHybridSpelling = new RegExp(['hy', 'bird'].join(''), 'i')
@@ -15,6 +15,8 @@ function walk(directory) {
     if (ignored.has(entry.name)) continue
     const fullPath = path.join(directory, entry.name)
     if (fullPath === path.join(root, 'release', 'package')) continue
+    // Fixture runs write local paths into ignored runtime output, never into release sources.
+    if (fullPath === path.join(root, 'examples', 'collective-decision', 'examples', 'output')) continue
     if (entry.isDirectory()) walk(fullPath)
     else inspect(fullPath)
   }

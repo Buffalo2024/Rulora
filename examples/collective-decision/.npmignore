@@ -1,0 +1,12 @@
+node_modules/
+.runtime/
+**/output/
+**/*.local.json
+**/*.local.env
+**/.env*
+**/*.log
+**/.DS_Store
+data/
+deploy/
+verification/
+*.tgz

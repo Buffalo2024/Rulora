@@ -1,0 +1,91 @@
+{
+  "contract_version": "1.0.0",
+  "kind": "immutable_validated_model_call_checkpoint",
+  "input_sha256": "bcd012be2b6e1adda8b9cd82d9ed5ee7795d6bb30a25e5192f9bbd9f8b436749",
+  "identity": {
+    "reference_binding": {
+      "version": "1.0.0",
+      "entries": [
+        {
+          "selector": 1,
+          "id": "E1"
+        },
+        {
+          "selector": 2,
+          "id": "E2"
+        }
+      ],
+      "sha256": "374afe7e215927f454011e7a90f27f71ee8524b18a01159ac6d9543984158339",
+      "direction_version": null,
+      "broadcast_version": null
+    },
+    "contract_version": "1.0.0",
+    "output_protocol_version": "5.3.0-action-object-boundaries",
+    "action_options_version": "3.0.0-object-boundaries",
+    "mode": "enterprise_decision_v2",
+    "operation": "seat_initial",
+    "agent": {
+      "agent_id": "demand_growth",
+      "model_profile": "chain_reasoner",
+      "method_family": "enterprise_demand_growth"
+    },
+    "question": {
+      "valid": true,
+      "missing": [],
+      "question": "企业产业链风险及决策分析",
+      "subject": "甲公司",
+      "matter": "目标企业自身的产业链风险与经营决策",
+      "time_range": "未来12个月",
+      "baseline": "截至证据日期可核验的当前经营状态",
+      "scope": "目标企业整体经营"
+    },
+    "rules": [],
+    "experience": [],
+    "evidence_version": "078513820dd5cb1bc18c712c41fd13ba8aeea034455e51e35c47b13e1827d1ea",
+    "model_fingerprint": "injected-enterprise-provider",
+    "stage": "direction",
+    "review_round": 0,
+    "direction_version": null,
+    "prompt_sha256": "aacecf30df926b3c6e7eb1ced3b6ab08d89a6d545f7f5a9e834bce776b6dc3a3"
+  },
+  "output": {
+    "direction": 1,
+    "reason": "依据E1",
+    "evidence_refs": [
+      "E1"
+    ],
+    "gaps": [],
+    "assumptions": [],
+    "factors": [
+      {
+        "name": "需求",
+        "mechanism": "由E1支持",
+        "effect": "positive",
+        "evidence_refs": [
+          "E1"
+        ],
+        "counter_evidence_refs": []
+      }
+    ],
+    "seat_summary": "依据E1"
+  },
+  "output_sha256": "69cabc5fa4158709f317ce31715951f37b5d6d0a997062aa203a14ec3066dba8",
+  "pipeline_events": [
+    {
+      "stepId": "seat_initial_model",
+      "owner": "model",
+      "startedAt": "2026-10-04T00:00:00.000Z",
+      "completedAt": "2026-10-04T00:00:01.000Z"
+    },
+    {
+      "stepId": "seat_initial_program_gate",
+      "owner": "program",
+      "startedAt": "2026-10-04T00:00:00.000Z",
+      "completedAt": "2026-10-04T00:00:01.000Z"
+    }
+  ],
+  "model_provenance": null,
+  "validation_loop": null,
+  "started_at": "2026-10-04T00:00:00.000Z",
+  "completed_at": "2026-10-04T00:00:01.000Z"
+}

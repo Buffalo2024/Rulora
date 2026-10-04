@@ -1,0 +1,25 @@
+{
+  "contract_version": "1.0.0",
+  "probability_labels": ["risk_up", "risk_flat", "risk_down"],
+  "contest_action_map": {
+    "risk_up": "-1",
+    "risk_flat": "0",
+    "risk_down": "1"
+  },
+  "maximum_advice_items": 3,
+  "competition_maximum_advice_items": 4,
+  "advice_vote_threshold": 0.32,
+  "minimum_evidence_coverage": 0.6,
+  "maximum_family_weight_share": 0.35,
+  "risk_control_advice": {
+    "1": "调整利率定价",
+    "2": "调低信用评级",
+    "3": "增加、提高经营销售归行占比",
+    "4": "暂停新增并冻结、调减经营额度",
+    "5": "追加或更换抵押物",
+    "6": "增加保证担保",
+    "7": "增加相应质押物担保",
+    "8": "缩短贷款期限",
+    "9": "提前收回融资"
+  }
+}

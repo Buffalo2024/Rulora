@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/competition-stage-decision-1.0.0.json",
+  "title": "CompetitionStageDecision",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_agent", "action_candidate", "action_confidence", "action_reason", "transmission_evidence", "threshold_evidence", "counter_evidence", "set_confidence", "label_assessments", "风控建议", "逻辑"],
+      "properties": {
+        "execution_agent": { "type": "string", "minLength": 1 },
+        "action_candidate": { "type": "integer", "minimum": -1, "maximum": 1 },
+        "action_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "action_reason": { "type": "array", "maxItems": 6, "items": { "type": "string", "minLength": 1, "maxLength": 400 } },
+        "transmission_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "threshold_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "counter_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "set_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "label_assessments": { "$ref": "#/$defs/labelAssessments" },
+        "执行员": { "type": "string", "minLength": 1 },
+        "经营调整方向": { "enum": ["risk_up", "risk_flat", "risk_down"] },
+        "风控建议": { "$ref": "#/$defs/advice" },
+        "逻辑": { "$ref": "#/$defs/logic" },
+        "证据": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_agent", "action_candidate", "action_confidence", "action_reason", "transmission_evidence", "threshold_evidence", "counter_evidence", "执行员", "经营调整方向", "逻辑", "证据"],
+      "properties": {
+        "execution_agent": { "type": "string", "minLength": 1 },
+        "action_candidate": { "type": "integer", "minimum": -1, "maximum": 1 },
+        "action_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "action_reason": { "type": "array", "maxItems": 6, "items": { "type": "string", "minLength": 1, "maxLength": 400 } },
+        "transmission_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "threshold_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "counter_evidence": { "$ref": "#/$defs/optionalEvidence" },
+        "执行员": { "type": "string", "minLength": 1 },
+        "经营调整方向": { "enum": ["risk_up", "risk_flat", "risk_down"] },
+        "逻辑": { "$ref": "#/$defs/logic" },
+        "证据": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_agent", "set_confidence", "label_assessments", "执行员", "风控建议", "逻辑", "证据"],
+      "properties": {
+        "execution_agent": { "type": "string", "minLength": 1 },
+        "set_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "label_assessments": { "$ref": "#/$defs/labelAssessments" },
+        "执行员": { "type": "string", "minLength": 1 },
+        "风控建议": { "$ref": "#/$defs/advice" },
+        "逻辑": { "$ref": "#/$defs/logic" },
+        "证据": { "$ref": "#/$defs/evidence" }
+      }
+    }
+  ],
+  "$defs": {
+    "advice": { "type": "array", "minItems": 0, "maxItems": 4, "items": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }, "uniqueItems": true },
+    "labelAssessments": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "necessary", "why_required", "why_deletable", "counter_evidence"],
+            "properties": {
+              "code": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] },
+              "necessary": { "type": "boolean" },
+              "why_required": { "type": "array", "maxItems": 4, "items": { "type": "string", "minLength": 1, "maxLength": 300 } },
+              "why_deletable": { "type": "array", "maxItems": 4, "items": { "type": "string", "minLength": 1, "maxLength": 300 } },
+              "counter_evidence": { "$ref": "#/$defs/optionalEvidence" }
+            }
+          }
+        },
+    "logic": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "mechanism", "evidence_refs"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "mechanism": { "type": "string", "minLength": 1, "maxLength": 600 },
+          "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        }
+      }
+    },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "optionalEvidence": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}

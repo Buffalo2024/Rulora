@@ -1,0 +1,72 @@
+{
+  "contract_version": "1.0.0",
+  "profiles": {
+    "chain_reasoner": {
+      "provider": "openai_compatible",
+      "base_url": "https://provider.example.invalid/v1",
+      "base_url_env": "CHAIN_LLM_BASE_URL",
+      "api_key_env": "CHAIN_LLM_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "CHAIN_LLM_MODEL",
+      "temperature": 0.1,
+      "timeout_ms": 120000,
+      "max_retries": 2,
+      "json_mode": true,
+      "extra_body": {
+        "reasoning_effort": "medium"
+      }
+    },
+    "factor_reasoner": {
+      "provider": "anthropic",
+      "base_url": "https://provider.example.invalid/v1",
+      "base_url_env": "FACTOR_LLM_BASE_URL",
+      "api_key_env": "FACTOR_LLM_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "FACTOR_LLM_MODEL",
+      "temperature": 0.1,
+      "max_tokens": 7000,
+      "timeout_ms": 120000,
+      "max_retries": 2
+    },
+    "red_team_reasoner": {
+      "provider": "openai_compatible",
+      "base_url": "https://provider.example.invalid/v1",
+      "base_url_env": "REDTEAM_LLM_BASE_URL",
+      "api_key_env": "REDTEAM_LLM_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "REDTEAM_LLM_MODEL",
+      "temperature": 0.2,
+      "timeout_ms": 120000,
+      "max_retries": 2,
+      "json_mode": true
+    },
+    "decision_reasoner": {
+      "provider": "openai_compatible",
+      "base_url": "https://provider.example.invalid/v1",
+      "base_url_env": "CREDIT_LLM_BASE_URL",
+      "api_key_env": "CREDIT_LLM_API_KEY",
+      "api_key_optional": true,
+      "model": "configure-your-model",
+      "model_env": "CREDIT_LLM_MODEL",
+      "temperature": 0.1,
+      "timeout_ms": 180000,
+      "max_retries": 1,
+      "json_mode": true
+    },
+    "monitor_extractor": {
+      "provider": "openai_compatible",
+      "base_url": "https://provider.example.invalid/v1",
+      "base_url_env": "MONITOR_LLM_BASE_URL",
+      "api_key_env": "MONITOR_LLM_API_KEY",
+      "model": "configure-your-model",
+      "model_env": "MONITOR_LLM_MODEL",
+      "temperature": 0,
+      "timeout_ms": 60000,
+      "max_retries": 2,
+      "json_mode": true,
+      "extra_body": {
+        "reasoning_effort": "low"
+      }
+    }
+  }
+}

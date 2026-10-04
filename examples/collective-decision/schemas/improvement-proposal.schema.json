@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/improvement-proposal-1.0.0.json",
+  "title": "ImprovementProposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["执行员", "目标席位", "选择因子", "调整理由", "评估依据"],
+  "properties": {
+    "执行员": { "const": "improvement_supervisor" },
+    "目标席位": { "enum": ["industry_chain_analyst", "risk_factor_analyst", "adversarial_reviewer"] },
+    "选择因子": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "调整理由": { "type": "string", "minLength": 1, "maxLength": 800 },
+    "评估依据": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint", "evaluated_cases", "scorecard_sha256"],
+      "properties": {
+        "checkpoint": { "type": "integer", "minimum": 1 },
+        "evaluated_cases": { "type": "integer", "minimum": 1 },
+        "scorecard_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}

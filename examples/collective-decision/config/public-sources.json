@@ -1,0 +1,270 @@
+{
+  "contract_version": "1.0.0",
+  "policy": {
+    "minimum_distinct_source_types": 2,
+    "minimum_independent_registered_sources": 2,
+    "primary_decision_grades": [
+      "A",
+      "B"
+    ],
+    "hypothesis_only_grades": [
+      "D"
+    ],
+    "respect_terms_and_rate_limits": true,
+    "store_content_snapshot_hash": true,
+    "reject_publications_after_as_of_date": true
+  },
+  "sources": [
+    {
+      "id": "cninfo",
+      "label": "巨潮资讯网",
+      "base_url": "https://www.cninfo.com.cn/",
+      "source_type": "company_disclosure",
+      "adapter": "cninfo",
+      "production_ingest_enabled": false,
+      "access_mode": "public_json_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "cninfo.com.cn"
+      ],
+      "data_category": "enterprise_disclosure",
+      "claims": [
+        "财务报表",
+        "客户供应商集中度",
+        "合同订单",
+        "担保诉讼",
+        "融资与股权变化"
+      ],
+      "listed_companies_only": true,
+      "manual_import_enabled": true
+    },
+    {
+      "id": "national_statistics",
+      "label": "国家统计局国家数据",
+      "base_url": "https://data.stats.gov.cn/",
+      "source_type": "government_statistics",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_licensed_api_due_site_control",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "data.stats.gov.cn",
+        "stats.gov.cn"
+      ],
+      "data_category": "regional_economy",
+      "claims": [
+        "PPI/CPI",
+        "工业增加值",
+        "固定资产投资",
+        "产量",
+        "行业景气基准率"
+      ]
+    },
+    {
+      "id": "credit_china",
+      "label": "信用中国",
+      "base_url": "https://www.creditchina.gov.cn/",
+      "source_type": "government_credit",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_authorized_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "creditchina.gov.cn"
+      ],
+      "data_category": "penalty_dishonesty",
+      "claims": [
+        "行政处罚",
+        "严重失信",
+        "信用修复",
+        "异常名录"
+      ]
+    },
+    {
+      "id": "court_enforcement",
+      "label": "中国执行信息公开网",
+      "base_url": "https://zxgk.court.gov.cn/",
+      "source_type": "government_credit",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_single_query_due_captcha",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "zxgk.court.gov.cn",
+        "court.gov.cn"
+      ],
+      "data_category": "penalty_dishonesty",
+      "claims": [
+        "失信被执行人",
+        "限制消费",
+        "被执行案件"
+      ]
+    },
+    {
+      "id": "tianyancha",
+      "label": "天眼查",
+      "base_url": "https://www.tianyancha.com/",
+      "source_type": "enterprise_registry",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_permitted_single_query_or_export",
+      "default_grade": "B",
+      "allowed_hosts": [
+        "tianyancha.com"
+      ],
+      "data_category": "enterprise_registry",
+      "claims": [
+        "企业主体",
+        "股东高管",
+        "工商变更",
+        "经营风险"
+      ],
+      "requires_independent_confirmation": true
+    },
+    {
+      "id": "chinaprice",
+      "label": "中国价格网",
+      "base_url": "https://www.chinaprice.cn/",
+      "source_type": "official_market_data",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_logged_in_single_query_or_export",
+      "default_grade": "B",
+      "allowed_hosts": [
+        "chinaprice.cn"
+      ],
+      "data_category": "commodity_price",
+      "claims": [
+        "大宗商品现货价格",
+        "价格指数",
+        "日周度涨跌幅"
+      ]
+    },
+    {
+      "id": "enterprise_registry",
+      "label": "国家企业信用信息公示系统",
+      "base_url": "https://www.gsxt.gov.cn/",
+      "source_type": "enterprise_registry",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_authorized_api_due_captcha",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "gsxt.gov.cn"
+      ],
+      "data_category": "enterprise_registry",
+      "claims": [
+        "企业主体",
+        "股东高管",
+        "经营异常",
+        "行政处罚",
+        "股权质押"
+      ]
+    },
+    {
+      "id": "official_commodity_exchanges",
+      "label": "境内商品交易所官方行情",
+      "base_url": "https://www.shfe.com.cn/",
+      "source_type": "official_market_data",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "official_download_or_licensed_api_due_site_control",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "shfe.com.cn",
+        "dce.com.cn",
+        "czce.com.cn"
+      ],
+      "data_category": "commodity_price",
+      "claims": [
+        "原材料价格",
+        "库存",
+        "期限结构",
+        "价格冲击窗口"
+      ],
+      "related_urls": [
+        "http://www.dce.com.cn/",
+        "http://www.czce.com.cn/"
+      ]
+    },
+    {
+      "id": "government_policy",
+      "label": "国务院及部委政策",
+      "base_url": "https://www.gov.cn/zhengce/",
+      "source_type": "government_policy",
+      "adapter": "government_policy",
+      "production_ingest_enabled": false,
+      "access_mode": "public_json_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "gov.cn"
+      ],
+      "data_category": "policy",
+      "claims": [
+        "产业政策",
+        "补贴与限制",
+        "贸易政策",
+        "安全环保要求"
+      ],
+      "manual_import_enabled": true
+    },
+    {
+      "id": "reputable_media",
+      "label": "可靠财经与行业媒体",
+      "base_url": null,
+      "source_type": "reputable_media",
+      "production_ingest_enabled": false,
+      "default_grade": "C",
+      "data_category": "supply_chain_event",
+      "claims": [
+        "事件线索",
+        "供应链访谈",
+        "需求变化"
+      ],
+      "requires_independent_confirmation": true
+    },
+    {
+      "id": "gdelt",
+      "label": "GDELT DOC 2.0",
+      "base_url": "https://api.gdeltproject.org/api/v2/doc/doc",
+      "source_type": "reputable_media",
+      "default_grade": "C",
+      "allowed_hosts": [
+        "gdeltproject.org"
+      ],
+      "allow_external_article_hosts": true,
+      "data_category": "supply_chain_event",
+      "adapter": "gdelt",
+      "production_ingest_enabled": false,
+      "access_mode": "public_json_api_rate_limited",
+      "claims": [
+        "全球供应链事件线索",
+        "海外媒体公开报道"
+      ],
+      "requires_independent_confirmation": true,
+      "minimum_interval_seconds": 6
+    },
+    {
+      "id": "social_research",
+      "label": "社媒与公开研究线索",
+      "base_url": null,
+      "source_type": "social_media",
+      "production_ingest_enabled": false,
+      "default_grade": "D",
+      "data_category": "research_lead",
+      "claims": [
+        "待验证的产业链关系",
+        "候选卡点",
+        "潜在催化或反证"
+      ],
+      "hypothesis_only": true
+    }
+  ]
+}

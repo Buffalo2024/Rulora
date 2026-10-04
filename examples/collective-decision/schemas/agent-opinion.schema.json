@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/agent-opinion-1.0.0.json",
+  "title": "AgentOpinion",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["agent_id", "agent_version", "method_family", "result_candidate", "probabilities", "factors", "chain_map", "recommended_advice", "thesis", "uncertainties"],
+  "properties": {
+    "agent_id": { "type": "string", "minLength": 1 },
+    "agent_version": { "type": "integer", "minimum": 1 },
+    "method_family": { "type": "string", "minLength": 1 },
+    "result_candidate": { "enum": ["risk_up", "risk_flat", "risk_down"] },
+    "probabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_up", "risk_flat", "risk_down"],
+      "properties": {
+        "risk_up": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_flat": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_down": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "factors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "direction", "strength", "confidence", "transmission_mechanism", "horizon_days", "correlation_group", "evidence_refs", "invalidation_condition"],
+        "properties": {
+          "direction": { "enum": ["risk_up", "neutral", "risk_down"] },
+          "strength": { "type": "number", "minimum": 0, "maximum": 1 },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "transmission_mechanism": { "type": "string", "minLength": 1 },
+          "horizon_days": { "type": "integer", "minimum": 1, "maximum": 1095 },
+          "correlation_group": { "type": "string", "minLength": 1 },
+          "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    },
+    "chain_map": {
+      "type": "object",
+      "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": { "type": "array" },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "relation", "status", "chain_layer", "transmission_mechanism", "horizon_days", "invalidation_condition", "evidence_refs"],
+            "properties": {
+              "status": { "enum": ["confirmed", "inferred"] },
+              "chain_layer": { "enum": ["upstream", "target", "downstream", "cross_cutting"] },
+              "horizon_days": { "type": "integer", "minimum": 1, "maximum": 1095 },
+              "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true }
+            }
+          }
+        }
+      }
+    },
+    "recommended_advice": {
+      "type": "array",
+      "items": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] },
+      "uniqueItems": true
+    },
+    "thesis": { "type": "string", "minLength": 1 },
+    "uncertainties": { "type": "array", "items": { "type": "string" } }
+  }
+}

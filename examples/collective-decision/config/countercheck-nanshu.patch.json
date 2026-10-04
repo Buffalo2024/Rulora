@@ -1,0 +1,44 @@
+{
+  "profiles": {
+    "countercheck_primary": {
+      "api_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "model": "gpt-6.1-sol",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "medium"
+      },
+      "model_env": "NANSHU_COUNTERCHECK_PRIMARY_MODEL"
+    },
+    "countercheck_secondary": {
+      "api_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+      "model": "gpt-6-astra",
+      "timeout_ms": 600000,
+      "extra_body": {
+        "reasoning_effort": "medium"
+      },
+      "model_env": "NANSHU_COUNTERCHECK_SECONDARY_MODEL"
+    },
+    "decision_reasoner": {
+      "api_key_env": "NANSHU_CREDIT_API_KEY",
+      "model": "glm-5.3-flash",
+      "model_env": "NANSHU_CREDIT_MODEL",
+      "timeout_ms": 600000
+    }
+  },
+  "enterprise_model_routing": {
+    "activation_key_env": "NANSHU_COUNTERCHECK_API_KEY",
+    "countercheck_profiles": [
+      "countercheck_primary",
+      "countercheck_secondary",
+      "decision_reasoner"
+    ],
+    "backup_for_profiles": [
+      "chain_reasoner",
+      "factor_reasoner",
+      "red_team_reasoner",
+      "decision_reasoner"
+    ]
+  }
+}

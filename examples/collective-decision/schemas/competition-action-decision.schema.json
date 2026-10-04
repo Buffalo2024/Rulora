@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/competition-action-decision-1.0.0.json",
+  "type": "object",
+  "required": ["action_candidate"],
+  "properties": {
+    "action_candidate": { "type": "integer", "enum": [-1, 0, 1] },
+    "action_reason": { "type": "array", "items": { "type": "string" } },
+    "threshold_evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "counter_evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/competition-audit-decision-1.0.0.json",
+  "title": "CompetitionAuditDecision",
+  "type": "object",
+  "properties": {
+    "reason": { "type": "array", "items": { "type": "string" } },
+    "action_reason": { "type": "array", "items": { "type": "string" } },
+    "action_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "set_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "transmission_evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "threshold_evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "counter_evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "evidence_refs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "warnings": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

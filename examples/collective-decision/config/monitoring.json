@@ -1,0 +1,30 @@
+{
+  "contract_version": "1.0.0",
+  "public_information_only": true,
+  "competition_cutoff_policy": "published_at_lte_run_as_of_and_competition_cutoff",
+  "unknown_publication_time_policy": "quarantine",
+  "future_information_policy": "quarantine_and_exclude",
+  "non_public_information_policy": "reject",
+  "passive": {
+    "trigger": "on_demand_case_analysis",
+    "recurring": false,
+    "description": "收到企业分析任务后按实体、产业链节点和风险假设采集截至分析日已经发布的公开信息，完成一次性证据包后结束。"
+  },
+  "active": {
+    "trigger": "baseline_analysis_completed",
+    "recurring": true,
+    "default_schedule": "0 */6 * * *",
+    "description": "对已完成基线分析的目标企业及固定产业链领域持续监控，只在出现新内容哈希或风险路径相关变化时触发重分析。",
+    "required_watch_fields": ["target_company_id", "baseline_run_id", "watch_entities", "watch_topics", "source_ids", "schedule", "competition_cutoff"],
+    "alert_conditions": [
+      "new_A_or_B_grade_evidence",
+      "confirmed_supply_chain_edge_changed",
+      "material_contract_or_capacity_change",
+      "administrative_penalty_or_credit_event",
+      "commodity_or_policy_threshold_crossed"
+    ]
+  },
+  "evidence_time_fields": ["event_at", "published_at", "first_seen_at", "retrieved_at"],
+  "deduplication_keys": ["canonical_url", "content_sha256"],
+  "storage_partitions": ["eligible_public", "future_quarantine", "unknown_time_quarantine", "rejected_non_public"]
+}

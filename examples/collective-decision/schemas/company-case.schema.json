@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/company-case-1.0.0.json",
+  "title": "CompanyCase",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["contract_version", "case_id", "as_of_date", "company", "evidence"],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "case_id": { "type": "string", "minLength": 1 },
+    "as_of_date": { "type": "string", "format": "date" },
+    "company": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "source_type", "publisher", "source_url", "title", "summary", "published_at", "evidence_grade", "content_sha256", "public"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "source_url": { "type": "string", "format": "uri" },
+          "published_at": { "type": "string", "format": "date" },
+          "evidence_grade": { "enum": ["A", "B", "C", "D"] },
+          "content_sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+          "public": { "const": true }
+        }
+      }
+    }
+  }
+}

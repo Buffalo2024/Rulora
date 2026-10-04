@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "rulora_governed_minimal": "./examples/langgraph-governed-minimal.js:graph"
+  },
+  "node_version": "20",
+  "node_loader": "tsx/esm",
+  "env": ".env"
+}

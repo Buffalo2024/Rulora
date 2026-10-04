@@ -4,6 +4,20 @@
 
 ## Unreleased
 
+- Add compiled TypeScript contract checks and explicit validator/loop types.
+- Add an Ajv integration example without adding Core runtime dependencies.
+- Check in synthetic enterprise input, expected report, snapshot text and a validated checkpoint, with executable replay checks.
+- Document the full-system call chain and running modes; make PostgreSQL scheduling an optional dependency with lazy loading.
+
+### 0.1.0-alpha.4 — prepared locally, not published
+
+- Isolate and recursively freeze plain JSON candidate snapshots; reject forged/cross-controller pools.
+- Reject unsupported candidate values instead of silently coercing them; publish deeply readonly types.
+- Add output, bounded-loop and candidate-selection quickstarts with positive and negative tests.
+- Focus the repository on Core and one enterprise collective-decision scenario, from minimal controls to a full system.
+- Separate Core guarantees from scenario implementations; add getting-started, API and integration guides.
+- Compatibility: candidate inputs must be finite, acyclic plain JSON; reconstructed pools must be revalidated and frozen.
+
 - 将项目收束为可嵌入现有 Agent 的流程、循环、输出边界与群体候选控制组件；
 - 新增 `LoopControl`、`OutputBoundary` 和 `CollectiveControl`；
 - 增加项目成熟度、已知边界与欢迎共同优化的公开说明；

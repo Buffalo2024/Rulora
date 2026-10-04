@@ -1,6 +1,6 @@
 {
   "name": "@rulora/core",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "Pluggable control components for reliable AI agents using Hybrid model-program cooperation.",
   "license": "Apache-2.0",
   "type": "commonjs",
@@ -38,11 +38,19 @@
   "scripts": {
     "test": "node --test tests/*.test.js",
     "example": "node examples/state-and-ownership/run.js",
+    "example:output": "node examples/quickstart/output-boundary/run.js",
+    "example:loop": "node examples/quickstart/bounded-loop/run.js",
+    "example:candidates": "node examples/quickstart/candidate-selection/run.js",
+    "examples:quickstart": "npm run example:output && npm run example:loop && npm run example:candidates",
+    "example:schema": "node examples/integrations/json-schema.js",
+    "test:types": "tsc -p tests/types/tsconfig.json",
     "lab:native-image": "node labs/native-image-report/run.js",
     "lab:stable-image": "node labs/stable-image-reproduction/run.js",
     "release:check": "node scripts/release-check.js",
+    "docs:check": "node scripts/docs-check.js",
+    "verify:local": "node scripts/verify-local.js",
     "pack:check": "npm pack --dry-run",
-    "prepublishOnly": "npm test && npm run release:check"
+    "prepublishOnly": "npm test && npm run test:types && npm run release:check"
   },
   "keywords": [
     "llm",
@@ -60,5 +68,9 @@
   "publishConfig": {
     "access": "public",
     "tag": "alpha"
+  },
+  "devDependencies": {
+    "ajv": "8.18.0",
+    "typescript": "5.9.3"
   }
 }

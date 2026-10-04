@@ -22,7 +22,9 @@ Rulora 使用以下职责边界：
 read state → build model task → model proposes → validate → commit transition
 ```
 
-## Implemented in `0.1.0-alpha.3`
+## Implemented in `0.1.0-alpha.4`
+
+场景高级运行时与 Core 的区别见 [保证与限制](guarantees.md)。
 
 - `ScenarioDefinition`：场景、分支、字段和输出契约。
 - `OrchestrationMachine`：唯一有权改变工作流状态的组件。
@@ -30,7 +32,7 @@ read state → build model task → model proposes → validate → commit trans
 - `HybridPipeline`：明确步骤所有权、按顺序运行并执行可选验证门禁。
 - `LoopControl`：显式区分网络重连、约束修订与业务广播，并为每类循环设置独立硬上限。
 - `OutputBoundary`：按 Recovery、Adapter、Core 和 Audit 顺序接收或拒绝模型输出。
-- `CollectiveControl`：冻结候选池、检查法定人数并限制 Reviewer 只能选择池内 ID。
+- `CollectiveControl`：复制并递归冻结普通 JSON 候选、检查法定人数；只接受同一控制器签发的池与合法 ID。
 - `recoverSession`：从宿主 Repository 恢复前校验场景、分支、状态和字段证据不变量。
 - 内建程序门禁：基础字段类型与容量、来源回合、Token 总量、无进展和人工接管。
 

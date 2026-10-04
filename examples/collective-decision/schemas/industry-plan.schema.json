@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/industry-plan-1.0.0.json",
+  "title": "IndustryPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["执行员", "产业链", "传导逻辑", "证据需求"],
+  "properties": {
+    "执行员": { "type": "string", "minLength": 1 },
+    "产业链": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 24,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "name", "layer"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+              "layer": { "enum": ["upstream", "target", "downstream", "cross_cutting"] }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["from", "to", "relation", "transmission_mechanism", "verification_status"],
+            "properties": {
+              "from": { "type": "string", "minLength": 1 },
+              "to": { "type": "string", "minLength": 1 },
+              "relation": { "type": "string", "minLength": 1, "maxLength": 160 },
+              "transmission_mechanism": { "type": "string", "minLength": 1, "maxLength": 600 },
+              "verification_status": { "const": "hypothesis_pending_public_evidence" }
+            }
+          }
+        }
+      }
+    },
+    "传导逻辑": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["factor_id", "factor", "mechanism", "decision_impact", "invalidation_condition"],
+        "properties": {
+          "factor_id": { "type": "string", "minLength": 1 },
+          "factor": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "mechanism": { "type": "string", "minLength": 1, "maxLength": 600 },
+          "decision_impact": { "enum": ["risk_up", "neutral", "risk_down", "two_sided"] },
+          "invalidation_condition": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      }
+    },
+    "证据需求": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["requirement_id", "claim_scope", "query_terms", "preferred_source_types", "required"],
+        "properties": {
+          "requirement_id": { "type": "string", "minLength": 1 },
+          "claim_scope": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "query_terms": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "type": "string", "minLength": 1, "maxLength": 80 }, "uniqueItems": true },
+          "preferred_source_types": { "type": "array", "minItems": 1, "items": { "enum": ["company_disclosure", "government_policy", "government_statistics", "government_credit", "enterprise_registry", "official_market_data", "reputable_media"] }, "uniqueItems": true },
+          "required": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

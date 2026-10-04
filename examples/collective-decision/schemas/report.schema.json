@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/report-1.0.0.json",
+  "title": "CreditRiskReport",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["contract_version", "run_id", "case_id", "as_of_date", "company", "probabilities", "risk_label", "submission_row", "chain_map", "factors", "dissent", "monitoring", "decision_strategy", "debate_summary", "qa", "provenance"],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "risk_label": { "enum": ["risk_up", "risk_flat", "risk_down"] },
+    "probabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_up", "risk_flat", "risk_down"],
+      "properties": {
+        "risk_up": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_flat": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_down": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "submission_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["company_id", "company_name", "action", "risk_control_advice"],
+      "properties": {
+        "company_id": { "type": "string", "minLength": 1 },
+        "company_name": { "type": "string", "minLength": 1 },
+        "action": { "enum": ["-1", "0", "1"] },
+        "risk_control_advice": { "type": "string" }
+      }
+    },
+    "monitoring": {
+      "type": "object",
+      "required": ["monitor_agent_id", "mode", "public_information_only", "competition_cutoff", "eligible_evidence_ids", "cutoff_verified"],
+      "properties": {
+        "mode": { "enum": ["active", "passive"] },
+        "public_information_only": { "const": true },
+        "cutoff_verified": { "const": true }
+      }
+    },
+    "decision_strategy": {
+      "type": "object",
+      "required": ["agent_id", "agent_version", "action", "risk_control_advice", "strategy_summary", "rationale", "monitoring_conditions", "evidence_refs"]
+    },
+    "debate_summary": {
+      "type": "object",
+      "required": ["opinion_count", "critique_count", "self_review_count", "rounds_completed", "termination_status", "termination_reason", "production_eligible", "clean_gate_satisfied", "forced_conclusion", "decision_mode", "conclusion_grade", "clean_round_streak", "required_clean_round_streak", "maximum_automated_rounds_before_forced_conclusion", "unresolved_conflicts", "unresolved_high_conflicts", "unanswered_challenges", "forced_adjustment"]
+    },
+    "qa": {
+      "type": "object",
+      "required": ["schema_valid", "probabilities_valid", "cutoff_verified", "source_registry_verified", "evidence_snapshots_verified", "evidence_refs_valid", "evidence_coverage", "evidence_coverage_sufficient", "fixture_provider", "degraded", "production_ready"]
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["rulora_source", "provider_source", "input_sha256", "analysis_snapshot_sha256", "generated_at"]
+    }
+  }
+}

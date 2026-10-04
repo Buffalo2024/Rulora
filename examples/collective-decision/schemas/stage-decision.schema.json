@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/stage-decision-1.0.0.json",
+  "title": "StageDecision",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["执行员", "经营调整方向", "逻辑", "证据"],
+      "properties": {
+        "执行员": { "type": "string", "minLength": 1 },
+        "经营调整方向": { "enum": ["risk_up", "risk_flat", "risk_down"] },
+        "逻辑": { "$ref": "#/$defs/logic" },
+        "证据": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["执行员", "风控建议", "逻辑", "证据"],
+      "properties": {
+        "执行员": { "type": "string", "minLength": 1 },
+        "风控建议": { "type": "array", "minItems": 0, "maxItems": 4, "items": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }, "uniqueItems": true },
+        "逻辑": { "$ref": "#/$defs/logic" },
+        "证据": { "$ref": "#/$defs/evidence" }
+      }
+    }
+  ],
+  "$defs": {
+    "logic": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "mechanism", "evidence_refs"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "mechanism": { "type": "string", "minLength": 1, "maxLength": 600 },
+          "evidence_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        }
+      }
+    },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}

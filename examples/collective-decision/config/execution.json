@@ -1,0 +1,33 @@
+{
+  "contract_version": "1.0.0",
+  "maximum_primary_model_calls": 80,
+  "maximum_elapsed_seconds": 3600,
+  "maximum_total_prompt_characters": 5000000,
+  "maximum_primary_protocol_retries": 1,
+  "model_smoke_max_age_hours": 24,
+  "model_call_checkpoints": {
+    "enabled_in_production": true,
+    "root_directory": ".runtime/model-call-checkpoints",
+    "lock_timeout_ms": 900000,
+    "reuse_requires_exact_input_hash": true,
+    "immutable_completed_records": true
+  },
+  "global_model_scheduler": {
+    "maximum_concurrent": 3,
+    "maximum_concurrent_per_profile": 1,
+    "circuit_failure_threshold": 3,
+    "circuit_cooldown_ms": 30000
+  },
+  "provider_connectivity": {
+    "enabled": true,
+    "consecutive_failed_attempts_alert_threshold": 3,
+    "failure_window_minutes": 10,
+    "repeat_alert_minutes": 30,
+    "notify_recovery": true,
+    "immediate_alert_categories": ["access_configuration", "request_configuration"],
+    "lock_timeout_ms": 10000,
+    "stale_lock_ms": 30000
+  },
+  "fallback_policy": "deterministic_conservative_and_mark_degraded",
+  "compliance_failures_may_fallback": false
+}

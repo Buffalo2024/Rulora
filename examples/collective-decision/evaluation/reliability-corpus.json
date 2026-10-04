@@ -1,0 +1,20 @@
+{
+  "contract_version": "1.0.0",
+  "carrier_cases": [
+    { "id": "normal-action", "phase": "decision_direction", "raw": "{\"action_candidate\":-1}", "expect": "accept", "expected_value": -1 },
+    { "id": "fenced-string-action", "phase": "decision_direction", "raw": "```json\n{\"action_candidate\":\"0\"}\n```", "expect": "accept", "expected_value": 0 },
+    { "id": "missing-comma-risk", "phase": "risk_control_advice", "raw": "{\n\"risk_control_advice\":[\"3\",\"6\"]\n\"reason\":\"explicit\"\n}", "expect": "accept", "expected_value": ["3", "6"] },
+    { "id": "markdown-risk", "phase": "risk_control_advice", "raw": "Risk:\n- 3\n- 6\n", "expect": "accept", "expected_value": ["3", "6"] },
+    { "id": "decision-block-action", "phase": "decision_direction", "raw": "## FINAL_DECISION\naction_candidate:\n1\n## END_FINAL_DECISION\n## ANALYSIS\nunclosed {", "expect": "accept", "expected_value": 1 },
+    { "id": "explanation-only", "phase": "decision_direction", "raw": "Risk appears high, so caution is recommended.", "expect": "reject" },
+    { "id": "conditional-tree", "phase": "risk_control_advice", "raw": "{\"risk_up\":[\"3\"],\"risk_flat\":[],\"risk_down\":[\"6\"]}", "expect": "reject" },
+    { "id": "missing-action", "phase": "decision_direction", "raw": "{\"reason\":\"no explicit answer\"}", "expect": "reject" },
+    { "id": "illegal-risk-code", "phase": "risk_control_advice", "raw": "{\"risk_control_advice\":[\"10\"]}", "expect": "reject" },
+    { "id": "ambiguous-actions", "phase": "decision_direction", "raw": "{\"action\":-1,\"action_candidate\":1}", "expect": "reject" }
+  ],
+  "reviewer_cases": [
+    { "id": "known-ids", "action_id": "action:0", "risk_id": "risk:3", "expect": "accept" },
+    { "id": "unknown-action-id", "action_id": "action:invented", "risk_id": "risk:3", "expect": "reject" },
+    { "id": "unknown-risk-id", "action_id": "action:0", "risk_id": "risk:invented", "expect": "reject" }
+  ]
+}

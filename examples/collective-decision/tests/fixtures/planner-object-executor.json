@@ -1,0 +1,75 @@
+{
+  "执行员": {
+    "执行员ID": "industry_research_planner",
+    "研究对象": "虚构示例企业",
+    "说明": "Synthetic protocol fixture, not a production response"
+  },
+  "产业链": {
+    "nodes": [
+      {
+        "id": "upstream:key_inputs",
+        "name": "关键投入品",
+        "layer": "upstream"
+      },
+      {
+        "id": "company:demo-001",
+        "name": "虚构示例企业",
+        "layer": "target"
+      },
+      {
+        "id": "downstream:key_demand",
+        "name": "关键客户与终端需求",
+        "layer": "downstream"
+      }
+    ],
+    "edges": [
+      {
+        "from": "upstream:key_inputs",
+        "to": "company:demo-001",
+        "relation": "投入品供给与成本",
+        "transmission_mechanism": "供给和价格经采购成本与产能利用率传导。",
+        "verification_status": "hypothesis_pending_public_evidence"
+      },
+      {
+        "from": "company:demo-001",
+        "to": "downstream:key_demand",
+        "relation": "需求与回款",
+        "transmission_mechanism": "需求和回款经收入与经营现金流传导。",
+        "verification_status": "hypothesis_pending_public_evidence"
+      }
+    ]
+  },
+  "传导逻辑": [
+    {
+      "factor_id": "input-demand-cashflow",
+      "factor": "供需与现金流传导",
+      "mechanism": "上下游冲击最终落到收入、毛利和偿债现金流。",
+      "decision_impact": "two_sided",
+      "invalidation_condition": "公开证据否认相关投入或客户关系。"
+    }
+  ],
+  "证据需求": [
+    {
+      "requirement_id": "company-disclosure",
+      "claim_scope": "企业经营、合同、客户供应商与财务变化",
+      "query_terms": [
+        "虚构示例企业"
+      ],
+      "preferred_source_types": [
+        "company_disclosure"
+      ],
+      "required": true
+    },
+    {
+      "requirement_id": "industry-policy",
+      "claim_scope": "适用产业政策与行业冲击",
+      "query_terms": [
+        "示例制造业"
+      ],
+      "preferred_source_types": [
+        "government_policy"
+      ],
+      "required": true
+    }
+  ]
+}

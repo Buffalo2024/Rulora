@@ -1,0 +1,42 @@
+{
+  "contract_version": "5.0.0",
+  "protocol": {
+    "type": "two_stage_four_module_self_review",
+    "seat_count": 3,
+    "same_seats_in_both_stages": true,
+    "stages": ["decision_direction", "risk_control_advice"],
+    "industry_plan_precedes_single_collection": true,
+    "maximum_collection_rounds": 1,
+    "maximum_self_review_rounds_per_stage": 1,
+    "context_format": "compact_json",
+    "forward_raw_model_output": false,
+    "flat_four_modules": true,
+    "direction_modules": ["执行员", "经营调整方向", "逻辑", "证据"],
+    "advice_modules": ["执行员", "风控建议", "逻辑", "证据"],
+    "one_final_output_per_seat": true,
+    "retain_challenge_records": false,
+    "freeze_direction_before_advice": true,
+    "vote_after_self_review": true,
+    "majority_threshold": 2,
+    "no_majority_resolution": "manual_evidence_adjudication"
+  },
+  "production_evidence_policy": {
+    "minimum_primary_grade": "B",
+    "forbid_probability_debate": true,
+    "require_registered_evidence_refs": true
+  },
+  "conclusion_policy": {
+    "clean_conclusion_grade": "standard",
+    "majority_conclusion_grade": "majority",
+    "adjudication_pending_grade": "pending_adjudication"
+  },
+  "forced_conclusion_policy": {
+    "high_or_unanswered_result": "risk_up",
+    "forbid_risk_easing": true,
+    "high_risk_advice_code": "4",
+    "hold_advice_code": "3",
+    "clean_conclusion_grade": "standard",
+    "forced_high_conclusion_grade": "restricted",
+    "forced_other_conclusion_grade": "cautious"
+  }
+}

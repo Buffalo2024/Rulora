@@ -1,10 +1,13 @@
 export type StepOwner = 'model' | 'program'
+/** Only the primitive true accepts. Other supported values are rejection diagnostics. */
+export type ValidationResult = boolean | string | readonly string[] | Record<string, unknown> | null
+export type Validator<T, C = Record<string, unknown>> = (value: T, context: C) => ValidationResult | Promise<ValidationResult>
 
 export interface PipelineStep<T = unknown, C = Record<string, unknown>> {
   id: string
   owner: StepOwner
   run(value: T, context: C): T | Promise<T>
-  validate?(value: T, context: C): true | unknown | Promise<true | unknown>
+  validate?: Validator<T, C>
 }
 
 export interface PipelineEvent {
@@ -27,29 +30,55 @@ export class HybridPipeline<T = unknown, C = Record<string, unknown>> {
   run(input: T, context?: C): Promise<{ pipelineId: string; output: T; events: PipelineEvent[] }>
 }
 
-export class LoopControlError extends Error { code: string; details: unknown }
+export type LoopKind = 'network_reconnect' | 'constraint_revision' | 'business_broadcast'
+export type LoopStatus = 'active' | 'exhausted' | 'human_handoff'
+export interface LoopSnapshot {
+  kind: LoopKind
+  attempts: number
+  noProgress: number
+  status: LoopStatus
+  remainingAttempts: number
+}
+export class LoopControlError extends Error {
+  code: string
+  details: unknown
+  constructor(code: string, message: string, details?: unknown)
+}
 export class LoopControl {
-  constructor(options?: { kind?: 'network_reconnect' | 'constraint_revision' | 'business_broadcast'; maxAttempts?: number; maxNoProgress?: number })
-  record(input: { progressed: boolean }): { kind: string; attempts: number; noProgress: number; status: string; remainingAttempts: number }
-  snapshot(): { kind: string; attempts: number; noProgress: number; status: string; remainingAttempts: number }
+  kind: LoopKind
+  maxAttempts: number
+  maxNoProgress: number
+  attempts: number
+  noProgress: number
+  status: LoopStatus
+  constructor(options?: { kind?: LoopKind; maxAttempts?: number; maxNoProgress?: number })
+  record(input: { progressed: boolean }): LoopSnapshot
+  snapshot(): LoopSnapshot
 }
 
-export class OutputBoundaryError extends Error { code: string; stage: 'core' | 'audit'; details: unknown }
-export class OutputBoundary<T = unknown, C = Record<string, unknown>> {
+export class OutputBoundaryError extends Error {
+  code: 'OUTPUT_REJECTED'
+  stage: 'core' | 'audit'
+  details: unknown
+  constructor(stage: 'core' | 'audit', message: string, details?: unknown)
+}
+export class OutputBoundary<T = unknown, C = Record<string, unknown>, Raw = unknown, Recovered = unknown> {
   constructor(options: {
-    recover?: (raw: unknown, context: C) => unknown | Promise<unknown>
-    adapt?: (value: unknown, context: C) => T | Promise<T>
-    validateCore: (value: T, context: C) => true | unknown | Promise<true | unknown>
-    validateAudit?: (value: T, context: C) => true | unknown | Promise<true | unknown>
+    recover?: (raw: Raw, context: C) => Recovered | Promise<Recovered>
+    adapt?: (value: Recovered, context: C) => T | Promise<T>
+    validateCore: Validator<T, C>
+    validateAudit?: Validator<T, C>
   })
-  process(raw: unknown, context?: C): Promise<{ value: T; accepted: true }>
+  process(raw: Raw, context?: C): Promise<{ value: T; accepted: true }>
 }
 
-export class CollectiveControlError extends Error { code: string }
+export class CollectiveControlError extends Error { code: string; constructor(code: string, message: string) }
+export type DeepReadonly<T> = T extends object ? { readonly [K in keyof T]: DeepReadonly<T[K]> } : T
 export class CollectiveControl<T extends { id?: string } = { id?: string; [key: string]: unknown }> {
   constructor(options?: { quorum?: number })
-  freezeCandidates(submissions: T[]): ReadonlyArray<Readonly<T & { id: string }>>
-  select(candidates: ReadonlyArray<T & { id: string }>, selectedId: string): T & { id: string }
+  /** Accepts plain, finite, acyclic JSON only. The pool belongs to this instance. */
+  freezeCandidates(submissions: readonly T[]): ReadonlyArray<DeepReadonly<T & { id: string }>>
+  select(candidates: ReadonlyArray<DeepReadonly<T & { id: string }>>, selectedId: string): DeepReadonly<T & { id: string }>
 }
 
 export interface Repository<T = Record<string, unknown>> {

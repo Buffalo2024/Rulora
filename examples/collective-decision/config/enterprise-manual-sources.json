@@ -1,0 +1,161 @@
+{
+  "contract_version": "1.0.0",
+  "sources": [
+    {
+      "id": "national_statistics",
+      "label": "国家统计局国家数据",
+      "base_url": "https://data.stats.gov.cn/",
+      "source_type": "government_statistics",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_licensed_api_due_site_control",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "data.stats.gov.cn",
+        "stats.gov.cn"
+      ],
+      "data_category": "regional_economy",
+      "claims": [
+        "PPI/CPI",
+        "工业增加值",
+        "固定资产投资",
+        "产量",
+        "行业景气基准率"
+      ]
+    },
+    {
+      "id": "credit_china",
+      "label": "信用中国",
+      "base_url": "https://www.creditchina.gov.cn/",
+      "source_type": "government_credit",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_authorized_api",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "creditchina.gov.cn"
+      ],
+      "data_category": "penalty_dishonesty",
+      "claims": [
+        "行政处罚",
+        "严重失信",
+        "信用修复",
+        "异常名录"
+      ]
+    },
+    {
+      "id": "court_enforcement",
+      "label": "中国执行信息公开网",
+      "base_url": "https://zxgk.court.gov.cn/",
+      "source_type": "government_credit",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_single_query_due_captcha",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "zxgk.court.gov.cn",
+        "court.gov.cn"
+      ],
+      "data_category": "penalty_dishonesty",
+      "claims": [
+        "失信被执行人",
+        "限制消费",
+        "被执行案件"
+      ]
+    },
+    {
+      "id": "tianyancha",
+      "label": "天眼查",
+      "base_url": "https://www.tianyancha.com/",
+      "source_type": "enterprise_registry",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_permitted_single_query_or_export",
+      "default_grade": "B",
+      "allowed_hosts": [
+        "tianyancha.com"
+      ],
+      "data_category": "enterprise_registry",
+      "claims": [
+        "企业主体",
+        "股东高管",
+        "工商变更",
+        "经营风险"
+      ],
+      "requires_independent_confirmation": true
+    },
+    {
+      "id": "chinaprice",
+      "label": "中国价格网",
+      "base_url": "https://www.chinaprice.cn/",
+      "source_type": "official_market_data",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_logged_in_single_query_or_export",
+      "default_grade": "B",
+      "allowed_hosts": [
+        "chinaprice.cn"
+      ],
+      "data_category": "commodity_price",
+      "claims": [
+        "大宗商品现货价格",
+        "价格指数",
+        "日周度涨跌幅"
+      ]
+    },
+    {
+      "id": "enterprise_registry",
+      "label": "国家企业信用信息公示系统",
+      "base_url": "https://www.gsxt.gov.cn/",
+      "source_type": "enterprise_registry",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "manual_or_authorized_api_due_captcha",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "gsxt.gov.cn"
+      ],
+      "data_category": "enterprise_registry",
+      "claims": [
+        "企业主体",
+        "股东高管",
+        "经营异常",
+        "行政处罚",
+        "股权质押"
+      ]
+    },
+    {
+      "id": "official_commodity_exchanges",
+      "label": "境内商品交易所官方行情",
+      "base_url": "https://www.shfe.com.cn/",
+      "source_type": "official_market_data",
+      "adapter": null,
+      "production_ingest_enabled": false,
+      "manual_import_enabled": true,
+      "access_mode": "official_download_or_licensed_api_due_site_control",
+      "default_grade": "A",
+      "allowed_hosts": [
+        "shfe.com.cn",
+        "dce.com.cn",
+        "czce.com.cn"
+      ],
+      "data_category": "commodity_price",
+      "claims": [
+        "原材料价格",
+        "库存",
+        "期限结构",
+        "价格冲击窗口"
+      ],
+      "related_urls": [
+        "http://www.dce.com.cn/",
+        "http://www.czce.com.cn/"
+      ]
+    }
+  ]
+}

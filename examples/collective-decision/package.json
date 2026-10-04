@@ -1,0 +1,83 @@
+{
+  "name": "@rulora/collective-decision-example",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Collective Decision two-layer enterprise decision example with Rulora collective controls.",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "keywords": [
+    "rulora",
+    "ai-agent",
+    "multi-agent",
+    "quorum",
+    "checkpoint",
+    "replay"
+  ],
+  "bin": {
+    "rulora-collective": "src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "privacy:check": "node scripts/privacy-check.js",
+    "example": "node examples/enterprise-collective.js",
+    "example:static": "node examples/static-fixtures.js",
+    "example:controlled": "node examples/controlled-collective.js",
+    "example:langgraph": "node examples/langgraph-governed-minimal.js",
+    "test:minimal": "node --test tests/langgraph-minimal.test.js tests/competition-output-recovery.test.js tests/llm-output-trace.test.js",
+    "eval:reliability": "node evaluation/run-reliability-eval.js",
+    "assist:list": "node src/cli.js assist-list",
+    "health:providers": "node src/cli.js provider-health",
+    "web": "node src/web-server.js",
+    "web:open": "node src/web-server.js --open",
+    "start:all": "node src/web-server.js --open",
+    "web:smoke": "node scripts/web-smoke.js",
+    "models:smoke": "node scripts/smoke_model_profiles.js",
+    "pack:check": "node scripts/privacy-check.js && node scripts/pack-check.js"
+  },
+  "files": [
+    "src/",
+    "schemas/",
+    "config/",
+    "web/",
+    "assets/",
+    "examples/*.js",
+    "examples/*.json",
+    "examples/fixtures/",
+    "scripts/",
+    "tests/",
+    "evaluation/",
+    "docs/",
+    "langgraph.json",
+    "README_EN.md",
+    "THIRD_PARTY.md",
+    "NOTICE",
+    "SECURITY.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Buffalo2024/Rulora.git",
+    "directory": "examples/collective-decision"
+  },
+  "homepage": "https://github.com/Buffalo2024/Rulora/tree/main/examples/collective-decision#readme",
+  "bugs": {
+    "url": "https://github.com/Buffalo2024/Rulora/issues"
+  },
+  "dependencies": {
+    "@langchain/core": "1.2.11",
+    "@langchain/langgraph": "1.4.15",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "cheerio": "1.0.0",
+    "pdfjs-dist": "4.10.38",
+    "undici": "6.29.0"
+  },
+  "optionalDependencies": {
+    "pg-boss": "10.4.2"
+  },
+  "peerDependencies": {
+    "@rulora/core": ">=0.1.0-alpha.2 <1"
+  }
+}

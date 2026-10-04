@@ -1,0 +1,23 @@
+{
+  "contract_version": "enterprise_decision_v2",
+  "direction_codes": {
+    "1": "拓展",
+    "0": "维持",
+    "-1": "收缩",
+    "null": "暂无法判断"
+  },
+  "seat_count_per_stage": 5,
+  "freeze_policy": "program_gated_five_seat_loop_with_two_independent_relevant_sources_globally",
+  "unresolved_disagreement": "awaiting_assistance",
+  "approval_owner": "system",
+  "max_search_rounds": 2,
+  "max_model_operations": 560,
+  "max_graph_steps": 24,
+  "no_advice_code": 10,
+  "fixed_task": "企业产业链风险及决策分析",
+  "max_exchange_rounds": {
+    "direction": 6,
+    "condition": 10
+  },
+  "deliberation_version": "5.3.0-action-object-boundaries"
+}

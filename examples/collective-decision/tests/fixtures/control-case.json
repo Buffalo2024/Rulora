@@ -1,0 +1,64 @@
+{
+  "contract_version": "1.0.0",
+  "case_id": "demo-manufacturing-001",
+  "as_of_date": "2026-06-30",
+  "decision_horizon_days": 180,
+  "competition_cutoff": "2026-06-30",
+  "monitoring": {
+    "mode": "passive"
+  },
+  "company": {
+    "id": "demo-001",
+    "name": "示例精密制造有限公司",
+    "industry": "高端装备零部件",
+    "region": "广东"
+  },
+  "evidence": [
+    {
+      "id": "ev-announcement-001",
+      "source_type": "company_disclosure",
+      "publisher": "示例公司",
+      "source_url": "https://example.com/disclosure/001",
+      "title": "原材料价格与采购集中度说明",
+      "summary": "公司披露关键原材料成本上升，且前两大供应商占比较高。",
+      "published_at": "2026-05-18",
+      "evidence_grade": "A",
+      "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "public": true
+    },
+    {
+      "id": "ev-government-001",
+      "source_type": "government_statistics",
+      "publisher": "示例统计部门",
+      "source_url": "https://example.gov.cn/statistics/001",
+      "title": "关键材料价格指数",
+      "summary": "公开统计显示相关材料价格指数连续两个季度上升。",
+      "published_at": "2026-06-10",
+      "evidence_grade": "A",
+      "content_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "public": true
+    },
+    {
+      "id": "ev-news-001",
+      "source_type": "reputable_media",
+      "publisher": "示例财经媒体",
+      "source_url": "https://example.org/news/001",
+      "title": "下游客户资本开支放缓",
+      "summary": "两个主要下游行业的资本开支计划出现放缓迹象。",
+      "published_at": "2026-06-22",
+      "evidence_grade": "C",
+      "content_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "public": true
+    }
+  ],
+  "chain_seed": {
+    "upstream": "material:critical-alloy",
+    "downstream": "sector:industrial-equipment"
+  },
+  "fixture_probabilities": {
+    "risk_up": 0.58,
+    "risk_flat": 0.27,
+    "risk_down": 0.15
+  },
+  "fixture_factor_name": "关键材料涨价、供应集中及下游放缓的叠加冲击"
+}

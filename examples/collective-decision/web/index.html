@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Rulora 群体决策</title>
+  <link rel="stylesheet" href="/styles.css?v=20261004-collective">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <h1>Rulora 群体决策</h1>
+      </div>
+      <div class="topbar-controls">
+        <div class="jev-top-control">
+          <label class="privacy-toggle" for="jev-prefilter-enabled">
+            <input type="checkbox" id="jev-prefilter-enabled" role="switch" aria-describedby="jev-prefilter-status">
+            <span class="privacy-toggle-track" aria-hidden="true"><span></span></span>
+            <span>使用 Jev</span>
+          </label>
+          <small class="visually-hidden" id="jev-prefilter-status" role="status">正在读取 Jev 状态…</small>
+        </div>
+        <label class="privacy-toggle" for="presentation-privacy-toggle">
+          <input type="checkbox" id="presentation-privacy-toggle" role="switch" aria-describedby="presentation-privacy-note">
+          <span class="privacy-toggle-track" aria-hidden="true"><span></span></span>
+          <span>路演脱敏</span>
+        </label>
+        <span class="privacy-mode-badge" id="presentation-privacy-badge" hidden>演示脱敏模式</span>
+        <div class="system-pill" id="system-health" aria-live="polite">
+          <span class="pulse neutral"></span>
+          <span>正在读取系统状态</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="workspace-layout">
+      <section class="workspace-board" id="input-board" aria-labelledby="input-board-title">
+        <h2 id="input-board-title" class="visually-hidden">企业与来源</h2>
+        <div class="input-layout"><div class="input-main"><section class="panel task-panel">
+          <div class="section-heading">
+            <div>
+              <h2>目标企业</h2>
+            </div>
+          </div>
+          <details class="import-box">
+            <summary><span class="import-summary-icon">＋</span><span><strong>导入新企业</strong><small>单家填写或批量导入</small></span><span class="summary-arrow">⌄</span></summary>
+            <div class="import-intro">填写四项必要信息，系统自动分配企业编号，导入后即可进件。</div>
+            <form id="company-import-form">
+              <label for="import-company-name">企业名称</label><input type="text" id="import-company-name" required>
+              <label for="import-taxpayer-id">纳税人识别号</label><input type="text" id="import-taxpayer-id" required>
+              <label for="import-industry">所属行业</label><input type="text" id="import-industry" placeholder="例如：电子设备制造" required>
+              <label for="import-business-scope">经营范围</label><textarea id="import-business-scope" placeholder="填写工商登记中的主要经营范围" required></textarea>
+              <button type="submit" class="secondary-button" id="import-record-button">导入并加入企业列表</button>
+            </form>
+            <div class="file-import-divider"><span>批量导入</span></div>
+            <div class="file-upload-card"><label class="file-picker" for="company-file"><span class="file-picker-icon">↑</span><span><strong>选择企业信息文件</strong><small id="company-file-name">支持 CSV、Excel、JSON</small></span></label><input type="file" id="company-file" accept=".json,.csv,.xls,.xlsx"><button type="button" class="ghost-button import-file-button" id="import-button">开始导入</button></div>
+            <a class="template-link" href="/api/companies/template">↓ 下载企业信息模板</a><p class="form-message" id="import-message" role="status"></p>
+          </details>
+            <div class="selection-heading">
+              <label for="company-search">勾选目标企业</label>
+              <span id="selection-count">已选 0 / 20</span>
+            </div>
+            <input type="search" id="company-search" placeholder="搜索编号、企业名称或行业">
+            <span class="visually-hidden" id="presentation-privacy-note">仅替换当前页面可见身份信息，不修改后台数据或模型输入。</span>
+            <div class="company-checklist" id="company-checklist" role="group" aria-label="目标企业多选">
+              <p class="empty-state">正在载入企业…</p>
+            </div>
+          <form id="intake-form">
+            <details class="optional-intake"><summary>补充检索网站、行业规则或经验（可选）</summary>
+              <label for="search-sites">指定检索网站（每行一个域名或网址）</label><textarea id="search-sites" placeholder="例如：gov.cn&#10;https://www.cninfo.com.cn"></textarea>
+              <p class="field-hint">留空则自由检索；填写后优先检索指定网站。</p>
+              <p class="field-hint" id="search-backend-status" role="status">正在读取联网检索状态…</p>
+              <label for="decision-rules">行业规则或决策约束（每行一条）</label><textarea id="decision-rules" placeholder="可留空，模型将用通用行业知识提出判断框架"></textarea>
+              <label for="decision-experience">参考经验（每行一条）</label><textarea id="decision-experience" placeholder="可留空；经验不会自动当作事实证据"></textarea>
+            </details>
+            <div class="batch-notice" id="batch-notice">进件容量 20 家 · 最多同时分析 2 家</div>
+            <button type="submit" class="primary-button" id="submit-button">
+              <span>开始分析</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p class="form-message" id="form-message" role="status"></p>
+          </form>
+        </section></div><div class="input-side">          <section class="panel history-panel history-sidebar" id="history-board" aria-labelledby="history-board-title">
+            <div class="section-heading compact"><h3 id="history-board-title">历史对话</h3></div>
+            <details class="panel history-panel history-fold" id="history-details">
+          <summary><strong>进件记录</strong><button type="button" class="icon-button" id="refresh-jobs" aria-label="刷新进件记录" title="刷新进件记录"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 7a7 7 0 0 1 11.6-1L20 9M4 15l2.3 3A7 7 0 0 0 17.9 17"/></svg></button><span id="history-count">0 条</span><span class="history-arrow" aria-hidden="true">⌄</span></summary>
+          <div class="history-fold-body"><p id="history-message" class="field-hint error" role="status"></p>
+            <div id="job-list" class="job-list"><p class="empty-state">暂无进件记录。</p></div>
+          </div>
+            </details>
+          </section>
+<section class="panel source-panel">
+          <div class="section-heading compact">
+            <div>
+              <h2>公开信息来源</h2>
+            </div>
+            <label class="privacy-toggle search-toggle"><input type="checkbox" id="searxng-enabled" checked><span class="privacy-toggle-track" aria-hidden="true"><span></span></span><span>联网检索</span></label>
+          </div>
+          <p id="search-choice-message" class="form-message" role="status"></p>
+          <div id="built-in-sources" class="source-list"><p class="empty-state">正在读取来源…</p></div>
+          <details class="source-settings">
+            <summary>配置开源检索与来源网站</summary>
+            <form id="source-form">
+              <label for="searxng-endpoint">SearXNG地址</label>
+              <input type="url" id="searxng-endpoint" placeholder="http://127.0.0.1:8080">
+              <div class="source-add-grid">
+                <input type="text" id="source-label" placeholder="网站名称">
+                <input type="url" id="source-url" placeholder="https://example.gov.cn">
+                <select id="source-type" aria-label="来源类型">
+                  <option value="government_policy">政府政策</option>
+                  <option value="government_statistics">政府统计</option>
+                  <option value="government_credit">政府信用</option>
+                  <option value="company_disclosure">企业披露</option>
+                  <option value="official_market_data">官方市场数据</option>
+                  <option value="enterprise_registry">企业登记</option>
+                  <option value="reputable_media">可靠媒体</option>
+                </select>
+                <button type="button" class="ghost-button" id="add-source">添加网站</button>
+              </div>
+              <div class="source-subsection">
+                <strong>添加公开 JSON API</strong>
+                <p class="field-hint">仅支持无需密钥的HTTPS GET API。字段路径使用点号，例如 data.items、publish_time。</p>
+                <div class="source-add-grid">
+                  <input type="text" id="api-label" placeholder="API名称">
+                  <input type="url" id="api-endpoint" placeholder="https://api.example.gov.cn/search">
+                  <select id="api-source-type" aria-label="API来源类型">
+                    <option value="government_policy">政府政策</option>
+                    <option value="government_statistics">政府统计</option>
+                    <option value="government_credit">政府信用</option>
+                    <option value="company_disclosure">企业披露</option>
+                    <option value="official_market_data">官方市场数据</option>
+                    <option value="enterprise_registry">企业登记</option>
+                    <option value="reputable_media">可靠媒体</option>
+                  </select>
+                  <input type="text" id="api-query-parameter" value="q" placeholder="检索参数名，如 q">
+                  <input type="text" id="api-items-path" value="data" placeholder="结果数组路径，如 data.items">
+                  <input type="text" id="api-title-field" value="title" placeholder="标题字段">
+                  <input type="text" id="api-summary-field" value="summary" placeholder="正文/摘要字段">
+                  <input type="text" id="api-date-field" value="published_at" placeholder="发布日期字段">
+                  <input type="text" id="api-url-field" value="url" placeholder="记录链接字段">
+                  <input type="text" id="api-static-parameters" value="{}" placeholder='固定参数JSON，如 {"format":"json"}'>
+                  <button type="button" class="ghost-button" id="add-api-source">添加API</button>
+                </div>
+              </div>
+              <div id="user-sources" class="source-list"></div>
+              <button type="submit" class="secondary-button" id="save-sources">保存来源配置</button>
+              <p class="form-message" id="source-message" role="status"></p>
+            </form>
+          </details>
+        </section>
+
+        </div></div>
+      </section>
+      <section class="workspace-board" id="process-board" aria-labelledby="process-board-title">
+        <h2 id="process-board-title" class="visually-hidden">流程与运行状态</h2>
+        <div class="process-stack"><section class="panel overview-panel">
+          <div class="run-header">
+            <div>
+              <span class="status-badge neutral" id="job-status">未选择任务</span>
+              <h2 id="job-title">等待进件</h2>
+              <p id="job-subtitle">选择企业开始分析，或打开历史记录。</p>
+            </div>
+            <div class="run-clock">
+              <span>本次耗时</span>
+              <strong id="elapsed-time">—</strong>
+            </div>
+          </div>
+          <div class="progress-track" aria-label="任务进度">
+            <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <div class="progress-caption">
+            <span id="stage-label">尚未开始</span>
+            <span id="progress-label">0%</span>
+          </div>
+        </section>
+        <section class="panel command-panel" aria-labelledby="command-title">
+            <div class="section-heading compact"><div><h3 id="command-title">对话与指令</h3></div></div>
+            <p class="field-hint" id="command-context">尚未选择任务</p>
+            <div class="command-messages" id="command-messages" role="log" aria-live="polite"><p class="empty-state">分析开始后，可在此查询进度、补充信息。</p></div>
+            <form id="workspace-command-form"><label for="workspace-command">发送消息</label><div class="command-compose"><input type="text" id="workspace-command" placeholder="例如：当前状态、缺口、从断点继续" autocomplete="off"><button type="submit" class="secondary-button">发送</button></div></form>
+            <details class="quick-commands" id="quick-commands">
+              <summary>常用指令 <span>展开设置</span></summary>
+              <div class="quick-command-list" id="quick-command-list"></div>
+              <form id="quick-command-form"><label for="quick-command-input">添加常用指令</label><div class="command-compose"><input type="text" id="quick-command-input" maxlength="100" placeholder="例如：当前状态" autocomplete="off"><button type="submit" class="secondary-button">添加</button></div></form>
+            </details>
+          </section>
+        <section class="panel pipeline-panel">
+          <div class="section-heading compact">
+            <div>
+              <h2>业务流程</h2>
+            </div>
+          </div>
+          <div class="pipeline" id="pipeline">
+            <article class="pipeline-step" data-step="evidence">
+              <span class="step-number">1</span>
+              <div><h3>证据准备</h3><p>产业链规划、公开证据与监控</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="action-decision">
+              <span class="step-number">2</span>
+              <div><h3>经营方向分析</h3><p>三席独立判断、广播与一次修订</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="action-calibration">
+              <span class="step-number">3</span>
+              <div><h3>经营方向确定</h3><p>程序检查门槛并冻结方向</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="risk-decision">
+              <span class="step-number">4</span>
+              <div><h3>风控措施分析</h3><p>三席基于已定方向提出完整方案</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="risk-calibration">
+              <span class="step-number">5</span>
+              <div><h3>完整方案冻结</h3><p>保留各席完整方案，不拼装措施</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="reviewer">
+              <span class="step-number">6</span>
+              <div><h3>最终复核</h3><p>只校对或选择已有完整方案</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="champion-gate">
+              <span class="step-number">7</span>
+              <div><h3>交付门禁</h3><p>按宿主规则确认、复查或质疑</p></div>
+              <span class="step-state">等待</span>
+            </article>
+            <article class="pipeline-step" data-step="finalization">
+              <span class="step-number">8</span>
+              <div><h3>结果交付</h3><p>核心结论、运行提示、质量检查与保存</p></div>
+              <span class="step-state">等待</span>
+            </article>
+          </div>
+          <div class="runtime-diagnostics" id="runtime-diagnostics">
+            <div><span>约束检查</span><strong>等待</strong><small>第 0/3 次</small></div>
+            <div><span>格式恢复</span><strong>未触发</strong><small>仅修复输出格式</small></div>
+          </div>
+        </section><section class="panel agents-panel">
+          <div class="section-heading compact">
+            <div>
+              <h2>Agent运行状态</h2>
+            </div>
+            <span class="section-note" id="active-agent-label">当前无Agent运行</span>
+          </div>
+          <div class="agent-grid" id="agent-grid">
+            <p class="empty-state">正在读取当前角色的分层状态…</p>
+          </div>
+        </section></div>
+      </section>
+      <section class="workspace-board" id="output-board" aria-labelledby="output-board-title">
+        <h2 id="output-board-title" class="visually-hidden">运行结果与日志</h2>
+        <div class="split-grid"><section class="panel result-panel">
+            <div class="section-heading compact">
+              <div>
+                <h2>运行结果</h2>
+              </div>
+            </div>
+            <div id="result-content" class="result-content">
+              <p class="empty-state">任务完成后在此显示正式结论。</p>
+            </div>
+          </section><section class="panel log-panel">
+            <div class="section-heading compact">
+              <div>
+                <h2>实时日志</h2>
+              </div>
+              <label class="switch-label"><input type="checkbox" id="auto-scroll" checked> 自动滚动</label>
+            </div>
+            <pre id="log-output" tabindex="0">尚未选择任务。</pre>
+          </section></div>
+      </section>
+    </main>
+    <footer class="contact-support-panel" aria-labelledby="contact-support-title">
+      <div class="contact-support-heading">
+        <p class="eyebrow">CONTACT &amp; SUPPORT</p>
+        <h2 id="contact-support-title">联系与支持</h2>
+      </div>
+      <div class="qr-card-grid">
+        <article class="qr-card">
+          <img src="/assets/author-wechat.jpg" alt="作者微信二维码" width="220" height="220" loading="lazy">
+          <div><strong>作者联系方式</strong><p>微信扫码，交流实际场景与Agent协作设计。</p></div>
+        </article>
+      </div>
+    </footer>
+  </div>
+  <dialog id="exception-dialog" class="exception-dialog">
+    <div class="exception-dialog-head"><span>!</span><div><h2>任务需要确认</h2><p id="exception-company"></p></div></div>
+    <div class="exception-dialog-body">
+      <strong id="exception-title">任务未完成</strong><p id="exception-message"></p><p class="exception-guidance" id="exception-guidance"></p>
+      <div class="exception-chat" id="exception-chat" aria-live="polite"></div>
+      <div class="exception-quick-actions" id="exception-default-actions"><button type="button" data-exception-command="请从断点继续">从断点继续</button><button type="button" data-exception-command="请解释失败原因">解释原因</button><button type="button" data-exception-command="暂不处理">暂不处理</button></div><div class="exception-quick-actions" id="exception-action-resolution" hidden><button type="button" data-action-resolution="tighten">人工裁决：收紧经营</button><button type="button" data-action-resolution="maintain">人工裁决：维持经营</button><button type="button" data-action-resolution="increase">人工裁决：增加经营</button><button type="button" data-action-resolution="reanalyze">重新进行三席分析</button></div>
+      <form id="exception-command-form" class="exception-command-form"><label for="exception-command">向运行协调Agent下达指令</label><div><input id="exception-command" type="text" placeholder="例如：从断点继续，或解释为什么失败" autocomplete="off"><button type="submit">发送</button></div></form>
+    </div>
+    <form method="dialog" class="exception-close-form"><button type="submit" class="ghost-button" id="exception-confirm">关闭对话</button></form>
+  </dialog>
+  <dialog id="privacy-unlock-dialog" class="privacy-unlock-dialog">
+    <form id="privacy-unlock-form" method="dialog">
+      <div class="privacy-unlock-head"><span aria-hidden="true">⌁</span><div><h2>关闭路演脱敏</h2><p>验证后将显示企业全名与原始身份信息。</p></div></div>
+      <div class="privacy-unlock-body">
+        <label for="privacy-unlock-password">访问密码</label>
+        <input id="privacy-unlock-password" type="password" autocomplete="current-password" required>
+        <p id="privacy-unlock-message" class="form-message" role="alert"></p>
+      </div>
+      <div class="privacy-unlock-actions"><button type="button" class="ghost-button" id="privacy-unlock-cancel">取消</button><button type="submit" class="primary-button">确认关闭脱敏</button></div>
+    </form>
+  </dialog>
+  <script src="/presentation-privacy.js" defer></script>
+  <script src="/app.js?v=20261004-collective" defer></script>
+</body>
+</html>

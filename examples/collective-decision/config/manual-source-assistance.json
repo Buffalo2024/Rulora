@@ -1,0 +1,56 @@
+{
+  "contract_version": "1.0.0",
+  "mode": "competition_mvp_one_query_at_a_time",
+  "enabled": true,
+  "public_information_only": true,
+  "operator": "user",
+  "workflow": [
+    "query_prepared",
+    "automatic_access_attempted",
+    "awaiting_user_login_or_captcha",
+    "public_result_visible",
+    "result_saved_or_exported",
+    "snapshot_hashed",
+    "evidence_validated",
+    "analysis_resumed"
+  ],
+  "allowed_assistance": [
+    "user_login_in_own_browser",
+    "user_enters_captcha",
+    "user_runs_one_public_query",
+    "user_downloads_or_exports_public_result",
+    "user_saves_public_result_page"
+  ],
+  "forbidden": [
+    "store_password",
+    "store_browser_cookie",
+    "store_captcha",
+    "bypass_captcha_or_waf",
+    "bulk_scrape_beyond_account_terms",
+    "use_non_public_or_future_information"
+  ],
+  "required_result_fields": [
+    "assistance_id",
+    "source_id",
+    "source_url",
+    "target_entity",
+    "query_terms",
+    "title",
+    "summary",
+    "publisher",
+    "published_at",
+    "retrieved_at",
+    "immutable_publication",
+    "publication_time_basis",
+    "immutable_proof_url_or_snapshot_ref",
+    "public",
+    "original_file_or_page_snapshot_passed_to_assist_import"
+  ],
+  "sources": [
+    { "source_id": "chinaprice", "mode": "user_login_then_single_query", "data_category": "commodity_price" },
+    { "source_id": "national_statistics", "mode": "user_login_then_single_query_or_official_download", "data_category": "regional_economy" },
+    { "source_id": "credit_china", "mode": "user_captcha_then_single_query", "data_category": "penalty_dishonesty" },
+    { "source_id": "court_enforcement", "mode": "user_captcha_then_single_query", "data_category": "penalty_dishonesty" },
+    { "source_id": "tianyancha", "mode": "user_login_then_permitted_single_query_or_export", "data_category": "enterprise_registry" }
+  ]
+}

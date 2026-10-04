@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "protocol": "5.3.0-action-object-boundaries",
+  "action_options_version": "3.0.0-object-boundaries",
+  "status": "approved",
+  "report": {
+    "方向": 1,
+    "决策建议": [
+      {
+        "编号": 3,
+        "建议": "强化回款与现金管理",
+        "id": 3,
+        "target": "甲公司",
+        "scope": "overall",
+        "time_range": "未来12个月",
+        "action": "核对应收账龄并按月编制现金预算",
+        "effect": "protect",
+        "readiness": "conditional",
+        "prerequisites": [
+          "核实内部应收账龄"
+        ],
+        "evidence_refs": [
+          "E2"
+        ],
+        "direction_relation": "现金管理支持稳健拓展"
+      }
+    ],
+    "理由": "经营方向：依据E1（证据：E1）\n\n决策建议：依据E2（证据：E2）"
+  },
+  "first_run_model_calls": 23,
+  "replay_additional_model_calls": 0,
+  "replay_report_identical": true
+}

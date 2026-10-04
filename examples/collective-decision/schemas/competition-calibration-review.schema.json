@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rulora.local/schemas/competition-calibration-review-1.0.0.json",
+  "title": "CompetitionCalibrationReview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reviewer_id", "recommended_action", "confidence", "why_not_minus_1", "why_not_plus_1", "recommended_risk_set", "risk_selection", "challenge_champion", "challenge_strength", "reason"],
+  "properties": {
+    "reviewer_id": { "const": "competition_calibration_reviewer" },
+    "recommended_action": { "enum": ["-1", "0", "1"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "why_not_minus_1": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 400 } },
+    "why_not_plus_1": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 400 } },
+    "recommended_risk_set": { "type": "array", "minItems": 0, "maxItems": 4, "items": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }, "uniqueItems": true },
+    "risk_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_candidate_set_id", "removed_codes", "reason"],
+      "properties": {
+        "source_candidate_set_id": { "type": "string", "minLength": 1 },
+        "removed_codes": { "type": "array", "maxItems": 4, "items": { "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }, "uniqueItems": true },
+        "reason": { "type": "array", "minItems": 1, "maxItems": 6, "items": { "type": "string", "minLength": 1, "maxLength": 400 } }
+      }
+    },
+    "challenge_champion": { "type": "boolean" },
+    "challenge_strength": { "enum": ["HIGH", "MEDIUM", "LOW"] },
+    "reason": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 400 } }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "contract_version": "1.0.0",
+  "selected_agent_foundation": "LangGraph.js",
+  "selected_version": "1.4.15",
+  "governance_control": "Rulora Core",
+  "monitor_scheduler": "CLI/manual invocation by default; pg-boss is an optional dependency, manually configured and not wired into the main flow",
+  "durable_store": "atomic local JSON with per-record CAS and append-only run events",
+  "langgraph_checkpointer": "in-process MemorySaver for graph scheduling plus immutable content-addressed model-call checkpoints and durable host run ledger; restart creates a new revision and reuses only exact-hash validated seat outputs",
+  "snapshot_store": "local content-addressed immutable evidence files verified by SHA-256",
+  "notification": "built-in macOS provider/manual-assistance alerts; OpenClaw remains an optional frozen-summary gateway",
+  "rejected_as_core": [
+    "OpenClaw",
+    "Hermes Agent"
+  ],
+  "design_rule": "LangGraph owns execution topology; Rulora owns field gates and freezes; programs own evidence eligibility and final actions; models only propose candidates."
+}
