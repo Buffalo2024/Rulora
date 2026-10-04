@@ -53,6 +53,14 @@ Core 也不会自动证明 Adapter 没有修改结论。
 
 ## 三个可以立即验证的控制点
 
+先 [下载源码 ZIP](https://github.com/Buffalo2024/Rulora/archive/refs/heads/main.zip)、
+[Fork 仓库](https://github.com/Buffalo2024/Rulora/fork)，或执行：
+
+```bash
+git clone https://github.com/Buffalo2024/Rulora.git
+cd Rulora
+```
+
 从本仓库源码根目录运行：
 
 ```bash

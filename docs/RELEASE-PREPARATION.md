@@ -1,6 +1,9 @@
-# 本地准备记录
+# 发布与验证记录
 
-@rulora/core 候选版本 0.1.0-alpha.4 尚未发布。
+@rulora/core@0.1.0-alpha.4 已公开发布，npm alpha 标签指向该版本。
+latest 标签仍为 0.1.0-alpha.2；本次安装请使用 @alpha。
+发布源提交：5d633cfc665f48ce43686afaf87d52f9c18eb24c。
+GitHub Release：https://github.com/Buffalo2024/Rulora/releases/tag/v0.1.0-alpha.4。
 主仓库聚焦 Core 与 Rulora 群体决策：最小控制、最小群体、完整系统。
 协议 5.3.0-action-object-boundaries；行动选项 3.0.0-object-boundaries。
 场景命名、CLI、演示路径和公开介绍统一更新。生产目录未修改。
@@ -10,11 +13,13 @@
 包括 TypeScript 编译与预期错误检查、JSON Schema 接入、最小群体、固定样例、完整双次重放、
 LangGraph 教学图、可靠性评估、网页冒烟、隐私与打包检查。
 文档链接和发布扫描通过。场景输入及辅助方向字段已统一使用经营决策用语。
-离线演示均为合成输入，真实模型准确性及远程 CI 不包含在本地结论中。
+离线演示均为合成输入，控制测试不证明真实模型的业务准确性。
 TypeScript 声明已使用 TypeScript 5.9.3 严格编译验证。Core 实际 tarball 从空目录安装，
 只安装 Core 一个包、零运行依赖；安装后的声明也通过同一类型正反例编译。
-推送后检查远程 CI；npm 发布前重新查询版本占用。
-准备时 Core 远端 alpha 为 alpha.3、latest 为 alpha.2。
+远程 Core CI（Node 20/22/24）与场景 CI（Node 22/24）均通过。
+从公开 GitHub 全新克隆，在不安装可选 PostgreSQL 队列依赖的情况下，19 项统一检查全部通过。
+从公共 npm registry 全新安装 alpha.4，输出边界、循环停止与候选冻结验证通过。
+主仓库为公开仓库，allow_forking=true；提供 Git 克隆、源码 ZIP 与 Release 下载。
 
 ## 本次接入体验改造
 
@@ -25,4 +30,4 @@ TypeScript 声明已使用 TypeScript 5.9.3 严格编译验证。Core 实际 tar
 - pg-boss 改为可选依赖，延迟到创建调度器时加载；缺失依赖提供明确配置提示。
 - 增加高级场景源码导航、运行模式、采用指南和架构决策记录。
 
-未执行真实 Provider 调用、真实 PostgreSQL 端到端测试或远程发布。
+未执行真实 Provider 调用或真实 PostgreSQL 端到端测试；生产适配仍需宿主验证。
