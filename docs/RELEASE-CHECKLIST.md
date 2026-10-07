@@ -4,7 +4,6 @@
 
 - [x] GitHub 用户名与仓库地址：`Buffalo2024/rulora`；
 - [x] 合作与安全联系邮箱：`zzjeff1993.agent@gmail.com`；
-- [x] README 已使用实际微信二维码；
 - [x] `package.json` 已增加 `repository`、`homepage`、`bugs` 和 `author`；
 - [x] npm Organization `@rulora` 已创建，`jeffbuffalo` 为 Owner；
 - [x] `@rulora/core@0.1.0-alpha.2` 已发布到公开 `alpha` 标签；

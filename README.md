@@ -199,11 +199,6 @@ rulora/
 如果你希望围绕 Rulora、场景案例或其他业务场景开展技术合作、联合开发或商务合作，请联系：
 
 - 邮箱：`zzjeff1993.agent@gmail.com`
-- 微信：扫码添加，请注明 Rulora 或合作事项
-
-<p align="center">
-  <img src="assets/contact/wechat-qr.jpg" width="220" alt="Rulora 微信联系方式">
-</p>
 
 ## 许可
 

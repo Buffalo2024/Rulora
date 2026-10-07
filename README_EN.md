@@ -122,11 +122,6 @@ Rulora acts as the deterministic business-control layer for fields, transitions,
 For collaboration around these three cases or other Hybrid scenarios:
 
 - Email: `zzjeff1993.agent@gmail.com`
-- WeChat: scan the QR code and mention Rulora or your collaboration topic.
-
-<p align="center">
-  <img src="assets/contact/wechat-qr.jpg" width="220" alt="Rulora WeChat contact">
-</p>
 
 ## License
 
