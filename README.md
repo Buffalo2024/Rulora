@@ -149,9 +149,6 @@ Rulora/
 当前实现已经过自动化测试和场景验证，但仍持续演进，架构、性能、安全与兼容性问题需要真实使用和共同审查来发现与改进。
 
 - 邮箱：`zzjeff1993.agent@gmail.com`
-- 微信：扫码添加，请注明 Rulora 或合作事项。
-
-<p align="center"><img src="assets/contact/wechat-qr.jpg" width="200" alt="Rulora 微信联系方式"></p>
 
 ## 许可
 

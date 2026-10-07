@@ -112,7 +112,5 @@ One repository, one detailed case. Extract reusable controls incrementally with 
 Technical and commercial collaboration: `zzjeff1993.agent@gmail.com`.
 Rulora has automated tests and scenario validation and remains under active development. Reproduction steps, evaluation data and technical review help identify architecture, performance, security and compatibility issues.
 
-<p align="center"><img src="assets/contact/wechat-qr.jpg" width="200" alt="Author WeChat contact"></p>
-
 Core and Collective Decision: [Apache-2.0](LICENSE).
 Check each case's LICENSE/NOTICE for assets and [TRADEMARKS.md](TRADEMARKS.md) for branding.

@@ -231,7 +231,7 @@ async function providerSnapshot(root) {
 
 async function serveStatic({ response, pathname, staticRoot }) {
   const relative = pathname === '/' ? 'index.html' : pathname.slice(1)
-  const allowedFiles = ['index.html', 'app.js', 'presentation-privacy.js', 'styles.css', 'assets/author-wechat.jpg']
+  const allowedFiles = ['index.html', 'app.js', 'presentation-privacy.js', 'styles.css']
   if (!allowedFiles.includes(relative)) {
     response.statusCode = 404
     response.end('Not found')

@@ -258,8 +258,7 @@ test('web server exposes same-origin task APIs with security headers', async t =
   assert.equal(privacyScript.status, 200)
   assert.match(await privacyScript.text(), /RuloraPresentationPrivacy/)
   const authorQr = await fetch(`${base}/assets/author-wechat.jpg`)
-  assert.equal(authorQr.status, 200)
-  assert.equal(authorQr.headers.get('content-type'), 'image/jpeg')
+  assert.equal(authorQr.status, 404)
   const rejectedPrivacyUnlock = await fetch(`${base}/api/privacy/unlock`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'wrong' }) })
   assert.equal(rejectedPrivacyUnlock.status, 401)
   const acceptedPrivacyUnlock = await fetch(`${base}/api/privacy/unlock`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test-only-password' }) })
@@ -354,10 +353,10 @@ test('result status labels separate delivery readiness from completed review', a
   assert.doesNotMatch(app, /result\.production_ready \? '可正式交付' : '需要复核'/)
 })
 
-test('public author contact remains accessible', async () => {
+test('personal contact QR is absent from the public interface', async () => {
   const html = await fs.readFile(path.join(__dirname, '..', 'web', 'index.html'), 'utf8')
-  assert.match(html, /作者联系方式/)
-  assert.match(html, /alt="作者微信二维码"/)
+  assert.doesNotMatch(html, /作者联系方式/)
+  assert.doesNotMatch(html, /alt="作者微信二维码"/)
 })
 
 test('privacy toggle requires password only when turning masking off', async () => {

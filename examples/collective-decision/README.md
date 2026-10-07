@@ -93,4 +93,3 @@ npm run pack:check
 private: true 仅防止误发 npm，不影响源码公开。
 [Apache-2.0](LICENSE) · [第三方许可](THIRD_PARTY.md)。
 技术与商务合作：zzjeff1993.agent@gmail.com。
-<p align="center"><img src="assets/contact/wechat-qr.jpg" width="200" alt="微信联系方式"></p>
