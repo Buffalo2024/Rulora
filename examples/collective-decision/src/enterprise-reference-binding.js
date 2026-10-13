@@ -47,6 +47,13 @@ function encodePrompt(prompt,binding) {
     return {...message,content:JSON.stringify(input)}
   }).concat([{role:'system',content:'证据引用仅填写本次 evidence.id 的整数序号，程序按冻结映射登记原始编号；不要生成或复写原始证据编号。direction_version与broadcast_version由程序绑定，不需输出。业务判断仍由你完成。'}])
 }
+function emptyNoActionBasis(value) {
+  if (Array.isArray(value)) return value.length === 0
+  if (!value || typeof value !== 'object') return false
+  return Object.entries(value).every(([key,item]) =>
+    key === 'existing_arrangements' ? Array.isArray(item) && item.length === 0 :
+    ['why_sufficient','direction_relation'].includes(key) && typeof item === 'string' && !item.trim())
+}
 function bindOutput(value,binding,operations) {
   if(!binding) return value
   const result=transform(value,binding,true)
@@ -96,11 +103,19 @@ function bindOutput(value,binding,operations) {
     }
   }
   const candidate=result.candidate || result
+  // [10] is an explicit indeterminate judgment, not a no-new-measures verdict.
+  // Only the empty array placeholder is applicable here; all substantive bases remain.
+  if (Array.isArray(candidate.recommendations) && candidate.recommendations.length === 1 && candidate.recommendations[0] === 10 &&
+      Array.isArray(candidate.no_action_basis) && candidate.no_action_basis.length === 0) {
+    delete candidate.no_action_basis
+    operations.push({type:'DETERMINISTIC_STRUCTURE',operation:'exclude_empty_no_action_basis_from_indeterminate_candidate',removed_value:[]})
+  }
   // Normalize only out-of-scope empty annotations, never a nonempty business basis.
   if(Array.isArray(candidate.recommendations) && candidate.recommendations.length && candidate.recommendations.every(isActualAction)) {
-    if(candidate.no_action_basis && typeof candidate.no_action_basis==='object' && !Array.isArray(candidate.no_action_basis) && !Object.keys(candidate.no_action_basis).length) {
+    if(emptyNoActionBasis(candidate.no_action_basis)) {
+      const removed_value=structuredClone(candidate.no_action_basis)
       delete candidate.no_action_basis
-      operations.push({type:'DETERMINISTIC_STRUCTURE',operation:'exclude_empty_no_action_basis_from_actual_candidate'})
+      operations.push({type:'DETERMINISTIC_STRUCTURE',operation:'exclude_empty_no_action_basis_from_actual_candidate',removed_value})
     }
     for(const action of Array.isArray(candidate.actions)?candidate.actions:[]) {
       if(!isActualAction(action?.id) || OBJECT_BOUNDARIES[action.id])continue

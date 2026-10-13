@@ -25,7 +25,9 @@ function resolveModelConfiguration(config, environment = process.env) {
       extra_body: profile.extra_body || {}
     }
   }
-  return { contract_version: config?.contract_version || null, profiles, ...(config?.enterprise_model_routing ? {enterprise_model_routing:config.enterprise_model_routing} : {}) }
+  return { contract_version: config?.contract_version || null, profiles,
+    ...(config?.message_adapter ? { message_adapter: { type: config.message_adapter.type, enabled: config.message_adapter.enabled !== false } } : {}),
+    ...(config?.enterprise_model_routing ? {enterprise_model_routing:config.enterprise_model_routing} : {}) }
 }
 
 function modelConfigurationFingerprint(config, environment = process.env) {

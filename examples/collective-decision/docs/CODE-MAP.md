@@ -37,6 +37,8 @@ CLI run / 本地页面
 | 快照哈希与来源登记 | [evidence-registry](../src/evidence-registry.js) | 场景 |
 | 验证后缓存与复用 | [checkpoint-store](../src/model-call-checkpoint-store.js) | 场景 |
 | 模型路由与重连 | [model-routing](../src/enterprise-model-routing.js)、[Provider](../src/provider-loader.js) | 场景 |
+| 有界存活与纯消息适配 | [model-liveness](../src/providers/model-liveness.js)、[message-adapter](../src/providers/message-adapter.js) | 可选传输控制 |
+| 定位反馈与不漂移修订 | [review-repair](../src/enterprise-review-repair.js)、[review-feedback](../src/enterprise-review-feedback.js) | 场景程序门禁 |
 | 本地交互和任务执行 | [web-server](../src/web-server.js)、[web-job-manager](../src/web-job-manager.js) | 宿主 |
 
 `orchestrator.js` 仍被网页模块引用以使用来源准备等共享功能；完整决策的主入口是
@@ -53,3 +55,5 @@ CLI run / 本地页面
 它不承诺进程崩溃期间外部请求恰好执行一次。
 
 [运行模式](RUNNING-MODES.md) · [验证](SYSTEM-VALIDATION.md)。
+
+[可选运行时增强](RUNTIME-UPGRADE.md)：慢推理等待预算、消息排序、精确反馈与动态有限并发。

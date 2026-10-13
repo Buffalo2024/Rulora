@@ -80,6 +80,12 @@ node src/cli.js run --input my-enterprise-case.json --out-dir examples/output/my
 输入包含企业、证据、日期与快照；可选 rules 与 experience 数组。未决退出码为 2。
 页面面向本机使用，公网部署需配置认证、权限与持久化。
 
+## 可选运行时增强
+
+长推理可启用有界存活检测；兼容性消息适配只调整传输结构，不注入业务判断。
+复核反馈定位具体字段，格式修订不能改写已有有效裁决或阻断缺口。
+默认仍有请求期限和有限并发；启用方式与边界见 [运行时增强](docs/RUNTIME-UPGRADE.md)。
+
 ## 验证与许可
 
 ```bash

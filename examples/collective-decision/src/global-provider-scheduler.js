@@ -1,3 +1,18 @@
+function concurrencyLimit(value) {
+  if (!Number.isSafeInteger(value) || value <= 0) throw new Error('Model concurrency must be a positive finite integer')
+  return value
+}
+
+// Validate both settings before changing a live scheduler; never cancel in-flight work.
+function applySchedulerConcurrency(scheduler, options = {}) {
+  const aggregate = concurrencyLimit(options.maximumConcurrent === undefined ? scheduler.maximumConcurrent : options.maximumConcurrent)
+  const perProfile = concurrencyLimit(options.maximumConcurrentPerProfile === undefined ? scheduler.maximumConcurrentPerProfile : options.maximumConcurrentPerProfile)
+  scheduler.maximumConcurrent = aggregate
+  scheduler.maximumConcurrentPerProfile = perProfile
+  scheduler.pump()
+  return scheduler.diagnostics()
+}
+
 class GlobalProviderScheduler {
   constructor({ maximumConcurrent = 3, maximumConcurrentPerProfile = 1, circuitFailureThreshold = 3, circuitCooldownMs = 30000 } = {}) {
     this.maximumConcurrent = Number.isInteger(maximumConcurrent) && maximumConcurrent > 0 ? maximumConcurrent : 3
@@ -11,10 +26,22 @@ class GlobalProviderScheduler {
     this.wakeTimers = new Map()
   }
 
-  schedule(profileId, operation, task) {
+  schedule(profileId, operation, task, { signal } = {}) {
     if (!profileId || typeof task !== 'function') throw new Error('scheduler requires profileId and task')
     return new Promise((resolve, reject) => {
-      this.queue.push({ profileId, operation, task, resolve, reject, queuedAt: Date.now() })
+      const cancelled = () => Object.assign(new Error('Scheduled request cancelled'), { code: 'MODEL_API_CANCELLED', retryable: false })
+      if (signal?.aborted) return reject(cancelled())
+      const item = { profileId, operation, task, resolve, reject, queuedAt: Date.now(), signal }
+      item.abort = () => {
+        const index = this.queue.indexOf(item)
+        if (index < 0) return
+        this.queue.splice(index, 1)
+        signal.removeEventListener('abort', item.abort)
+        reject(cancelled())
+        this.pump()
+      }
+      signal?.addEventListener('abort', item.abort, { once: true })
+      this.queue.push(item)
       this.pump()
     })
   }
@@ -24,6 +51,7 @@ class GlobalProviderScheduler {
       const index = this.queue.findIndex(item => this.canStart(item.profileId))
       if (index < 0) break
       const [item] = this.queue.splice(index, 1)
+      item.signal?.removeEventListener('abort', item.abort)
       this.start(item)
     }
   }
@@ -53,6 +81,11 @@ class GlobalProviderScheduler {
       this.healthByProfile.set(item.profileId, { consecutiveFailures: 0, openUntil: 0 })
       item.resolve(value)
     } catch (error) {
+      // Caller/resource budgets do not demonstrate a provider outage.
+      if (['MODEL_API_CANCELLED', 'MODEL_API_RESPONSE_TOO_LARGE', 'MODEL_API_BUDGET_EXHAUSTED'].includes(error.code)) {
+        item.reject(error)
+        return
+      }
       const previous = this.healthByProfile.get(item.profileId) || { consecutiveFailures: 0, openUntil: 0 }
       const consecutiveFailures = previous.consecutiveFailures + 1
       const openUntil = consecutiveFailures >= this.circuitFailureThreshold ? Date.now() + this.circuitCooldownMs : 0
@@ -68,6 +101,8 @@ class GlobalProviderScheduler {
 
   diagnostics() {
     return {
+      maximum_concurrent: this.maximumConcurrent,
+      maximum_concurrent_per_profile: this.maximumConcurrentPerProfile,
       active: this.active,
       queued: this.queue.length,
       active_by_profile: Object.fromEntries(this.activeByProfile),
@@ -83,4 +118,4 @@ function globalProviderScheduler(config = {}) {
   return singleton
 }
 
-module.exports = { GlobalProviderScheduler, globalProviderScheduler }
+module.exports = { GlobalProviderScheduler, globalProviderScheduler, applySchedulerConcurrency }

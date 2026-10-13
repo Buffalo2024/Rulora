@@ -118,7 +118,7 @@ const CREDIT_STRATEGY_OUTPUT_INSTRUCTION = [
 ].join('\n')
 
 class MultiModelProvider {
-  constructor({ config, configPath = null, fetchImpl = modelFetch, environment = process.env, healthMonitor = null, scheduler = null } = {}) {
+  constructor({ config, configPath = null, fetchImpl = modelFetch, environment = process.env, healthMonitor = null, scheduler = null, requestPolicy = null } = {}) {
     if (!config || config.contract_version !== '1.0.0' || !config.profiles) {
       throw new Error('model profile config must use contract_version 1.0.0 and define profiles')
     }
@@ -129,6 +129,7 @@ class MultiModelProvider {
     this.environment = environment
     this.healthMonitor = healthMonitor
     this.scheduler = scheduler || globalProviderScheduler()
+    this.requestPolicy = require('./model-liveness').normalizeLivenessPolicy(requestPolicy)
     this.healthTrackingErrors = []
   }
 
@@ -178,6 +179,7 @@ class MultiModelProvider {
     traceBase.audit_required = enterpriseProtocol
     const stableIndustryOutput = decisionMode === 'competition_calibrated_v2' && agent.agent_id === 'industry_chain_analyst' && ['decideStage', 'reviewStage'].includes(operation)
     const request = this.buildRequest(profile, messages, { forceText: stableIndustryOutput })
+    if (request.message_adapter) traceBase.message_adapter = request.message_adapter
     let response
     try {
       response = await this.scheduler.schedule(profileId, operation, () => requestWithRetry({
@@ -185,6 +187,7 @@ class MultiModelProvider {
           url: request.url,
           init: request.init,
           timeoutMs: resolveNumber(profile.timeout_ms, DEFAULT_MODEL_TIMEOUT_MS),
+          requestPolicy: this.requestPolicy,
           maxRetries: strictSinglePass ? resolveNumber(profile.max_transport_retries, 2) : resolveNumber(profile.max_retries, 3),
           maxTimeoutRetries: transportPolicy?.maxTimeoutRetries ?? Infinity,
           timeoutRetryMs: transportPolicy?.timeoutRetryMs ?? null,
@@ -355,6 +358,7 @@ class MultiModelProvider {
       prompt_sha256: sha256(canonicalJson(messages)),
       model_config_sha256: sha256(canonicalJson(redactConfig(profile))),
       response_sha256: sha256(finalContent),
+      ...(traceBase.message_adapter ? { message_adapter: structuredClone(traceBase.message_adapter) } : {}),
       format_repaired: finalContent !== content,
       original_response_sha256: finalContent !== content ? sha256(content) : null,
       transport_attempts: Number(response.transport_attempts || 1),
@@ -422,6 +426,7 @@ class MultiModelProvider {
       url: request.url,
       init: request.init,
       timeoutMs: resolveNumber(profile.timeout_ms, DEFAULT_MODEL_TIMEOUT_MS),
+      requestPolicy: this.requestPolicy,
       maxRetries: 1,
       baseDelayMs: resolveNumber(profile.retry_base_delay_ms, 1000),
       maxDelayMs: resolveNumber(profile.retry_max_delay_ms, 15000),
@@ -489,16 +494,19 @@ class MultiModelProvider {
             temperature: resolveNumber(profile.temperature, 0.1),
             max_tokens: resolveNumber(profile.max_tokens, 7000),
             ...(profile.extra_body || {}),
-            stream: false
+            stream: this.requestPolicy?.stream === true
           })
         }
       }
     }
     const effectiveFormat = profile.extra_body?.response_format || (forceText || profile.json_mode === false ? null : { type: 'json_object' })
-    const wireMessages = effectiveFormat?.type === 'json_object'
+    let wireMessages = effectiveFormat?.type === 'json_object'
       ? ensureJsonInputMessages(profile.extra_body?.messages || messages)
       : structuredClone(profile.extra_body?.messages || messages)
+    const adapted = require('./message-adapter').adaptMessages(wireMessages, this.config.message_adapter)
+    if (adapted) wireMessages = adapted.messages
     return {
+      ...(adapted ? { message_adapter: adapted.audit } : {}),
       url: `${baseUrl}/chat/completions`,
       init: {
         method: 'POST',
@@ -520,7 +528,7 @@ class MultiModelProvider {
           ...(forceText || profile.json_mode === false ? {} : { response_format: { type: 'json_object' } }),
           ...(profile.extra_body || {}),
           messages: wireMessages,
-          stream: false
+          stream: this.requestPolicy?.stream === true
         })
       }
     }
@@ -712,7 +720,7 @@ async function createMultiModelProvider(configPath, options = {}) {
     circuitFailureThreshold: schedulerConfig.circuit_failure_threshold,
     circuitCooldownMs: schedulerConfig.circuit_cooldown_ms
   })
-  return new MultiModelProvider({ config, configPath: resolved, ...options, healthMonitor, scheduler })
+  return new MultiModelProvider({ config, configPath: resolved, ...options, healthMonitor, scheduler, requestPolicy: options.requestPolicy ?? execution.model_request_policy })
 }
 
 const JSON_INPUT_INSTRUCTION = 'Return one valid json object following the specified output schema. Do not include markdown or explanatory text.'
@@ -812,10 +820,14 @@ async function extractResponseContent(provider, response) {
   for (const line of raw.split(/\r?\n/)) {
     if (!line.startsWith('data:')) continue
     const payload = line.slice(5).trim()
-    if (!payload || payload === '[DONE]') continue
+    if (!payload) continue
+    if (payload === '[DONE]') break
     let event
-    try { event = JSON.parse(payload) } catch { continue }
-    if (event.error) throw streamResponseError(event.error)
+    try { event = JSON.parse(payload) } catch {
+      throw Object.assign(new Error('模型流包含无效事件，拒绝不完整输出'), { code: 'MODEL_API_STREAM_INVALID' })
+    }
+    if (event.error || event.type === 'error') throw streamResponseError(event.error || event)
+    if (event.type === 'message_stop') break
     if (event.choices?.[0]?.message) completed = event
     const delta = event.choices?.[0]?.delta || {}
     if (typeof delta.content === 'string') content += delta.content
@@ -856,8 +868,10 @@ async function requestWithRetry({
   retryDelaysMs = null,
   onRequestRepair = async () => {},
   maxTimeoutRetries = Infinity,
-  timeoutRetryMs = null
+  timeoutRetryMs = null,
+  requestPolicy = null
 }) {
+  const livenessPolicy = require('./model-liveness').normalizeLivenessPolicy(requestPolicy)
   let lastError
   let requestInit = init
   let requestCount = 0
@@ -869,7 +883,7 @@ async function requestWithRetry({
     requestCount += 1
     let timeout
     const attemptTimeoutMs = timeoutFailures > 0 && Number.isFinite(timeoutRetryMs) && timeoutRetryMs > timeoutMs ? timeoutRetryMs : timeoutMs
-    const deadline = new Promise((_, reject) => {
+    const deadline = livenessPolicy ? null : new Promise((_, reject) => {
       timeout = setTimeout(() => {
         controller.abort()
         reject(Object.assign(new Error('model response deadline exceeded'), { name: 'AbortError' }))
@@ -877,10 +891,12 @@ async function requestWithRetry({
     })
     let response
     const startedAt = Date.now()
-    const diagnostic = { attempt: requestCount, timeout_ms: attemptTimeoutMs, phase: 'waiting_headers' }
+    const diagnostic = { attempt: requestCount, timeout_ms: livenessPolicy ? null : attemptTimeoutMs, phase: 'waiting_headers' }
     transportDiagnostics.push(diagnostic)
     try {
-      response = await Promise.race([deadline, (async () => {
+      response = livenessPolicy
+        ? await require('./model-liveness').requestWhileAlive({ fetchImpl, url, init: requestInit, controller, policy: livenessPolicy, diagnostic })
+        : await Promise.race([deadline, (async () => {
         const received = await fetchImpl(url, { ...requestInit, signal: controller.signal })
         Object.assign(diagnostic, { phase: 'reading_body', headers_ms: Date.now() - startedAt, http_status: received.status, request_id: received.headers?.get?.('x-request-id') || null })
         // Keep the same deadline through body download, including SSE and error bodies.
@@ -897,10 +913,25 @@ async function requestWithRetry({
         Object.assign(diagnostic, { phase: 'complete', elapsed_ms: Date.now() - startedAt })
         return received
       })()])
+      if (/text\/event-stream/i.test(response.headers?.get?.('content-type') || '')) {
+        const raw = await response.text()
+        for (const line of raw.split(/\r?\n/)) {
+          if (!line.startsWith('data:')) continue
+          if (line.slice(5).trim() === '[DONE]') break
+          let event; try { event = JSON.parse(line.slice(5).trim()) } catch { continue }
+          if (event?.type === 'message_stop') break
+          if (event?.error || event?.type === 'error') {
+            response = null
+            diagnostic.phase = 'upstream_error'
+            throw streamResponseError(event.error || event)
+          }
+        }
+      }
     } catch (error) {
       diagnostic.elapsed_ms = Date.now() - startedAt
       diagnostic.network_cause_code = error?.cause?.code || error?.code || null
-      const transport = networkTransportError(error, requestCount)
+      const transport = error.is_model_transport_failure ? error : networkTransportError(error, requestCount)
+      transport.connection_attempts = requestCount
       transport.transport_diagnostics = structuredClone(transportDiagnostics)
       transport.request_repairs = structuredClone(repairs)
       lastError = transport

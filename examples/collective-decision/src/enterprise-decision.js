@@ -2,6 +2,7 @@ const { createBinding, encodePrompt } = require('./enterprise-reference-binding'
 const promptBindings = new WeakMap()
 const deliberation = require('./enterprise-deliberation')
 const { REVIEW_POLICY } = require('./decision-policy')
+const { syntaxDiagnostic, nextCandidateRepair } = require('./enterprise-json-repair')
 const { buildEvidenceBrief, recallSnapshotText } = require('./evidence-brief')
 const { cleanText, cleanItems } = require('./decision-copy')
 const crypto = require('node:crypto')
@@ -225,7 +226,7 @@ async function runEnterpriseDecision({ caseData, question, rules = [], experienc
       Object.defineProperty(fresh,'reference_binding',{value:binding})
       return fresh
     }
-    const revised = [...wire, { role: 'user', content: JSON.stringify({ revision_mode:revision.mode, instruction: (revision.mode==='format_only'?'本次仅修正格式，必须保留原选案、通过与否、逐项必要性判断及已有非空判断理由原文；只补缺失字段或修正结构，不改写已有理由；不得借修正格式重新裁决。':'') + '上一份JSON未通过程序校验。依据校验反馈和当前阶段输出契约纠正字段。仍仅执行本次原定岗位和阶段；第一层不要求第二层行动或冻结方向绑定，证据筛选不承担经营方向裁决。涉及业务含义的判断由你完成，不能只改枚举掩盖矛盾。保留可核验事实与原有有效证据引用。counter_evidence是说明文本，counter_evidence_refs是证据序号，不得相互替换；错误引用须回到本次证据表核对。结构修订期间仍与原始own候选比较revision_kind：若方案已发生实质变化不能因本次仅修字段而改为wording_only。必须重新输出完整JSON对象；不得猜测缺失证据。', program_errors: revision.errors, previous_output: binding ? require('./enterprise-reference-binding').transform(revision.previous_output, binding) : revision.previous_output }) }]
+    const revised = [...wire, { role: 'user', content: JSON.stringify({ revision_mode:revision.mode, instruction: (revision.mode==='format_only'?'本次仅修正格式，必须保留原选案、通过与否、逐项必要性判断及已有非空判断理由原文；只补缺失字段或修正结构，不改写已有理由；不得借修正格式重新裁决。':'') + '上一份JSON未通过程序校验。依据校验反馈和当前阶段输出契约纠正字段。仍仅执行本次原定岗位和阶段；第一层不要求第二层行动或冻结方向绑定，证据筛选不承担经营方向裁决。涉及业务含义的判断由你完成，不能只改枚举掩盖矛盾。保留可核验事实与原有有效证据引用。counter_evidence是说明文本，counter_evidence_refs是证据序号，不得相互替换；错误引用须回到本次证据表核对。结构修订期间仍与原始own候选比较revision_kind：若方案已发生实质变化不能因本次仅修字段而改为wording_only。必须重新输出完整JSON对象；不得猜测缺失证据。', program_errors: revision.errors, ...(revision.syntax_diagnostic ? {json_syntax_diagnostic:revision.syntax_diagnostic,serialization_instruction:'只修正JSON序列化，不截取局部对象；保留原有事实、引用和全部业务字段。'} : {}), ...(revision.feedback ? {program_feedback: binding ? require('./enterprise-reference-binding').transform(revision.feedback, binding) : revision.feedback} : {}), previous_output: binding ? require('./enterprise-reference-binding').transform(revision.previous_output, binding) : revision.previous_output }) }]
     Object.defineProperty(revised, 'reference_binding', { value: binding })
     return revised
   }
@@ -265,6 +266,8 @@ async function runEnterpriseDecision({ caseData, question, rules = [], experienc
           }
           const record = { run_id: runId, operation, agent_id: agent.agent_id, attempt,
             revision_mode: revision?.mode || null,
+            program_feedback: revision?.feedback || null,
+            json_syntax_diagnostic: value == null ? syntaxDiagnostic(failure?.raw_model_response) : null,
             verdict_drift: verdictDrift ? {previous:verdictDrift.previous_verdict,revised:verdictDrift.revised_verdict} : null,
             call_id: value?.model_provenance?.call_id || failure?.call_id || null,
             raw_model_response: value?.raw_model_response ?? failure?.raw_model_response ?? null,
@@ -279,7 +282,7 @@ async function runEnterpriseDecision({ caseData, question, rules = [], experienc
           attempts.push(file)
           
           if (!errors.length) return value
-          const nextRepair = operation === 'semantic_review' ? require('./enterprise-review-repair').nextReviewRepair({attempt,errors,value,verdictDrift}) : (attempt === 0 || (seatRepair && attempt === 1 && canonicalJson(errors)!==canonicalJson(firstErrors)) ? {mode:'contract_repair',errors,previous_output:value ?? failure?.raw_model_response ?? null} : null)
+          const nextRepair = operation === 'semantic_review' ? require('./enterprise-review-repair').nextReviewRepair({attempt,errors,value,verdictDrift,reviewContext,previousRepairMode:revision?.mode}) : nextCandidateRepair({attempt,errors,firstErrors,value,rawOutput:failure?.raw_model_response,seatRepair})
           if(attempt === 0)firstErrors=[...errors]
           if (!nextRepair) throw Object.assign(new Error(`${operation} program gate rejected: ${errors.join('; ')}`), { code: 'ENTERPRISE_MODEL_CONTRACT_INVALID', validation_errors: errors, output_audit_paths: attempts })
           counters.consume('model_operations')
@@ -290,7 +293,7 @@ async function runEnterpriseDecision({ caseData, question, rules = [], experienc
       } },
       { id: `${operation}_program_gate`, owner: 'program', run: value => { const errors = gate(value); if (errors.length) throw Object.assign(new Error(errors.join('; ')), { code: 'ENTERPRISE_MODEL_CONTRACT_INVALID', validation_errors: errors }); return value } }
     ] })
-    const result = await checkpointer.execute({ identity: { reference_binding: referenceBinding, contract_version: '1.0.0', output_protocol_version: deliberation.VERSION, action_options_version: ACTION_OPTIONS_VERSION, ...(operation==='semantic_review'?{review_repair_version:'2.0.0'}:{}), mode: MODE, operation, agent: { agent_id: agent.agent_id, model_profile: agent.model_profile, method_family: agent.method_family || null }, question: parsed, rules, experience, evidence_version: identity?.evidence_version || sha256(canonicalJson(baseContext.caseData.evidence || [])), model_fingerprint: source.executionFingerprint, ...identity }, run: () => pipeline.run({}), validate: value => { const errors = gate(value); if (errors.length) throw new Error(errors.join('; ')) } })
+    const result = await checkpointer.execute({ identity: { reference_binding: referenceBinding, contract_version: '1.0.0', runtime_controls_version: '1.1.0', output_protocol_version: deliberation.VERSION, action_options_version: ACTION_OPTIONS_VERSION, ...(operation==='semantic_review'?{review_repair_version:'3.0.0',candidate_repair_version:'1.0.0'}:{}), mode: MODE, operation, agent: { agent_id: agent.agent_id, model_profile: agent.model_profile, method_family: agent.method_family || null }, question: parsed, rules, experience, evidence_version: identity?.evidence_version || sha256(canonicalJson(baseContext.caseData.evidence || [])), model_fingerprint: source.executionFingerprint, ...identity }, run: () => pipeline.run({}), validate: value => { const errors = gate(value); if (errors.length) throw new Error(errors.join('; ')) } })
     await emit({ type: 'output_contract_reviewed', phase: operation, agent_id: agent.agent_id, audit_paths: attempts, checkpoint: result.checkpoint, output_sha256: sha256(canonicalJson(result.output)) })
     return { output: result.output, events: result.events || [], checkpoint: result.checkpoint }
   }

@@ -4,12 +4,14 @@
 
 ## Unreleased
 
+- Add bounded optional liveness, pure wire-message adaptation, precise review repair feedback and finite live concurrency updates to the advanced collective-decision example. Core API is unchanged.
+- Preserve blocking-gap contents during format repairs and reject malformed or prematurely closed streams; use synthetic regression inputs only.
 - Add compiled TypeScript contract checks and explicit validator/loop types.
 - Add an Ajv integration example without adding Core runtime dependencies.
 - Check in synthetic enterprise input, expected report, snapshot text and a validated checkpoint, with executable replay checks.
 - Document the full-system call chain and running modes; make PostgreSQL scheduling an optional dependency with lazy loading.
 
-### 0.1.0-alpha.4 — prepared locally, not published
+### 0.1.0-alpha.4 — published
 
 - Isolate and recursively freeze plain JSON candidate snapshots; reject forged/cross-controller pools.
 - Reject unsupported candidate values instead of silently coercing them; publish deeply readonly types.

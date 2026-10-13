@@ -50,6 +50,9 @@ Action numbers are categories, not scores.
 
 ## Live calls and checks
 
+Optional runtime controls: [bounded liveness, pure message adaptation and review repair](docs/RUNTIME-UPGRADE.md).
+They remain scenario implementations; default model deadlines and finite concurrency are preserved. Tests do not prove business accuracy.
+
 ```bash
 node src/cli.js run --input my-enterprise-case.json --out-dir examples/output/my-case --live
 npm run example:controlled
