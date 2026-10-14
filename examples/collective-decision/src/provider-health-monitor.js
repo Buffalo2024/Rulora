@@ -1,3 +1,4 @@
+const { dataPath } = require('./runtime-paths')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const { spawnSync } = require('node:child_process')
@@ -18,7 +19,7 @@ class ProviderHealthMonitor {
   constructor({ root = path.resolve(__dirname, '..'), directory, config = {}, notifier = macosProviderNotifier, now = () => new Date(), wait = delay } = {}) {
     this.root = path.resolve(root)
     this.config = { ...DEFAULT_CONFIG, ...(config || {}) }
-    this.directory = path.resolve(directory || path.join(this.root, '.runtime', 'provider-health'))
+    this.directory = path.resolve(directory || dataPath(this.root, 'provider-health'))
     this.alertLogPath = path.join(this.directory, 'alerts.jsonl')
     this.notifier = notifier
     this.now = now

@@ -80,6 +80,7 @@
 
 ```bash
 node --test tests/runtime-upgrade.test.js tests/stream-errors.test.js
+node --test tests/network-socket-recovery.test.js tests/storage-portability.test.js
 npm test
 npm run example:static
 npm run privacy:check
@@ -101,3 +102,14 @@ import the private application's unlimited-wait/unlimited-concurrency policy,
 provider-specific adapters, review guards, reasoning-output fallbacks, model menus,
 credentials or production data. The generic opt-in `system-first-v1` adapter is
 provider-neutral and contains no provider-specific business instructions.
+
+## 2026-10-14：断流恢复与存储迁移
+
+请求层根据底层错误码（包括 `UND_ERR_SOCKET`）识别暂时性断流，沿用有限重试预算。
+读取或检查响应失败后丢弃失败响应对象，不能继续按成功交付。
+TLS、配置、鉴权失败保持拒绝；此修订不新增供应商专用备用模型路由。
+存活检测模式的 `init.signal` 取消及请求预算保持原有语义，不代表完整网页任务暂停能力已经迁移。
+
+运行数据支持 `RULORA_DATA_ROOT` 与历史任务路径重定位，详见 [存储说明](storage-layout.md)。
+新测试全部使用合成数据、模拟传输及本机临时 HTTP 服务，不调用真实模型；
+本机真实 TCP 断流验证传输恢复，不证明真实供应商可用性或业务判断准确率。

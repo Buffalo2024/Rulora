@@ -1,3 +1,4 @@
+const { dataPath } = require('./runtime-paths')
 const { createBinding, encodePrompt } = require('./enterprise-reference-binding')
 const promptBindings = new WeakMap()
 const deliberation = require('./enterprise-deliberation')
@@ -185,12 +186,12 @@ async function runEnterpriseDecision({ caseData, question, rules = [], experienc
   if (!parsed.valid) return { status: 'awaiting_question', missing: parsed.missing }
   if (!Array.isArray(rules) || !Array.isArray(experience)) throw new Error('rules and experience must be arrays')
   const root = projectRoot()
-  const outputRoot = path.resolve(outputDirectory || path.join(root, '.runtime', 'enterprise-output'))
+  const outputRoot = path.resolve(outputDirectory || dataPath(root, 'enterprise-output'))
   await fs.mkdir(outputRoot, { recursive: true })
   const config = providedConfig || JSON.parse(await fs.readFile(path.join(root, 'config', 'enterprise-decision.json'), 'utf8'))
   const sourceConfig = JSON.parse(await fs.readFile(path.join(root, 'config', 'enterprise-sources.json'), 'utf8'))
   const manualSources = JSON.parse(await fs.readFile(path.join(root, 'config', 'enterprise-manual-sources.json'), 'utf8'))
-  const userSources = await new UserSourceConfigStore({ filePath: path.join(root, '.runtime', 'web-ui', 'user-public-sources.json') }).load()
+  const userSources = await new UserSourceConfigStore({ filePath: dataPath(root, 'web-ui', 'user-public-sources.json') }).load()
   sourceConfig.sources = [
     ...sourceConfig.sources.filter(item => item.id !== 'web_search' || userSources.search_backend.enabled),
     ...(userSources.websites || []).filter(item => item.enabled !== false).map(item => ({ ...item, production_ingest_enabled: true, default_grade: 'C' })),

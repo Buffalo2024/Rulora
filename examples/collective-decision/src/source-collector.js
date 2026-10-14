@@ -1,3 +1,4 @@
+const { dataPath } = require('./runtime-paths')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const { CninfoAdapter } = require('./sources/cninfo-adapter')
@@ -13,7 +14,7 @@ const { withFileLock } = require('./file-lock')
 const EMPTY_SHA256 = sha256(Buffer.alloc(0))
 
 class PublicSourceCollector {
-  constructor({ adapters, userSourceConfig = null, snapshotDirectory = path.resolve('.runtime', 'evidence-snapshots'), manualAssistance } = {}) {
+  constructor({ adapters, userSourceConfig = null, snapshotDirectory = dataPath(undefined, 'evidence-snapshots'), manualAssistance } = {}) {
     const builtInAdapters = {
       cninfo: new CninfoAdapter(),
       government_policy: new GovernmentPolicyAdapter(),

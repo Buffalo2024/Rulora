@@ -86,6 +86,12 @@ node src/cli.js run --input my-enterprise-case.json --out-dir examples/output/my
 复核反馈定位具体字段，格式修订不能改写已有有效裁决或阻断缺口。
 默认仍有请求期限和有限并发；启用方式与边界见 [运行时增强](docs/RUNTIME-UPGRADE.md)。
 
+## 运行数据与历史迁移
+
+可通过 `RULORA_DATA_ROOT` 将运行数据放到独立的可写持久化目录，默认仍为案例目录下的 `.runtime`。
+相对配置以案例目录为基准，不依赖启动命令所在目录。迁移时复制完整数据目录，包括证据、日志、报告和检查点，不能只复制任务 JSON。
+路径迁移不改写证据或自动批准旧检查点；详见 [存储布局与迁移边界](docs/storage-layout.md)。
+
 ## 验证与许可
 
 ```bash

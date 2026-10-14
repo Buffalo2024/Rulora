@@ -1,3 +1,4 @@
+const { dataPath } = require('./runtime-paths')
 const crypto = require('node:crypto')
 const fs = require('node:fs/promises')
 const path = require('node:path')
@@ -16,10 +17,10 @@ class ManualAssistanceService {
     now = () => new Date()
   } = {}) {
     this.root = path.resolve(root)
-    this.runtimeDirectory = path.resolve(runtimeDirectory || path.join(this.root, '.runtime', 'manual-assistance'))
+    this.runtimeDirectory = path.resolve(runtimeDirectory || dataPath(this.root, 'manual-assistance'))
     this.requestsDirectory = path.join(this.runtimeDirectory, 'requests')
     this.templatesDirectory = path.join(this.runtimeDirectory, 'response-templates')
-    this.snapshotDirectory = path.resolve(snapshotDirectory || path.join(this.root, '.runtime', 'evidence-snapshots'))
+    this.snapshotDirectory = path.resolve(snapshotDirectory || dataPath(this.root, 'evidence-snapshots'))
     this.configPath = path.resolve(configPath || path.join(this.root, 'config', 'manual-source-assistance.json'))
     this.sourceConfigPath = path.resolve(sourceConfigPath || path.join(this.root, 'config', 'public-sources.json'))
     this.notifier = notifier

@@ -1,3 +1,4 @@
+const { dataPath, resolveRuntimePath } = require('./runtime-paths')
 const path = require('node:path')
 const fs = require('node:fs/promises')
 const { MemorySaver } = require('@langchain/langgraph')
@@ -59,7 +60,7 @@ async function runCase({ inputPath, outputDirectory, allowFixture = false, allow
     readJson(path.join(root, 'config', 'execution.json')),
     readJson(path.join(root, 'config', 'competition-mode.json'))
   ])
-  const userSourceConfig = await new UserSourceConfigStore({ filePath: path.join(root, '.runtime', 'web-ui', 'user-public-sources.json') }).load()
+  const userSourceConfig = await new UserSourceConfigStore({ filePath: dataPath(root, 'web-ui', 'user-public-sources.json') }).load()
   sourceConfig.sources = [
     ...(sourceConfig.sources || []),
     ...userSourceConfig.websites.map(source => ({
@@ -86,7 +87,7 @@ async function runCase({ inputPath, outputDirectory, allowFixture = false, allow
   const schemas = await loadSchemaValidators(root)
   validateDebateConfig(debateConfig)
   const populationStore = new PopulationStore({
-    filePath: path.join(root, '.runtime', 'population.json'),
+    filePath: dataPath(root, 'population.json'),
     roles: agentsConfig.roles
   })
   const population = await populationStore.load()
@@ -148,7 +149,7 @@ async function runCase({ inputPath, outputDirectory, allowFixture = false, allow
   const { core, source: ruloraSource } = loadRulora()
   const checkpointConfig = executionConfig.model_call_checkpoints || {}
   const modelCallCheckpoints = new ModelCallCheckpointStore({
-    rootDirectory: path.resolve(modelCallCheckpointRoot || process.env.MODEL_CALL_CHECKPOINT_ROOT || path.join(root, checkpointConfig.root_directory || '.runtime/model-call-checkpoints')),
+    rootDirectory: path.resolve(modelCallCheckpointRoot || process.env.MODEL_CALL_CHECKPOINT_ROOT || resolveRuntimePath(root, checkpointConfig.root_directory || '.runtime/model-call-checkpoints')),
     enabled: productionMode && checkpointConfig.enabled_in_production === true,
     lockTimeoutMs: checkpointConfig.lock_timeout_ms || 900000
   })
@@ -195,7 +196,7 @@ async function runCase({ inputPath, outputDirectory, allowFixture = false, allow
   const modelCaseData = withOperatorTask(caseData, operatorTask)
   const runId = safeId(`${caseData.case_id}-${nowId()}`)
   progressRunId = runId
-  const runLedger = new RunLedger(path.join(root, '.runtime', 'runs'))
+  const runLedger = new RunLedger(dataPath(root, 'runs'))
   await runLedger.create({ runId, caseId: caseData.case_id, inputSha256: sha256(caseData) })
   await emitProgress({
     type: 'run_created',
@@ -206,7 +207,7 @@ async function runCase({ inputPath, outputDirectory, allowFixture = false, allow
     evidence_count: caseData.evidence.length
   })
   let currentStage = 'session_initialization'
-  const repository = new FileRepository(path.join(root, '.runtime', 'sessions'))
+  const repository = new FileRepository(dataPath(root, 'sessions'))
   const analysisMachine = new core.OrchestrationMachine({ repository, scenario: analysisScenario })
   const analysisSessionId = `${runId}-analysis`
   try {
@@ -587,7 +588,7 @@ async function persistCaseExecutionCheckpoint({ root, caseData, decisionMode, cu
     normalization_operations: structuredClone(normalization?.normalization_operations || []),
     updated_at: new Date().toISOString()
   }
-  const checkpointPath = path.join(root, '.runtime', 'case-resume-checkpoints', `${safeId(caseData.case_id)}.json`)
+  const checkpointPath = dataPath(root, 'case-resume-checkpoints', `${safeId(caseData.case_id)}.json`)
   await writeJsonAtomic(checkpointPath, output)
   return checkpointPath
 }
@@ -600,7 +601,7 @@ async function createIndustryPlan({ caseData, allowFixture = false, allowBaselin
     loadSchemaValidators(root)
   ])
   const population = await new PopulationStore({
-    filePath: path.join(root, '.runtime', 'population.json'),
+    filePath: dataPath(root, 'population.json'),
     roles: agentsConfig.roles
   }).load()
   const planningAgent = population.active.find(agent => agent.stage === 'industry_chain_planning')
@@ -623,7 +624,7 @@ async function createIndustryPlan({ caseData, allowFixture = false, allowBaselin
   const { core } = loadRulora()
   const checkpointConfig = executionConfig.model_call_checkpoints || {}
   const modelCallCheckpoints = new ModelCallCheckpointStore({
-    rootDirectory: path.resolve(modelCallCheckpointRoot || process.env.MODEL_CALL_CHECKPOINT_ROOT || path.join(root, checkpointConfig.root_directory || '.runtime/model-call-checkpoints')),
+    rootDirectory: path.resolve(modelCallCheckpointRoot || process.env.MODEL_CALL_CHECKPOINT_ROOT || resolveRuntimePath(root, checkpointConfig.root_directory || '.runtime/model-call-checkpoints')),
     enabled: !allowFixture && !allowBaseline && checkpointConfig.enabled_in_production === true,
     lockTimeoutMs: checkpointConfig.lock_timeout_ms || 900000
   })
@@ -644,14 +645,14 @@ async function prepareEvidenceCase({ inputCaseData, root, industryPlan }) {
     : item)
   let collectedPacket = null
   if (caseData.collection_request) {
-    const userSourceConfig = await new UserSourceConfigStore({ filePath: path.join(root, '.runtime', 'web-ui', 'user-public-sources.json') }).load()
+    const userSourceConfig = await new UserSourceConfigStore({ filePath: dataPath(root, 'web-ui', 'user-public-sources.json') }).load()
     const request = applyIndustryPlanToCollectionRequest({
       request: { ...structuredClone(caseData.collection_request), company: caseData.company, as_of_date: caseData.as_of_date },
       industryPlan,
       company: caseData.company,
       configuredSources: userSourceConfig.websites
     })
-    const collector = new PublicSourceCollector({ snapshotDirectory: path.join(root, '.runtime', 'evidence-snapshots'), userSourceConfig })
+    const collector = new PublicSourceCollector({ snapshotDirectory: dataPath(root, 'evidence-snapshots'), userSourceConfig })
     collectedPacket = await collector.collect(request)
     if (collectedPacket.status === 'awaiting_manual_assistance') {
       const pending = collectedPacket.manual_assistance_requests.map(item => `${item.assistance_id} (${item.source_id}) -> ${item.response_template_path}`).join('; ')
@@ -2050,7 +2051,7 @@ async function resolveEvidenceSnapshotRoot({ caseData, inputPath, root = project
   if (declared && await directoryExists(declared)) return path.resolve(declared)
   const adjacent = path.join(path.dirname(path.resolve(inputPath)), 'evidence-snapshots')
   if (await directoryExists(adjacent)) return adjacent
-  return path.resolve(declared || path.join(root, '.runtime', 'evidence-snapshots'))
+  return path.resolve(declared || dataPath(root, 'evidence-snapshots'))
 }
 
 async function directoryExists(candidate) {

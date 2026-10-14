@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Make advanced-example runtime data configurable with `RULORA_DATA_ROOT`; migrate task paths without rewriting evidence or validated checkpoints.
+- Classify interrupted model sockets by transport cause and discard failed response objects; add provider-neutral fault-injection and loopback HTTP regression tests. Finite retry limits and Core API remain unchanged.
 - Add bounded optional liveness, pure wire-message adaptation, precise review repair feedback and finite live concurrency updates to the advanced collective-decision example. Core API is unchanged.
 - Preserve blocking-gap contents during format repairs and reject malformed or prematurely closed streams; use synthetic regression inputs only.
 - Add compiled TypeScript contract checks and explicit validator/loop types.

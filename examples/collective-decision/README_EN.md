@@ -66,3 +66,10 @@ Live calls require configuration and may incur charges. The console is for local
 private: true prevents accidental npm publication; source remains open.
 [Apache-2.0](LICENSE) · [Third-party licenses](THIRD_PARTY.md).
 Contact: zzjeff1993.agent@gmail.com.
+
+## Runtime storage and moving history
+
+Set `RULORA_DATA_ROOT` to a writable persistent directory when deploying with
+read-only code. See [storage layout and history migration](docs/storage-layout.md).
+Copy the complete data directory, including evidence and validated checkpoints,
+when moving tasks; copying only job JSON records is insufficient.

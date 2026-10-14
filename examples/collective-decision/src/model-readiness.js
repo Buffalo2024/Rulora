@@ -1,3 +1,4 @@
+const { dataPath } = require('./runtime-paths')
 const fs = require('node:fs')
 const fsp = require('node:fs/promises')
 const path = require('node:path')
@@ -35,7 +36,7 @@ function modelConfigurationFingerprint(config, environment = process.env) {
 }
 
 function smokeReceiptPath(root = path.resolve(__dirname, '..')) {
-  return path.join(path.resolve(root), '.runtime', 'model-smoke', 'latest.json')
+  return dataPath(path.resolve(root), 'model-smoke', 'latest.json')
 }
 
 async function writeSmokeReceipt({ root, config, environment = process.env, checkedAt = new Date(), maxAgeHours = 24, passed, results }) {

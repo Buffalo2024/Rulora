@@ -1,3 +1,4 @@
+const { dataPath, resolveDataRoot, resolveRuntimePath } = require('./runtime-paths')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const { buildCompanyCase, findCompanyRecord } = require('./case-builder')
@@ -128,7 +129,7 @@ async function prepareOne({ root, runtime, record, config, statePath, frozen }) 
 
 async function initializePopulation(root) {
   const agents = await readJson(path.join(root, 'config', 'agents.json'))
-  const store = new PopulationStore({ filePath: path.join(root, '.runtime', 'population.json'), roles: agents.roles })
+  const store = new PopulationStore({ filePath: dataPath(root, 'population.json'), roles: agents.roles })
   await store.load()
 }
 
@@ -205,7 +206,7 @@ async function verifyPausedOne({ root, runtime, record, statePath }) {
   const current = await getCompanyState(statePath, id)
   if (!['paused_upstream', 'paused_seat_failure'].includes(current.status)) return
   const caseData = await readJson(current.case_path)
-  const checkpointPath = current.case_checkpoint_path || path.join(root, '.runtime', 'case-resume-checkpoints', `${caseData.case_id}.json`)
+  const checkpointPath = current.case_checkpoint_path || dataPath(root, 'case-resume-checkpoints', `${caseData.case_id}.json`)
   const checkpoint = await readJson(checkpointPath)
   const evidenceHash = sha256(caseData.evidence || [])
   if (checkpoint.evidence_hash !== evidenceHash || current.evidence_sha256 && current.evidence_sha256 !== evidenceHash) {
@@ -322,7 +323,7 @@ async function freezeControlPlane(root, runtime) {
   relative.sort()
   const files = {}
   for (const item of relative) {
-    const filePath = path.join(root, item)
+    const filePath = resolveRuntimePath(root, item)
     const bytes = await fs.readFile(filePath)
     files[item] = sha256(bytes)
   }
@@ -454,6 +455,12 @@ function normalizeBatchConfig(input) {
 }
 
 function resolveUnderRoot(root, value) {
+  if (value === '.runtime' || value.startsWith('.runtime/')) {
+    const resolved = resolveRuntimePath(root, value), base = resolveDataRoot(root)
+    const relative = path.relative(base, resolved)
+    if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) throw new Error(`batch path escapes data root: ${value}`)
+    return resolved
+  }
   const resolved = path.resolve(root, value)
   if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) throw new Error(`batch path escapes project root: ${value}`)
   return resolved

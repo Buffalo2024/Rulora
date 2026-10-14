@@ -705,7 +705,7 @@ async function createMultiModelProvider(configPath, options = {}) {
     try { execution = JSON.parse(await fs.readFile(path.join(root, 'config', 'execution.json'), 'utf8')) } catch (error) {
       if (error.code !== 'ENOENT') throw error
     }
-    healthMonitor = new ProviderHealthMonitor({ root, config: execution.provider_connectivity })
+    healthMonitor = new ProviderHealthMonitor({ root: require('../rulora-loader').projectRoot(), config: execution.provider_connectivity })
   }
   if (!Object.keys(execution).length) {
     const root = path.resolve(path.dirname(resolved), '..')
@@ -928,6 +928,8 @@ async function requestWithRetry({
         }
       }
     } catch (error) {
+      // A failed response must never enter the successful-response branch.
+      response = null
       diagnostic.elapsed_ms = Date.now() - startedAt
       diagnostic.network_cause_code = error?.cause?.code || error?.code || null
       const transport = error.is_model_transport_failure ? error : networkTransportError(error, requestCount)
@@ -971,6 +973,8 @@ async function requestWithRetry({
 }
 
 function isTransientNetworkError(error) {
+  const causeCode = error?.cause?.code || error?.code
+  if (['UND_ERR_SOCKET', 'ECONNRESET', 'ECONNREFUSED', 'EPIPE', 'EHOSTUNREACH', 'ENETUNREACH', 'ENETDOWN', 'ETIMEDOUT', 'ENOTFOUND', 'EAI_AGAIN'].includes(causeCode)) return true
   return /fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|EAI_AGAIN/i.test(String(error?.message || ''))
 }
 

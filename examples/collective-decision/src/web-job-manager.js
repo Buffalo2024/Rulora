@@ -1,3 +1,4 @@
+const { dataPath, resolveDataRoot } = require('./runtime-paths')
 const { formatAssistance } = require('./decision-copy')
 const crypto = require('node:crypto')
 const fs = require('node:fs/promises')
@@ -82,7 +83,9 @@ class WebJobManager {
     this.allowArchivedLegacy = allowArchivedLegacy === true
     this.concurrency = Number.isInteger(concurrency) && concurrency > 0 ? Math.min(concurrency, 2) : 2
     this.batchLimit = Number.isInteger(batchLimit) && batchLimit > 0 ? Math.min(batchLimit, 20) : 20
-    this.runtimeDirectory = path.join(this.root, '.runtime', 'web-ui')
+    this.dataRoot = resolveDataRoot(this.root)
+    this.storage = new (require('./job-storage').JobStorage)({ codeRoot: this.root, dataRoot: this.dataRoot })
+    this.runtimeDirectory = path.join(this.dataRoot, 'web-ui')
     this.jobsDirectory = path.join(this.runtimeDirectory, 'jobs')
     this.logsDirectory = path.join(this.runtimeDirectory, 'logs')
     this.outputsDirectory = path.join(this.runtimeDirectory, 'outputs')
@@ -134,7 +137,8 @@ class WebJobManager {
     const entries = await fs.readdir(this.jobsDirectory, { withFileTypes: true })
     for (const entry of entries.filter(item => item.isFile() && item.name.endsWith('.json'))) {
       try {
-        const job = await readJson(path.join(this.jobsDirectory, entry.name))
+        const job = this.storage.decode(await readJson(path.join(this.jobsDirectory, entry.name)))
+        if (!/^[A-Za-z0-9_-][A-Za-z0-9._-]*$/.test(job.job_id || '') || entry.name !== `${job.job_id}.json`) throw new Error('Invalid stored job identity')
         job.v2_state ||= createV2State()
         if (job.status === 'running' || job.status === 'queued') {
           job.status = 'interrupted'
@@ -143,7 +147,7 @@ class WebJobManager {
           job.active_agents = []
           job.updated_at = new Date().toISOString()
           job.failure = { code: 'WEB_SERVER_RESTARTED', message: '本地Web服务重启，任务已停在原断点。可确认后从断点继续。' }
-          await writeJsonAtomic(path.join(this.jobsDirectory, entry.name), job)
+          await this.persistJob(job)
         }
         this.jobs.set(job.job_id, job)
       } catch {
@@ -452,7 +456,7 @@ class WebJobManager {
           validated.push(request.evidence)
         }
         evidence = validated
-        const caseData = await readJson(job.case_path)
+        const caseData = await this.readJobDocument(job, job.case_path)
         const mergedSnapshotRoot = path.join(job.output_directory, `manual-evidence-snapshots-${Date.now()}`)
         await fs.mkdir(mergedSnapshotRoot, { recursive: true })
         if (caseData.evidence_snapshot_root) {
@@ -522,7 +526,7 @@ class WebJobManager {
   checkpointRootForJob(job) {
     // New UI jobs own an isolated checkpoint directory. Historical jobs used the
     // runtime-wide store, so retain that fallback to make their completed calls reusable.
-    return job.model_call_checkpoint_root || path.join(this.root, '.runtime', 'model-call-checkpoints')
+    return job.model_call_checkpoint_root || dataPath(this.root, 'model-call-checkpoints')
   }
 
   async resumeJob(jobId) {
@@ -721,7 +725,7 @@ class WebJobManager {
   }
 
   async executeEnterprise(jobId, job) {
-    const caseData = await readJson(job.case_path)
+    const caseData = await this.readJobDocument(job, job.case_path)
     const run = await runEnterpriseDecision({ caseData, question: job.question, rules: job.rules, experience: job.experience, outputDirectory: job.output_directory, checkpointRoot: this.checkpointRootForJob(job), onProgress: event => this.recordProgress(jobId, event), supplementalSearch: async ({ gaps, caseData: currentCase, question, scope, round }) => this.searchEnterpriseGaps(jobId, currentCase, question, gaps, scope, round) })
     await this.mutateJob(jobId, async current => {
       current.status = run.status
@@ -877,7 +881,7 @@ class WebJobManager {
     try {
       const packetPath = path.join(companyRoot, 'enterprise-evidence-packet.json')
       const packetBinding = { ...binding, plan_sha256: planning.plan_sha256, request_sha256: sha256(canonicalJson({ ...request, request_id: null })) }
-      const savedPacket = await readJson(packetPath).catch(error => { if (error.code !== 'ENOENT') throw error; return null })
+      const savedPacket = await this.readJobDocument(job, packetPath).catch(error => { if (error.code !== 'ENOENT') throw error; return null })
       if (!job.force_evidence_recollection && savedPacket?.resume_binding && canonicalJson(savedPacket.resume_binding) === canonicalJson(packetBinding)) {
         if (!Array.isArray(savedPacket.evidence) || savedPacket.evidence_sha256 !== sha256(canonicalJson(savedPacket.evidence))) throw Object.assign(new Error('证据断点内容校验失败'), { code: 'INTAKE_CHECKPOINT_INVALID' })
         const errors = await verifyEvidenceSnapshots(savedPacket.evidence, { snapshotRoot, productionMode: true })
@@ -1031,7 +1035,11 @@ class WebJobManager {
   }
 
   async persistJob(job) {
-    await writeJsonAtomic(path.join(this.jobsDirectory, `${job.job_id}.json`), job)
+    await writeJsonAtomic(path.join(this.jobsDirectory, `${job.job_id}.json`), this.storage.encode(job))
+  }
+
+  async readJobDocument(job, file) {
+    return this.storage.rebaseDocument(job, await readJson(file))
   }
 
   async appendLog(job, message) {
@@ -1041,7 +1049,7 @@ class WebJobManager {
 
 async function discoverCases(root, companyIds) {
   const catalog = new Map()
-  const runtimeRoot = path.join(root, '.runtime')
+  const runtimeRoot = resolveDataRoot(root)
   let entries = []
   try {
     entries = await fs.readdir(runtimeRoot, { withFileTypes: true })

@@ -1,3 +1,4 @@
+const { dataPath, resolveDataRoot } = require('./runtime-paths')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const crypto = require('node:crypto')
@@ -5,7 +6,9 @@ const { canonicalJson, sha256, writeJsonAtomic } = require('./utils')
 const { recoverCompetitionOutput, diagnoseCompetitionRecoveryFailure } = require('./competition-output-recovery')
 const { adaptCompetitionActionOutput, adaptCompetitionReviewerOutput, adaptCompetitionRiskOutput, adaptCompetitionSeatOutput } = require('./competition-output-adapter')
 
-async function persistLlmOutputTrace(trace, { rootDirectory = process.env.LLM_OUTPUT_TRACE_ROOT || path.join(process.cwd(), '.runtime', 'llm-output-traces') } = {}) {
+async function persistLlmOutputTrace(trace, { rootDirectory = process.env.LLM_OUTPUT_TRACE_ROOT
+    ? path.resolve(resolveDataRoot(), process.env.LLM_OUTPUT_TRACE_ROOT)
+    : dataPath(undefined, 'llm-output-traces') } = {}) {
   const value = {
     contract_version: '1.0.0',
     recorded_at: new Date().toISOString(),
